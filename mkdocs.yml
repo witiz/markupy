@@ -1,0 +1,29 @@
+site_name: markupy
+site_url: https://markupy.github.io/markupy
+repo_url: https://github.com/markupy/markupy
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - toc.integrate
+  icon:
+    logo: material/code-tags
+nav:
+  - README.md
+  - usage.md
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - tables
