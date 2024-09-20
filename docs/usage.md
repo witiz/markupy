@@ -140,8 +140,7 @@ You can pass a list, tuple or generator to generate multiple children:
 !!! note
 
     The generator will be lazily evaluated when rendering the element, not
-    directly when the element is constructed. See [Streaming](streaming.md) for
-    more information.
+    directly when the element is constructed.
 
 A `list` can be used similar to a [JSX fragment](https://react.dev/reference/react/Fragment):
 
@@ -404,9 +403,8 @@ You may use `render_node` to achieve this:
 <tr>a</tr><tr>b</tr>
 ```
 
-`render_node()` accepts all kinds of [`Node`](static-typing.md#node) objects.
-You may use it to render anything that would normally be a children of another
-element.
+`render_node()` accepts all kinds of `Node` objects.
+You may use it to render anything that would normally be a chil of another element.
 
 !!! note "Best practice: Only use render_node() to render non-Elements"
 

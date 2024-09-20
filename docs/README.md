@@ -89,9 +89,6 @@ comprehension, generators, conditionals, static typing and any other feature of
 Python to organize your components. This gives you a lot of power and makes markupy
 scale from a single small Flask project to bigger applications.
 
-[Common patterns](/common-patterns/) can give you some ideas
-that you can build upon yourself.
-
 
 ## Installation
 
@@ -103,14 +100,6 @@ pip install markupy
 
 ## Documentation
 
-The full documentation is available at [markupy.github.io/markupy](https://markupy.github.io/markupy):
+The full documentation is available at [markupy.witiz.com](https://markupy.witiz.com):
 
-- [Usage](https://markupy.github.io/markupy/usage/)
-- [Common patterns](https://markupy.github.io/markupy/common-patterns/)
-- [Static typing](https://markupy.github.io/markupy/static-typing/)
-- [Usage with Django](https://markupy.github.io/markupy/django/)
-- [Streaming of contents](https://markupy.github.io/markupy/streaming/)
-- [Convert HTML to markupy code](https://markupy.github.io/markupy/html2markupy/)
-- [FAQ](https://markupy.github.io/markupy/faq/)
-- [References](https://markupy.github.io/markupy/references/)
-- [Changelog](https://markupy.github.io/markupy/changelog/)
+- [Usage](https://markupy.witiz.com/usage/)

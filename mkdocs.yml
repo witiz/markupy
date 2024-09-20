@@ -1,6 +1,6 @@
 site_name: markupy
-site_url: https://markupy.github.io/markupy
-repo_url: https://github.com/markupy/markupy
+site_url: https://markupy.witiz.com
+repo_url: https://github.com/witiz/markupy
 theme:
   name: material
   features:
