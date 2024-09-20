@@ -1,7 +1,7 @@
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator, Sequence
 from functools import lru_cache
 from re import sub as re_sub
-from typing import Iterator, Sequence, TypeAlias
+from typing import TypeAlias
 
 from markupsafe import escape
 
@@ -22,8 +22,8 @@ def _iter_classes_dict(dct: ClassNamesDict) -> Iterator[str]:
             yield k
 
 
-def _iter_classes_list(lst: ClassNamesSequence) -> Iterator[str]:
-    for v in lst:
+def _iter_classes_seq(seq: ClassNamesSequence) -> Iterator[str]:
+    for v in seq:
         if not v:
             continue
         if isinstance(v, dict):
@@ -148,7 +148,7 @@ class AttributeDict(dict[str, AttributeValue]):
                 if isinstance(value, dict):
                     classes = _iter_classes_dict(value)
                 else:
-                    classes = _iter_classes_list(value)
+                    classes = _iter_classes_seq(value)
                 self[key] = _classes_to_str(classes)
                 continue
 
