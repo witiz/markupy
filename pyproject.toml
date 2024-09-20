@@ -23,7 +23,8 @@ dependencies = [
 ]
 
 [project.urls]
-Home = "https://github.com/markupy/markupy"
+Homepage = "https://markupy.witiz.com"
+Repository = "https://github.com/witiz/markupy"
 Issues = "https://github.com/markupy/markupy/issues"
 
 [project.scripts]
