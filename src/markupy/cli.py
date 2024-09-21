@@ -4,8 +4,19 @@ import sys
 from html.parser import HTMLParser
 from typing import Any
 
+from markupy import tag
 from markupy.attribute import is_boolean_attribute
-from markupy.element import is_void_element
+from markupy.element import VoidElement
+
+_void_elements: set[str] = {
+    element.name
+    for element in map(lambda x: getattr(tag, x), tag.__all__)
+    if isinstance(element, VoidElement)
+}
+
+
+def _is_void_element(name: str) -> bool:
+    return name in _void_elements
 
 
 def _format_attribute_key(key: str) -> str:
@@ -101,7 +112,7 @@ class MarkupyParser(HTMLParser):
         self.push(markupy_tag)
         if attributes_str := _format_attrs(attrs):
             self.push(attributes_str)
-        if is_void_element(tag):
+        if _is_void_element(tag):
             self.push(",")
         else:
             self.push("[")

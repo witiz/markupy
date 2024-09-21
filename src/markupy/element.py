@@ -1,33 +1,10 @@
 from collections.abc import Callable, Iterable, Iterator
-from functools import lru_cache
-from re import sub as re_sub
 from typing import Any, TypeAlias, overload
 
 from markupsafe import Markup, escape
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
-
-
-def is_void_element(name: str) -> bool:
-    return name in {
-        "area",
-        "base",
-        "br",
-        "col",
-        "command",
-        "embed",
-        "hr",
-        "img",
-        "input",
-        "keygen",
-        "link",
-        "meta",
-        "param",
-        "source",
-        "track",
-        "wbr",
-    }
 
 
 class Element:
@@ -57,23 +34,7 @@ class Element:
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} '{self.tag_opening()}'>"
 
-    @staticmethod
-    @lru_cache(maxsize=300)
-    def shared_instance(name: str) -> "Element":
-        if set(name) == {"_"}:
-            return CommentElement(name)
-
-        # Consider uppercase chars and underscores as word boundaries for tag names
-        words = filter(None, re_sub(r"([A-Z])", r"_\1", name).split("_"))
-        html_name = "-".join(words).lower()
-        if html_name == "html":
-            return HtmlElement(html_name)
-        elif is_void_element(html_name):
-            return VoidElement(html_name)
-        else:
-            return Element(html_name)
-
-    def unshared_instance(self: Self) -> Self:
+    def new_instance(self: Self) -> Self:
         # When imported, elements are loaded from cache
         # Make sure we re-instantiate them on setting attributes/children
         # to avoid sharing attributes/children between multiple instances
@@ -151,13 +112,13 @@ class Element:
         if len(attributes) == 0:
             return self
 
-        el = self.unshared_instance()
+        el = self.new_instance()
         el.attributes = attributes
         return el
 
     # Use subscriptable [] syntax to assign children
     def __getitem__(self, children: "Node") -> Self:
-        el = self.unshared_instance()
+        el = self.new_instance()
         el.children = children
         return el
 

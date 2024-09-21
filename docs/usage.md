@@ -3,29 +3,16 @@
 ## Elements
 
 All elements in markupy are objects derived from the `Element` class.
-Elements are imported directly from the `markupy` module as their name using one of the 2 following syntaxes:
-
-- CapitalizedCase : this is the recommended syntax as it avoids naming conflicts between markupy elements and your own variables and makes it easier to distinguish markupy / HTML tags vs other parts of your code.
-- snake_case : this is mostly provided to make it easier for users transitioning from other libraries or to support personal preference.
+Elements are imported directly from the `markupy` module as their name using the CapitalizedCase syntax. Although HTML elements are usually spelled in lower case, using CapitalizedCase avoids naming conflicts between markupy elements and your own variables and makes it easier to distinguish markupy tags vs other parts of your code.
 
 
 HTML attributes are specified by using parenthesis `()` syntax on an element.
 
-=== "CapitalizedCase"
-
-    ```python
-    >>> from markupy.tag import Div
-    >>> print(Div(id="hi")["Hello!"])
-    <div id="hi">Hello!</div>
-    ```
-
-=== "snake_case"
-
-    ```python
-    >>> from markupy.tag import div
-    >>> print(div(id="hi")["Hello!"])
-    <div id="hi">Hello!</div>
-    ```
+```python
+>>> from markupy.tag import Div
+>>> print(Div(id="hi")["Hello!"])
+<div id="hi">Hello!</div>
+```
 
 ## Children
 
@@ -158,21 +145,11 @@ components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Usin
 are HTML elements that contains at least one dash (`-`). Since `-` cannot be
 used in Python identifiers, here's how you'd write them in markupy depending on your favorite syntax:
 
-=== "CapitalizedCase"
-
-    ```python title="Custom elements with CapitalizedCase syntax"
-    >>> from markupy.tag import MyCustomElement
-    >>> print(MyCustomElement['hi!'])
-    <my-custom-element>hi!</my-custom-element>
-    ```
-
-=== "snake_case"
-
-    ```python title="Custom elements with snake_case syntax"
-    >>> from markupy.tag import my_custom_element
-    >>> print(my_custom_element['hi!'])
-    <my-custom-element>hi!</my-custom-element>
-    ```
+```python title="Custom elements with CapitalizedCase syntax"
+>>> from markupy.tag import MyCustomElement
+>>> print(MyCustomElement['hi!'])
+<my-custom-element>hi!</my-custom-element>
+```
 
 ### HTML Doctype
 
@@ -189,20 +166,20 @@ The [HTML5 doctype](https://developer.mozilla.org/en-US/docs/Glossary/Doctype) i
 Since the Python code is the source of the HTML generation, to add a comment to
 the code, most of the time regular Python comments (`#`) are used.
 
-If you want to emit HTML comments that will be visible in the browser, you need to initialize a new element whose name is made of any number of `_` (for example, the following would work: `_`, `__`, `___`, etc...):
+If you want to emit HTML comments that will be visible in the browser, you need to initialize a special element whose name is `_`:
 
 ```python
 >>> from markupy.tag import Div, _
->>> print(Div[_["This is a HTML comment!"]])
-<div><!--This is a HTML comment!--></div>
+>>> print(Div[_["This is a HTML comment"]])
+<div><!--This is a HTML comment--></div>
 ```
 
 Given that a comment is a `Element`, you can wrap other elements as children:
 
 ```python
 >>> from markupy.tag import Div, Strong, _
->>> print(Div[_["This is a HTML comment!", Strong["Hidden text"]]])
-<div><!--This is a HTML comment!<strong>Hidden text</strong>--></div>
+>>> print(Div[_["This is a HTML comment", Strong["Hidden text"]]])
+<div><!--This is a HTML comment<strong>Hidden text</strong>--></div>
 ```
 
 If you need full control over the exact rendering of the comment, you can create

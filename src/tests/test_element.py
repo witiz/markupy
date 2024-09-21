@@ -6,7 +6,7 @@ from markupy.element import (
     HtmlElement,
     VoidElement,
 )
-from markupy.tag import Div, Hr, Html, Input, _, __
+from markupy.tag import Div, Hr, Html, Input, MyElement, Unknown, _
 
 
 def test_instance_cache() -> None:
@@ -15,11 +15,10 @@ def test_instance_cache() -> None:
     """
     from markupy import tag
 
-    assert tag.div is tag.div
     assert tag.Div is tag.Div
-    assert tag.div is tag.div()
-    assert tag.div is tag.div(attr=False)
-    assert tag.div is not tag.div[None]
+    assert tag.Div is tag.Div()
+    assert tag.Div is tag.Div(attr=False)
+    assert tag.Div is not tag.Div[None]
 
 
 def test_element_repr() -> None:
@@ -38,11 +37,12 @@ def test_markup_str() -> None:
 
 
 def test_element_type() -> None:
+    assert type(Unknown) is Element
+    assert type(MyElement) is Element
     assert type(Div) is Element
     assert type(Input) is VoidElement
     assert type(Html) is HtmlElement
     assert type(_) is CommentElement
-    assert type(__) is CommentElement
 
 
 def test_comment() -> None:

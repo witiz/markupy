@@ -3,7 +3,7 @@ import typing as t
 import pytest
 from markupsafe import Markup
 
-from markupy.tag import Button, Input, _, button, div, th
+from markupy.tag import Button, Div, Input, Th, _
 
 
 def test_attribute() -> None:
@@ -42,29 +42,29 @@ def test_comment() -> None:
 
 class Test_class_names:
     def test_str(self) -> None:
-        result = div(class_='">foo bar')
+        result = Div(class_='">foo bar')
         assert str(result) == '<div class="&#34;&gt;foo bar"></div>'
 
     def test_safestring(self) -> None:
-        result = div(class_=Markup('">foo bar'))
+        result = Div(class_=Markup('">foo bar'))
         assert str(result) == '<div class="&#34;&gt;foo bar"></div>'
 
     def test_list(self) -> None:
-        result = div(class_=['">foo', Markup('">bar'), None, "", "baz"])
+        result = Div(class_=['">foo', Markup('">bar'), None, "", "baz"])
         assert str(result) == '<div class="&#34;&gt;foo &#34;&gt;bar baz"></div>'
 
     def test_tuple(self) -> None:
-        result = div(class_=('">foo', Markup('">bar'), None, "", "baz"))
+        result = Div(class_=('">foo', Markup('">bar'), None, "", "baz"))
         assert str(result) == '<div class="&#34;&gt;foo &#34;&gt;bar baz"></div>'
 
     def test_dict(self) -> None:
-        result = div(
+        result = Div(
             class_={'">foo': True, Markup('">bar'): True, "x": False, "baz": True}
         )
         assert str(result) == '<div class="&#34;&gt;foo &#34;&gt;bar baz"></div>'
 
     def test_nested_dict(self) -> None:
-        result = div(
+        result = Div(
             class_=[
                 '">list-foo',
                 Markup('">list-bar'),
@@ -77,42 +77,42 @@ class Test_class_names:
         )
 
     def test_false(self) -> None:
-        result = str(div(class_=False))
+        result = str(Div(class_=False))
         assert result == "<div></div>"
 
     def test_none(self) -> None:
-        result = str(div(class_=None))
+        result = str(Div(class_=None))
         assert result == "<div></div>"
 
     def test_no_classes(self) -> None:
-        result = str(div(class_={"foo": False}))
+        result = str(Div(class_={"foo": False}))
         assert result == "<div></div>"
 
 
 def test_dict_attributes() -> None:
-    result = div({"@click": 'hi = "hello"'})
+    result = Div({"@click": 'hi = "hello"'})
 
     assert str(result) == """<div @click="hi = &#34;hello&#34;"></div>"""
 
 
 def test_underscore() -> None:
     # Hyperscript (https://hyperscript.org/) uses _, make sure it works good.
-    result = div(_="foo")
+    result = Div(_="foo")
     assert str(result) == """<div _="foo"></div>"""
 
 
 def test_dict_attributes_avoid_replace() -> None:
-    result = div({"class_": "foo", "hello_hi": "abc"})
+    result = Div({"class_": "foo", "hello_hi": "abc"})
     assert str(result) == """<div class_="foo" hello_hi="abc"></div>"""
 
 
 def test_dict_attribute_false() -> None:
-    result = div({"bool-false": False})
+    result = Div({"bool-false": False})
     assert str(result) == "<div></div>"
 
 
 def test_dict_attribute_true() -> None:
-    result = div({"bool-true": True})
+    result = Div({"bool-true": True})
     assert str(result) == "<div bool-true></div>"
 
 
@@ -146,102 +146,102 @@ class Test_attribute_escape:
     )
 
     def test_dict(self, x: str) -> None:
-        result = div({x: x})
+        result = Div({x: x})
         assert str(result) == """<div &lt;&#34;foo="&lt;&#34;foo"></div>"""
 
     def test_kwarg(self, x: str) -> None:
-        result = div(**{x: x})
+        result = Div(**{x: x})
         assert str(result) == """<div &lt;&#34;foo="&lt;&#34;foo"></div>"""
 
 
 def test_boolean_attribute_true() -> None:
-    result = button(disabled=True)
+    result = Button(disabled=True)
     assert str(result) == "<button disabled></button>"
 
 
 def test_kwarg_attribute_none() -> None:
-    result = div(foo=None)
+    result = Div(foo=None)
     assert str(result) == "<div></div>"
 
 
 def test_dict_attribute_none() -> None:
-    result = div({"foo": None})
+    result = Div({"foo": None})
     assert str(result) == "<div></div>"
 
 
 def test_boolean_attribute_false() -> None:
-    result = button(disabled=False)
+    result = Button(disabled=False)
     assert str(result) == "<button></button>"
 
 
 def test_integer_attribute() -> None:
-    result = th(colspan=123)
-    assert str(result) == '<th colspan="123"></th>'
+    result = Th(colspan=123, tabindex=0)
+    assert str(result) == '<th colspan="123" tabindex="0"></th>'
 
 
 def test_id_class() -> None:
-    result = div("#myid.cls1.cls2")
+    result = Div("#myid.cls1.cls2")
 
     assert str(result) == """<div id="myid" class="cls1 cls2"></div>"""
 
 
 def test_id_class_only_id() -> None:
-    result = div("#myid")
+    result = Div("#myid")
     assert str(result) == """<div id="myid"></div>"""
 
 
 def test_id_class_only_classes() -> None:
-    result = div(".foo.bar")
+    result = Div(".foo.bar")
     assert str(result) == """<div class="foo bar"></div>"""
 
 
 def test_id_class_empty_classes() -> None:
-    result = div(".foo..bar.")
+    result = Div(".foo..bar.")
     assert str(result) == """<div class="foo bar"></div>"""
 
 
 def test_id_class_bad_format() -> None:
     with pytest.raises(ValueError):
-        div("foo")
+        Div("foo")
 
 
 def test_id_class_bad_type() -> None:
     with pytest.raises(TypeError):
-        div({"oops": "yes"}, {})  # type: ignore
+        Div({"oops": "yes"}, {})  # type: ignore
 
 
 def test_invalid_number_of_attributes() -> None:
     with pytest.raises(ValueError):
-        div("#id.cls", {"attr": "val"}, "other")  # type: ignore
+        Div("#id.cls", {"attr": "val"}, "other")  # type: ignore
 
 
 def test_id_class_and_kwargs() -> None:
-    result = div("#theid", for_="hello", dataFoo="<bar")
+    result = Div("#theid", for_="hello", dataFoo="<bar")
     assert str(result) == """<div id="theid" for="hello" data-foo="&lt;bar"></div>"""
 
 
 def test_attrs_and_kwargs() -> None:
-    result = div({"a": "1", "for": "a"}, for_="b", b="2")
+    result = Div({"a": "1", "for": "a"}, for_="b", b="2")
     assert str(result) == """<div a="1" for="b" b="2"></div>"""
 
 
 def test_class_priority() -> None:
-    result = div(".a", {"class": "b"}, class_="c")
+    result = Div(".a", {"class": "b"}, class_="c")
     assert str(result) == """<div class="c"></div>"""
 
-    result = div(".a", {"class": "b"})
+    result = Div(".a", {"class": "b"})
     assert str(result) == """<div class="b"></div>"""
 
 
 def test_attribute_priority() -> None:
-    result = div({"foo": "a"}, foo="b")
+    result = Div({"foo": "a"}, foo="b")
     assert str(result) == """<div foo="b"></div>"""
 
 
 @pytest.mark.parametrize("not_an_attr", [1234, b"foo", object(), object, 1, 0, None])
 def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
     with pytest.raises(ValueError):
-        str(div({not_an_attr: "foo"}))
+        str(Div({not_an_attr: "foo"}))
 
 
 @pytest.mark.parametrize(
@@ -250,4 +250,4 @@ def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
 )
 def test_invalid_attribute_value(not_an_attr: t.Any) -> None:
     with pytest.raises(ValueError):
-        div(foo=not_an_attr)
+        Div(foo=not_an_attr)

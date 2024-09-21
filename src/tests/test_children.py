@@ -7,16 +7,16 @@ from markupsafe import Markup
 
 from markupy.element import Element, VoidElement
 from markupy.tag import (
+    Dd,
+    Div,
+    Dl,
+    Dt,
+    Html,
+    Img,
     Input,
-    dd,
-    div,
-    dl,
-    dt,
-    html,
-    img,
-    li,
-    my_custom_element,
-    ul,
+    Li,
+    MyCustomElement,
+    Ul,
 )
 
 if t.TYPE_CHECKING:
@@ -37,35 +37,35 @@ def test_void_element() -> None:
 
 
 def test_children() -> None:
-    assert str(div[img]) == "<div><img></div>"
+    assert str(Div[Img]) == "<div><img></div>"
 
 
 def test_integer_child() -> None:
-    assert str(div[123]) == "<div>123</div>"
+    assert str(Div[123]) == "<div>123</div>"
 
 
 def test_multiple_children() -> None:
-    result = ul[li, li]
+    result = Ul[Li, Li]
 
     assert str(result) == "<ul><li></li><li></li></ul>"
 
 
 def test_list_children() -> None:
-    children: list[Element] = [li["a"], li["b"]]
-    result = ul[children]
+    children: list[Element] = [Li["a"], Li["b"]]
+    result = Ul[children]
     assert str(result) == "<ul><li>a</li><li>b</li></ul>"
 
 
 def test_tuple_children() -> None:
-    result = ul[(li["a"], li["b"])]
+    result = Ul[(Li["a"], Li["b"])]
     assert str(result) == "<ul><li>a</li><li>b</li></ul>"
 
 
 def test_flatten_nested_children() -> None:
-    result = dl[
+    result = Dl[
         [
-            (dt["a"], dd["b"]),
-            (dt["c"], dd["d"]),
+            (Dt["a"], Dd["b"]),
+            (Dt["c"], Dd["d"]),
         ]
     ]
     assert str(result) == """<dl><dt>a</dt><dd>b</dd><dt>c</dt><dd>d</dd></dl>"""
@@ -73,7 +73,7 @@ def test_flatten_nested_children() -> None:
 
 def test_flatten_very_nested_children() -> None:
     # maybe not super useful but the nesting may be arbitrarily deep
-    result = div[[([["a"]],)], [([["b"]],)]]
+    result = Div[[([["a"]],)], [([["b"]],)]]
     assert str(result) == """<div>ab</div>"""
 
 
@@ -88,41 +88,41 @@ def test_flatten_nested_generators() -> None:
         yield cols()
         yield cols()
 
-    result = div[rows()]
+    result = Div[rows()]
 
     assert str(result) == """<div>abcabcabc</div>"""
 
 
 def test_generator_children() -> None:
-    gen: Generator[Element, None, None] = (li[x] for x in ["a", "b"])
-    result = ul[gen]
+    gen: Generator[Element, None, None] = (Li[x] for x in ["a", "b"])
+    result = Ul[gen]
     assert str(result) == "<ul><li>a</li><li>b</li></ul>"
 
 
 def test_html_tag_with_doctype() -> None:
-    result = html(foo="bar")["hello"]
+    result = Html(foo="bar")["hello"]
     assert str(result) == '<!doctype html><html foo="bar">hello</html>'
 
 
 def test_void_element_children() -> None:
     with pytest.raises(ValueError):
-        img["hey"]
+        Img["hey"]
 
 
 def test_call_without_args() -> None:
-    result = img()
+    result = Img()
     assert str(result) == "<img>"
 
 
 def test_custom_element() -> None:
-    el = my_custom_element()
+    el = MyCustomElement()
     assert isinstance(el, Element)
     assert str(el) == "<my-custom-element></my-custom-element>"
 
 
 @pytest.mark.parametrize("ignored_value", [None, True, False])
 def test_ignored(ignored_value: t.Any) -> None:
-    assert str(div[ignored_value]) == "<div></div>"
+    assert str(Div[ignored_value]) == "<div></div>"
 
 
 def test_iter() -> None:
@@ -132,11 +132,11 @@ def test_iter() -> None:
         nonlocal trace
 
         trace = "before yield"
-        yield li("#a")
+        yield Li("#a")
 
         trace = "done"
 
-    iterator = iter(ul[generate_list()])
+    iterator = iter(Ul[generate_list()])
 
     assert next(iterator) == "<ul>"
     assert trace == "not started"
@@ -151,7 +151,7 @@ def test_iter() -> None:
 
 
 def test_iter_str() -> None:
-    _, child, _ = div["a"]
+    _, child, _ = Div["a"]
 
     assert child == "a"
     # Make sure we dont get Markup (subclass of str)
@@ -159,7 +159,7 @@ def test_iter_str() -> None:
 
 
 def test_iter_markup() -> None:
-    _, child, _ = div["a"]
+    _, child, _ = Div["a"]
 
     assert child == "a"
     # Make sure we dont get Markup (subclass of str)
@@ -172,9 +172,9 @@ def test_callable() -> None:
     def generate_img() -> Element:
         nonlocal called
         called = True
-        return img
+        return Img
 
-    iterator = iter(div[generate_img])
+    iterator = iter(Div[generate_img])
 
     assert next(iterator) == "<div>"
     assert called is False
@@ -184,12 +184,12 @@ def test_callable() -> None:
 
 
 def test_escape_children() -> None:
-    result = str(div['>"'])
+    result = str(Div['>"'])
     assert result == "<div>&gt;&#34;</div>"
 
 
 def test_safe_children() -> None:
-    result = str(div[Markup("<hello></hello>")])
+    result = str(Div[Markup("<hello></hello>")])
     assert result == "<div><hello></hello></div>"
 
 
@@ -197,7 +197,7 @@ def test_nested_callable_generator() -> None:
     def func() -> Generator[str, None, None]:
         return (x for x in "abc")
 
-    assert str(div[func]) == "<div>abc</div>"
+    assert str(Div[func]) == "<div>abc</div>"
 
 
 def test_nested_callables() -> None:
@@ -207,14 +207,14 @@ def test_nested_callables() -> None:
     def second() -> Node:
         return "hi"
 
-    assert str(div[first]) == "<div>hi</div>"
+    assert str(Div[first]) == "<div>hi</div>"
 
 
 def test_callable_in_generator() -> None:
-    assert str(div[((lambda: "hi") for _ in range(1))]) == "<div>hi</div>"
+    assert str(Div[((lambda: "hi") for _ in range(1))]) == "<div>hi</div>"
 
 
 @pytest.mark.parametrize("not_a_child", [12.34, object(), object])
 def test_invalid_child(not_a_child: t.Any) -> None:
     with pytest.raises(TypeError):
-        str(div[not_a_child])
+        str(Div[not_a_child])
