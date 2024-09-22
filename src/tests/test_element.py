@@ -18,7 +18,12 @@ def test_instance_cache() -> None:
     assert tag.Div is tag.Div
     assert tag.Div is tag.Div()
     assert tag.Div is tag.Div(attr=False)
-    assert tag.Div is not tag.Div[None]
+    assert tag.Div is tag.Div[None]
+    assert tag.Div is tag.Div[""]
+    assert tag.Div is tag.Div[True]
+    assert tag.Div is tag.Div[False]
+    assert tag.Div is tag.Div[[]]
+    assert tag.Div is tag.Div[[None]]
 
 
 def test_element_repr() -> None:

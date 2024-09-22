@@ -7,6 +7,7 @@ from markupsafe import Markup
 
 from markupy.element import Element, VoidElement
 from markupy.tag import (
+    Button,
     Dd,
     Div,
     Dl,
@@ -16,6 +17,7 @@ from markupy.tag import (
     Input,
     Li,
     MyCustomElement,
+    Template,
     Ul,
 )
 
@@ -54,6 +56,18 @@ def test_list_children() -> None:
     children: list[Element] = [Li["a"], Li["b"]]
     result = Ul[children]
     assert str(result) == "<ul><li>a</li><li>b</li></ul>"
+
+
+def test_list_children_with_element_and_none() -> None:
+    children: list[Node] = [None, Li["b"]]
+    result = Ul[children]
+    assert str(result) == "<ul><li>b</li></ul>"
+
+
+def test_list_children_with_none() -> None:
+    children: list[Node] = [None]
+    result = Ul[children]
+    assert str(result) == "<ul></ul>"
 
 
 def test_tuple_children() -> None:
@@ -218,3 +232,7 @@ def test_callable_in_generator() -> None:
 def test_invalid_child(not_a_child: t.Any) -> None:
     with pytest.raises(TypeError):
         str(Div[not_a_child])
+
+
+def test_render_children_only() -> None:
+    assert Template[Input, Button].render_children() == "<input><button></button>"

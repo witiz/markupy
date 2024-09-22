@@ -1,4 +1,4 @@
-from collections.abc import Callable, Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from typing import Any, TypeAlias, overload
 
 from markupsafe import Markup, escape
@@ -13,29 +13,32 @@ class Element:
         self.attributes: AttributeDict | None = None
         self.children: Node = None
 
-    def tag_opening(self) -> str:
+    def render_tag_opening(self) -> str:
         if attributes := self.attributes:
             attributes_str = str(attributes)
             if len(attributes_str) > 0:
                 return f"<{self.name} {attributes_str}>"
         return f"<{self.name}>"
 
-    def tag_closing(self) -> str:
+    def render_children(self) -> str:
+        return render_node(self.children)
+
+    def render_tag_closing(self) -> str:
         return f"</{self.name}>"
 
     def __iter__(self) -> Iterator[str]:
-        yield self.tag_opening()
+        yield self.render_tag_opening()
         yield from iter_node(self.children)
-        yield self.tag_closing()
+        yield self.render_tag_closing()
 
     def __str__(self) -> str:
         return Markup("".join(self))
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} '{self.tag_opening()}'>"
+        return f"<{self.__class__.__name__} '{self.render_tag_opening()}'>"
 
     def new_instance(self: Self) -> Self:
-        # When imported, elements are loaded from cache
+        # When imported, elements are loaded from a shared instance
         # Make sure we re-instantiate them on setting attributes/children
         # to avoid sharing attributes/children between multiple instances
         if self.attributes is None and self.children is None:
@@ -118,6 +121,9 @@ class Element:
 
     # Use subscriptable [] syntax to assign children
     def __getitem__(self, children: "Node") -> Self:
+        if not _validate_node(children):
+            return self
+
         el = self.new_instance()
         el.children = children
         return el
@@ -145,7 +151,7 @@ class HtmlElement(Element):
 class VoidElement(Element):
     @override
     def __iter__(self) -> Iterator[str]:
-        yield self.tag_opening()
+        yield self.render_tag_opening()
 
     @override
     def __getitem__(self, children: Any) -> Self:
@@ -154,11 +160,11 @@ class VoidElement(Element):
 
 class CommentElement(Element):
     @override
-    def tag_opening(self) -> str:
+    def render_tag_opening(self) -> str:
         return "<!--"
 
     @override
-    def tag_closing(self) -> str:
+    def render_tag_closing(self) -> str:
         return "-->"
 
     @override
@@ -171,12 +177,25 @@ Node: TypeAlias = (
 )
 
 
+def _validate_node(node: Node) -> bool:
+    if node is None or isinstance(node, bool):
+        return False
+    if isinstance(node, (int, Element, Iterator)) or callable(node):
+        return True
+    if isinstance(node, str):
+        return bool(node)
+    elif isinstance(node, Sequence):
+        return any(_validate_node(child) for child in node)
+    else:
+        raise TypeError(f"{node!r} is not a valid child element")
+
+
 def render_node(node: Node) -> Markup:
     return Markup("".join(iter_node(node)))
 
 
 def iter_node(node: Node) -> Iterator[str]:
-    if node is None or isinstance(node, bool):
+    if not _validate_node(node):
         return
     while not isinstance(node, Element) and callable(node):
         node = node()
