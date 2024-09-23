@@ -15,7 +15,7 @@ def test_empty_element() -> None:
 
 def test_strip() -> None:
     html = """<div>\n</div><div>  \n  </div>"""
-    py = """from markupy.tag import Div\nDiv,Div"""
+    py = """from markupy.tag import Div\n[Div,Div]"""
     assert to_markupy(html) == py
 
 
@@ -52,6 +52,12 @@ def test_invalid_html() -> None:
 def test_to_markupy() -> None:
     html = """<html><Head><TITLE>Test</title></head><body class=''><h1 id='myid' burger&fries='good' class='title header'>Parse me! <!--My comment--></h1><hr><input class='my-input' disabled value='0' @click.outside.500ms='test' data-test='other' data-url-valid='coucou'><sl-button hx-on:htmx:config-request='attri'>Click!</sl-button></body></html>"""
     py = """from markupy.tag import Body,H1,Head,Hr,Html,Input,SlButton,Title\nHtml[Head[Title["Test"]],Body[H1("#myid.title.header",{"burger&fries":"good"})["Parse me!"],Hr,Input(".my-input",disabled=True,value="0",_click_outside_500ms="test",dataTest="other",dataUrlValid="coucou"),SlButton(hxOn__htmx__configRequest="attri")["Click!"]]]"""
+    assert to_markupy(html) == py
+
+
+def test_escape() -> None:
+    html = """<a href="{{ url_for(".index") }}">Hello</a>"""
+    py = """from markupy.tag import A\nA(href='{{ url_for(".index") }}')["Hello"]"""
     assert to_markupy(html) == py
 
 
