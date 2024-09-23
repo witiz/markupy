@@ -30,10 +30,15 @@ def _format_attribute_key(key: str) -> str:
     return key
 
 
+def _quote(value: str) -> str:
+    quote = '"' if '"' not in value else "'" if "'" not in value else '"""'
+    return f"{quote}{value}{quote}"
+
+
 def _format_attribute_value(value: str | None) -> str:
     if value is None:
         return "True"
-    return f'"{value}"'
+    return _quote(value)
 
 
 def _format_attrs_dict(attrs: dict[str, str | None]) -> str:
@@ -58,10 +63,10 @@ def _format_attrs(
             value = None
         elif not value:
             continue
-        elif key == "id" and use_selector:
+        elif key == "id" and use_selector and "{" not in value:
             selector = f"#{value}{selector}"
             continue
-        elif key == "class" and use_selector:
+        elif key == "class" and use_selector and "{" not in value:
             selector = f"{selector}.{'.'.join(value.split())}"
             continue
 
@@ -88,8 +93,10 @@ class MarkupyParser(HTMLParser):
     def __init__(self, *, use_selector: bool, use_import_tag: bool) -> None:
         self.stack: list[str] = list()
         self.imports: set[str] = set()
-        self.use_import_tag = use_import_tag
-        self.use_selector = use_selector
+        self.use_import_tag: bool = use_import_tag
+        self.use_selector: bool = use_selector
+        self.count_top_level: int = 0
+        self.count_tag: int = 0
         super().__init__()
 
     def peek(self) -> str | None:
@@ -107,6 +114,10 @@ class MarkupyParser(HTMLParser):
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         # print("Encountered a start tag:", tag, attrs)
+        if self.count_tag == 0:
+            self.count_top_level += 1
+        self.count_tag += 1
+
         markupy_tag = "".join(map(lambda x: x.capitalize(), tag.split("-")))
         if self.use_import_tag:
             markupy_tag = f"tag.{markupy_tag}"
@@ -122,6 +133,7 @@ class MarkupyParser(HTMLParser):
 
     def handle_endtag(self, tag: str) -> None:
         # print("Encountered an end tag :", tag)
+        self.count_tag -= 1
         if self.peek() == ",":
             self.pop()
         if self.peek() == "[":
@@ -137,7 +149,9 @@ class MarkupyParser(HTMLParser):
             line = " ".join(line.split())
             if not line:
                 continue
-            self.push(f'"{line}"')
+            if self.count_tag == 0:
+                self.count_top_level += 1
+            self.push(_quote(line))
             self.push(",")
 
     def output_imports(self) -> str:
@@ -149,32 +163,19 @@ class MarkupyParser(HTMLParser):
         return ""
 
     def output_code(self) -> str:
-        return "".join(self.stack).strip(",")
+        code = "".join(self.stack).strip(",")
+        if self.count_top_level > 1:
+            return f"[{code}]"
+        return code
 
 
 def _template_process(html: str) -> str:
-    # html = html.strip()
-    html = _template_remove_extends(html)
-    html = _template_replace_blocks(html)
-    return html
-
-
-def _template_remove_extends(html: str) -> str:
-    return re.sub(
-        r"{%[+-]?\s*extends\s+\".+?\"\s*[+-]?%}",
-        r"",
-        html,
-    )
-
-
-def _template_replace_blocks(html: str) -> str:
     # Replace opening `block`
     html = re.sub(
         r"{%[+-]?\s+block\s+([a-zA-Z_]+)\s+[+-]?%}",
         lambda match: f"<block-{match.group(1).lower().replace('_','-')}>",
         html,
     )
-
     # Replace closing `block`
     html = re.sub(
         r"{%[+-]?\s+endblock(?:\s+[a-zA-Z_]+)?\s+[+-]?%}",
@@ -182,7 +183,6 @@ def _template_replace_blocks(html: str) -> str:
         "</endblock>",
         html,
     )
-
     return html
 
 
