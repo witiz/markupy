@@ -3,6 +3,8 @@ import re
 from html.parser import HTMLParser
 from typing import Any
 
+from markupsafe import escape
+
 from markupy import tag
 from markupy.attribute import is_boolean_attribute
 from markupy.element import VoidElement
@@ -181,6 +183,12 @@ def _template_process(html: str) -> str:
         r"{%[+-]?\s+endblock(?:\s+[a-zA-Z_]+)?\s+[+-]?%}",
         # we can use whatever closing tag name we want here as it'll end up being replace with a closing bracket
         "</endblock>",
+        html,
+    )
+    # Escape template contents
+    html = re.sub(
+        r"{{.*?}}|{%.*?%}|{#.*?#}",
+        lambda match: escape(match.group(0)),
         html,
     )
     return html
