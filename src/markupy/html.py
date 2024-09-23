@@ -1,4 +1,5 @@
 import keyword
+import re
 from html.parser import HTMLParser
 from typing import Any
 
@@ -109,11 +110,8 @@ class MarkupyParser(HTMLParser):
         markupy_tag = "".join(map(lambda x: x.capitalize(), tag.split("-")))
         if self.use_import_tag:
             markupy_tag = f"tag.{markupy_tag}"
-        else:
-            self.imports.add(markupy_tag)
 
-        # if self.peek() and self.peek() not in ",[":
-        #     self.push(",")
+        self.imports.add(markupy_tag)
         self.push(markupy_tag)
         if attributes_str := _format_attrs(attrs, use_selector=self.use_selector):
             self.push(attributes_str)
@@ -134,29 +132,66 @@ class MarkupyParser(HTMLParser):
 
     def handle_data(self, data: str) -> None:
         # print("Encountered some data  :", data)
-        data = data.strip()
-        if not data:
-            return
-        self.push(f'"{data}"')
-        self.push(",")
+        for line in data.splitlines():
+            # Strip newlines, leading/traing spaces and redundant spaces
+            line = " ".join(line.split())
+            if not line:
+                continue
+            self.push(f'"{line}"')
+            self.push(",")
 
     def output_imports(self) -> str:
-        if self.use_import_tag:
-            return "from markupy import tag"
-        elif self.imports:
-            return f"from markupy.tag import {','.join(sorted(self.imports))}"
+        if self.imports:
+            if self.use_import_tag:
+                return "from markupy import tag\n"
+            else:
+                return f"from markupy.tag import {','.join(sorted(self.imports))}\n"
         return ""
 
     def output_code(self) -> str:
         return "".join(self.stack).strip(",")
 
 
+def _template_process(html: str) -> str:
+    # html = html.strip()
+    html = _template_remove_extends(html)
+    html = _template_replace_blocks(html)
+    return html
+
+
+def _template_remove_extends(html: str) -> str:
+    return re.sub(
+        r"{%[+-]?\s*extends\s+\".+?\"\s*[+-]?%}",
+        r"",
+        html,
+    )
+
+
+def _template_replace_blocks(html: str) -> str:
+    # Replace opening `block`
+    html = re.sub(
+        r"{%[+-]?\s+block\s+([a-zA-Z_]+)\s+[+-]?%}",
+        lambda match: f"<block-{match.group(1).lower().replace('_','-')}>",
+        html,
+    )
+
+    # Replace closing `block`
+    html = re.sub(
+        r"{%[+-]?\s+endblock(?:\s+[a-zA-Z_]+)?\s+[+-]?%}",
+        # we can use whatever closing tag name we want here as it'll end up being replace with a closing bracket
+        "</endblock>",
+        html,
+    )
+
+    return html
+
+
 def to_markupy(
     html: str, *, use_selector: bool = True, use_import_tag: bool = False
 ) -> str:
     parser = MarkupyParser(use_selector=use_selector, use_import_tag=use_import_tag)
-    parser.feed(html)
+    parser.feed(_template_process(html))
     parser.close()
     if code := parser.output_code():
-        return f"{parser.output_imports()}\n{code}"
+        return f"{parser.output_imports()}{code}"
     return ""
