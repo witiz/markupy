@@ -1,3 +1,5 @@
+import pytest
+
 from markupy.html import to_markupy
 
 
@@ -43,10 +45,22 @@ def test_empty_kwargs() -> None:
     assert to_markupy(html) == py
 
 
-def test_invalid_html() -> None:
+def test_invalid_html_unclosed() -> None:
     html = """<div>"""
-    py = """from markupy.tag import Div\nDiv["""
-    assert to_markupy(html) == py
+    with pytest.raises(ValueError):
+        to_markupy(html)
+
+
+def test_invalid_html_toomany_closed() -> None:
+    html = """<div></div></div>"""
+    with pytest.raises(ValueError):
+        to_markupy(html)
+
+
+def test_invalid_html_not_matching() -> None:
+    html = """<div></pre>"""
+    with pytest.raises(ValueError):
+        to_markupy(html)
 
 
 def test_to_markupy() -> None:
