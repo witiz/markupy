@@ -1,7 +1,7 @@
 import keyword
 import re
 from html.parser import HTMLParser
-from typing import Any
+from typing import Iterator
 
 from markupsafe import escape
 
@@ -91,58 +91,78 @@ def _format_attrs(
     return None
 
 
+class Stack:
+    def __init__(self) -> None:
+        self._list: list[str] = []
+
+    def __len__(self) -> int:
+        return len(self._list)
+
+    def push(self, item: str) -> None:
+        if not item:
+            raise ValueError("Can't push None or empty string into stack")
+        self._list.append(item)
+
+    def peek(self) -> str | None:
+        if len(self) > 0:
+            return self._list[-1]
+        return None
+
+    def pop(self) -> str | None:
+        if len(self) > 0:
+            return self._list.pop()
+        return None
+
+    def __iter__(self) -> Iterator[str]:
+        yield from self._list
+
+
 class MarkupyParser(HTMLParser):
     def __init__(self, *, use_selector: bool, use_import_tag: bool) -> None:
-        self.stack: list[str] = list()
+        self.count_top_level: int = 0
+        self.code_stack: Stack = Stack()
+        self.unclosed_stack: Stack = Stack()
         self.imports: set[str] = set()
         self.use_import_tag: bool = use_import_tag
         self.use_selector: bool = use_selector
-        self.count_top_level: int = 0
-        self.count_tag: int = 0
         super().__init__()
-
-    def peek(self) -> str | None:
-        if len(self.stack) > 0:
-            return self.stack[-1]
-        return None
-
-    def push(self, value: Any) -> None:
-        return self.stack.append(value)
-
-    def pop(self) -> Any:
-        if len(self.stack) > 0:
-            return self.stack.pop()
-        return None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         # print("Encountered a start tag:", tag, attrs)
-        if self.count_tag == 0:
+        if len(self.unclosed_stack) == 0:
             self.count_top_level += 1
-        self.count_tag += 1
+        if not _is_void_element(tag):
+            self.unclosed_stack.push(tag)
 
         markupy_tag = "".join(map(lambda x: x.capitalize(), tag.split("-")))
         if self.use_import_tag:
             markupy_tag = f"tag.{markupy_tag}"
 
         self.imports.add(markupy_tag)
-        self.push(markupy_tag)
+        self.code_stack.push(markupy_tag)
         if attributes_str := _format_attrs(attrs, use_selector=self.use_selector):
-            self.push(attributes_str)
+            self.code_stack.push(attributes_str)
         if _is_void_element(tag):
-            self.push(",")
+            self.code_stack.push(",")
         else:
-            self.push("[")
+            self.code_stack.push("[")
 
     def handle_endtag(self, tag: str) -> None:
         # print("Encountered an end tag :", tag)
-        self.count_tag -= 1
-        if self.peek() == ",":
-            self.pop()
-        if self.peek() == "[":
-            self.pop()
+        if not _is_void_element(tag):
+            last_open_tag = self.unclosed_stack.pop()
+            if last_open_tag is None or last_open_tag != tag:
+                raise ValueError(f"Unmatched closing tag {tag}")
+            elif tag == "endblock" and not tag.startswith("block-"):
+                raise ValueError(f"Unmatched closing block {last_open_tag}")
+
+        if self.code_stack.peek() == ",":
+            self.code_stack.pop()
+        if self.code_stack.peek() == "[":
+            self.code_stack.pop()
         elif not _is_void_element(tag):
-            self.push("]")
-        self.push(",")
+            self.code_stack.push("]")
+        self.code_stack.push(",")
 
     def handle_data(self, data: str) -> None:
         # print("Encountered some data  :", data)
@@ -151,10 +171,10 @@ class MarkupyParser(HTMLParser):
             line = " ".join(line.split())
             if not line:
                 continue
-            if self.count_tag == 0:
+            if len(self.unclosed_stack) == 0:
                 self.count_top_level += 1
-            self.push(_quote(line))
-            self.push(",")
+            self.code_stack.push(_quote(line))
+            self.code_stack.push(",")
 
     def output_imports(self) -> str:
         if self.imports:
@@ -165,7 +185,7 @@ class MarkupyParser(HTMLParser):
         return ""
 
     def output_code(self) -> str:
-        code = "".join(self.stack).strip(",")
+        code = "".join(self.code_stack).strip(",")
         if self.count_top_level > 1:
             return f"[{code}]"
         return code
@@ -200,6 +220,8 @@ def to_markupy(
     parser = MarkupyParser(use_selector=use_selector, use_import_tag=use_import_tag)
     parser.feed(_template_process(html))
     parser.close()
+    if tag := parser.unclosed_stack.pop():
+        raise ValueError(f"Unmatched opening tag {tag}")
     if code := parser.output_code():
         return f"{parser.output_imports()}{code}"
     return ""
