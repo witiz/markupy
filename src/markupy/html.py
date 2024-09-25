@@ -151,10 +151,16 @@ class MarkupyParser(HTMLParser):
         # print("Encountered an end tag :", tag)
         if not _is_void_element(tag):
             last_open_tag = self.unclosed_stack.pop()
-            if last_open_tag is None or last_open_tag != tag:
-                raise ValueError(f"Unmatched closing tag {tag}")
-            elif tag == "endblock" and not tag.startswith("block-"):
-                raise ValueError(f"Unmatched closing block {last_open_tag}")
+            if last_open_tag is None:
+                raise ValueError(f"Unexpected closing tag `</{tag}>`")
+            elif tag != "endblock" and tag != last_open_tag:
+                raise ValueError(
+                    f"Invalid closing tag `</{tag}>`, expected `</{last_open_tag}>`"
+                )
+            elif tag == "endblock" and not last_open_tag.startswith("block-"):
+                raise ValueError(
+                    f"Invalid template `endblock`, expected `</{last_open_tag}>`"
+                )
 
         if self.code_stack.peek() == ",":
             self.code_stack.pop()
@@ -221,7 +227,7 @@ def to_markupy(
     parser.feed(_template_process(html))
     parser.close()
     if tag := parser.unclosed_stack.pop():
-        raise ValueError(f"Unmatched opening tag {tag}")
+        raise ValueError(f"Opening tag `<{tag}>` was not closed")
     if code := parser.output_code():
         return f"{parser.output_imports()}{code}"
     return ""

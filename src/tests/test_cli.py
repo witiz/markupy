@@ -112,3 +112,13 @@ def test_use_selector() -> None:
     html = """<div id="myid" class="cls1 cls2">hello</div>"""
     py = """from markupy.tag import Div\nDiv(id="myid",class_="cls1 cls2")["hello"]"""
     assert to_markupy(html, use_selector=False) == py
+
+
+def test_jinja_block() -> None:
+    html = """
+    {% block my_name %}
+        <div></div>
+    {% endblock %}
+    """
+    py = """from markupy.tag import BlockMyName,Div\nBlockMyName[Div]"""
+    assert to_markupy(html) == py
