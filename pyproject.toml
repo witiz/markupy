@@ -28,7 +28,7 @@ Repository = "https://github.com/witiz/markupy"
 Issues = "https://github.com/markupy/markupy/issues"
 
 [project.scripts]
-html2markupy = "markupy.cli:main"
+html2markupy = "markupy._private.cli:main"
 
 [build-system]
 requires = ["flit_core >=3.2,<4"]

@@ -1,6 +1,6 @@
 import pytest
 
-from markupy.html import to_markupy
+from markupy._private.html import to_markupy
 
 
 def test_nested_void() -> None:

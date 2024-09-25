@@ -6,8 +6,9 @@ from typing import Iterator
 from markupsafe import escape
 
 from markupy import tag
-from markupy.attribute import is_boolean_attribute
-from markupy.element import VoidElement
+
+from .attribute import is_boolean_attribute
+from .element import VoidElement
 
 _void_elements: set[str] = {
     element.name

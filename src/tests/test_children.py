@@ -5,7 +5,7 @@ import typing as t
 import pytest
 from markupsafe import Markup
 
-from markupy.element import Element, VoidElement
+from markupy._private.element import Element, VoidElement
 from markupy.tag import (
     Button,
     Dd,
