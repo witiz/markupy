@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable, Iterator, Sequence
-from typing import Any, TypeAlias, overload
+from typing import Any, TypeAlias, final, overload
 
 from markupsafe import Markup, escape
 from typing_extensions import Self, override
@@ -12,6 +12,10 @@ class Element:
         self.name = name
         self.attributes: AttributeDict | None = None
         self.children: Node = None
+
+    @final
+    def render(self) -> str:
+        return Markup("".join(self))
 
     def render_tag_opening(self) -> str:
         if attributes := self.attributes:
@@ -32,7 +36,7 @@ class Element:
         yield self.render_tag_closing()
 
     def __str__(self) -> str:
-        return Markup("".join(self))
+        return self.render()
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} '{self.render_tag_opening()}'>"
@@ -190,10 +194,6 @@ def _validate_node(node: Node) -> bool:
         raise TypeError(f"{node!r} is not a valid child element")
 
 
-def render_node(node: Node) -> Markup:
-    return Markup("".join(iter_node(node)))
-
-
 def iter_node(node: Node) -> Iterator[str]:
     if not _validate_node(node):
         return
@@ -210,3 +210,7 @@ def iter_node(node: Node) -> Iterator[str]:
             yield from iter_node(child)
     else:
         raise TypeError(f"{node!r} is not a valid child element")
+
+
+def render_node(node: Node) -> Markup:
+    return Markup("".join(iter_node(node)))
