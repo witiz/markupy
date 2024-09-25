@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable, Iterator, Sequence
-from typing import Any, TypeAlias, overload
+from typing import Any, TypeAlias, final, overload
 
 from markupsafe import Markup, escape
 from typing_extensions import Self, override
@@ -9,40 +9,48 @@ from .attribute import AttributeDict, AttributeValue
 
 class Element:
     def __init__(self, name: str) -> None:
-        self.name = name
-        self.attributes: AttributeDict | None = None
-        self.children: Node = None
+        self._name = name
+        self._attributes: AttributeDict | None = None
+        self._children: Node = None
 
-    def render_tag_opening(self) -> str:
-        if attributes := self.attributes:
-            attributes_str = str(attributes)
-            if len(attributes_str) > 0:
-                return f"<{self.name} {attributes_str}>"
-        return f"<{self.name}>"
+    @property
+    def name(self) -> str:
+        return self._name
 
-    def render_children(self) -> str:
-        return render_node(self.children)
-
-    def render_tag_closing(self) -> str:
-        return f"</{self.name}>"
-
-    def __iter__(self) -> Iterator[str]:
-        yield self.render_tag_opening()
-        yield from iter_node(self.children)
-        yield self.render_tag_closing()
-
-    def __str__(self) -> str:
+    @final
+    def render(self) -> str:
         return Markup("".join(self))
 
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} '{self.render_tag_opening()}'>"
+    def _render_tag_opening(self) -> str:
+        if attributes := self._attributes:
+            attributes_str = str(attributes)
+            if len(attributes_str) > 0:
+                return f"<{self._name} {attributes_str}>"
+        return f"<{self._name}>"
 
-    def new_instance(self: Self) -> Self:
+    def render_children(self) -> str:
+        return render_node(self._children)
+
+    def _render_tag_closing(self) -> str:
+        return f"</{self._name}>"
+
+    def __iter__(self) -> Iterator[str]:
+        yield self._render_tag_opening()
+        yield from iter_node(self._children)
+        yield self._render_tag_closing()
+
+    def __str__(self) -> str:
+        return self.render()
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} '{self._render_tag_opening()}'>"
+
+    def _new_instance(self: Self) -> Self:
         # When imported, elements are loaded from a shared instance
         # Make sure we re-instantiate them on setting attributes/children
         # to avoid sharing attributes/children between multiple instances
-        if self.attributes is None and self.children is None:
-            return self.__class__(self.name)
+        if self._attributes is None and self._children is None:
+            return self.__class__(self._name)
         return self
 
     # Use call syntax () to define attributes
@@ -115,8 +123,8 @@ class Element:
         if len(attributes) == 0:
             return self
 
-        el = self.new_instance()
-        el.attributes = attributes
+        el = self._new_instance()
+        el._attributes = attributes
         return el
 
     # Use subscriptable [] syntax to assign children
@@ -124,8 +132,8 @@ class Element:
         if not _validate_node(children):
             return self
 
-        el = self.new_instance()
-        el.children = children
+        el = self._new_instance()
+        el._children = children
         return el
 
     # Allow starlette Response.render to directly render this element without
@@ -151,7 +159,7 @@ class HtmlElement(Element):
 class VoidElement(Element):
     @override
     def __iter__(self) -> Iterator[str]:
-        yield self.render_tag_opening()
+        yield self._render_tag_opening()
 
     @override
     def __getitem__(self, children: Any) -> Self:
@@ -160,11 +168,11 @@ class VoidElement(Element):
 
 class CommentElement(Element):
     @override
-    def render_tag_opening(self) -> str:
+    def _render_tag_opening(self) -> str:
         return "<!--"
 
     @override
-    def render_tag_closing(self) -> str:
+    def _render_tag_closing(self) -> str:
         return "-->"
 
     @override
@@ -190,10 +198,6 @@ def _validate_node(node: Node) -> bool:
         raise TypeError(f"{node!r} is not a valid child element")
 
 
-def render_node(node: Node) -> Markup:
-    return Markup("".join(iter_node(node)))
-
-
 def iter_node(node: Node) -> Iterator[str]:
     if not _validate_node(node):
         return
@@ -210,3 +214,7 @@ def iter_node(node: Node) -> Iterator[str]:
             yield from iter_node(child)
     else:
         raise TypeError(f"{node!r} is not a valid child element")
+
+
+def render_node(node: Node) -> Markup:
+    return Markup("".join(iter_node(node)))

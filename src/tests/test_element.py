@@ -1,6 +1,6 @@
 from markupsafe import Markup
 
-from markupy.element import (
+from markupy._private.element import (
     CommentElement,
     Element,
     HtmlElement,
