@@ -3,23 +3,6 @@ from typing import TypeAlias, final
 
 from markupsafe import Markup, escape
 
-
-class View(Iterable[str]):
-    def __init__(self, *nodes: "Node") -> None:
-        self._nodes = nodes
-
-    @final
-    def render(self) -> str:
-        return Markup("".join(self))
-
-    def __iter__(self) -> Iterator[str]:
-        yield from iter_node(self._nodes)
-
-    @final
-    def __str__(self) -> str:
-        return self.render()
-
-
 Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]
 
 
@@ -54,5 +37,17 @@ def iter_node(node: Node) -> Iterator[str]:
         raise TypeError(f"{node!r} is not a valid child element")
 
 
-def render_node(node: Node) -> Markup:
+def render_node(*node: Node) -> Markup:
     return Markup("".join(iter_node(node)))
+
+
+class View(Iterable[str]):
+    def render(self) -> Node:
+        return None
+
+    def __iter__(self) -> Iterator[str]:
+        yield from iter_node(self.render())
+
+    @final
+    def __str__(self) -> str:
+        return Markup("".join(self))

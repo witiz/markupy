@@ -4,7 +4,7 @@ from typing import Any, overload
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
-from .view import Node, View, iter_node, render_node, validate_node
+from .view import Node, View, iter_node, validate_node
 
 
 class Element(View):
@@ -17,26 +17,23 @@ class Element(View):
     def name(self) -> str:
         return self._name
 
-    def _render_tag_opening(self) -> str:
+    def _tag_opening(self) -> str:
         if attributes := self._attributes:
             attributes_str = str(attributes)
             if len(attributes_str) > 0:
                 return f"<{self._name} {attributes_str}>"
         return f"<{self._name}>"
 
-    def render_children(self) -> str:
-        return render_node(self._children)
-
-    def _render_tag_closing(self) -> str:
+    def _tag_closing(self) -> str:
         return f"</{self._name}>"
 
     def __iter__(self) -> Iterator[str]:
-        yield self._render_tag_opening()
+        yield self._tag_opening()
         yield from iter_node(self._children)
-        yield self._render_tag_closing()
+        yield self._tag_closing()
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} '{self._render_tag_opening()}'>"
+        return f"<{self.__class__.__name__} '{self._tag_opening()}'>"
 
     def _new_instance(self: Self) -> Self:
         # When imported, elements are loaded from a shared instance
@@ -152,7 +149,7 @@ class HtmlElement(Element):
 class VoidElement(Element):
     @override
     def __iter__(self) -> Iterator[str]:
-        yield self._render_tag_opening()
+        yield self._tag_opening()
 
     @override
     def __getitem__(self, children: Any) -> Self:
@@ -161,11 +158,11 @@ class VoidElement(Element):
 
 class CommentElement(Element):
     @override
-    def _render_tag_opening(self) -> str:
+    def _tag_opening(self) -> str:
         return "<!--"
 
     @override
-    def _render_tag_closing(self) -> str:
+    def _tag_closing(self) -> str:
         return "-->"
 
     @override
