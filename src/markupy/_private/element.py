@@ -7,7 +7,23 @@ from typing_extensions import Self, override
 from .attribute import AttributeDict, AttributeValue
 
 
-class Element:
+class View(Iterable[str]):
+    def __init__(self, *nodes: "Node") -> None:
+        self._nodes = nodes
+
+    @final
+    def render(self) -> str:
+        return Markup("".join(self))
+
+    def __iter__(self) -> Iterator[str]:
+        yield from iter_node(self._nodes)
+
+    @final
+    def __str__(self) -> str:
+        return self.render()
+
+
+class Element(View):
     def __init__(self, name: str) -> None:
         self._name = name
         self._attributes: AttributeDict | None = None
@@ -16,10 +32,6 @@ class Element:
     @property
     def name(self) -> str:
         return self._name
-
-    @final
-    def render(self) -> str:
-        return Markup("".join(self))
 
     def _render_tag_opening(self) -> str:
         if attributes := self._attributes:
@@ -38,9 +50,6 @@ class Element:
         yield self._render_tag_opening()
         yield from iter_node(self._children)
         yield self._render_tag_closing()
-
-    def __str__(self) -> str:
-        return self.render()
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} '{self._render_tag_opening()}'>"
@@ -180,15 +189,13 @@ class CommentElement(Element):
         raise ValueError(f"Comment element {self} cannot have attributes")
 
 
-Node: TypeAlias = (
-    None | bool | str | int | Element | Iterable["Node"] | Callable[[], "Node"]
-)
+Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]
 
 
 def _validate_node(node: Node) -> bool:
     if node is None or isinstance(node, bool):
         return False
-    if isinstance(node, (int, Element, Iterator)) or callable(node):
+    if isinstance(node, (int, View, Iterator)) or callable(node):
         return True
     if isinstance(node, str):
         return bool(node)
@@ -201,9 +208,9 @@ def _validate_node(node: Node) -> bool:
 def iter_node(node: Node) -> Iterator[str]:
     if not _validate_node(node):
         return
-    while not isinstance(node, Element) and callable(node):
+    while not isinstance(node, View) and callable(node):
         node = node()
-    if isinstance(node, Element):
+    if isinstance(node, View):
         yield from node
     elif isinstance(node, int):
         yield str(node)
