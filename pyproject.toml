@@ -1,7 +1,7 @@
 [project]
 name = "markupy"
-version = "0.9.3"
-description = "HTML in Python"
+description = "markupy - HTML in Python"
+dynamic = ["version"]
 authors = [
   { name="witiz", email="markupy@witiz.com" },
 ]
@@ -24,6 +24,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://markupy.witiz.com"
+html2markupy = "https://html2markupy.witiz.com"
 Repository = "https://github.com/witiz/markupy"
 Issues = "https://github.com/markupy/markupy/issues"
 
