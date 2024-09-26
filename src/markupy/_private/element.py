@@ -1,26 +1,10 @@
-from collections.abc import Callable, Iterable, Iterator, Sequence
-from typing import Any, TypeAlias, final, overload
+from collections.abc import Iterator
+from typing import Any, overload
 
-from markupsafe import Markup, escape
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
-
-
-class View(Iterable[str]):
-    def __init__(self, *nodes: "Node") -> None:
-        self._nodes = nodes
-
-    @final
-    def render(self) -> str:
-        return Markup("".join(self))
-
-    def __iter__(self) -> Iterator[str]:
-        yield from iter_node(self._nodes)
-
-    @final
-    def __str__(self) -> str:
-        return self.render()
+from .view import Node, View, iter_node, render_node, validate_node
 
 
 class Element(View):
@@ -138,7 +122,7 @@ class Element(View):
 
     # Use subscriptable [] syntax to assign children
     def __getitem__(self, children: "Node") -> Self:
-        if not _validate_node(children):
+        if not validate_node(children):
             return self
 
         el = self._new_instance()
@@ -187,41 +171,3 @@ class CommentElement(Element):
     @override
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
         raise ValueError(f"Comment element {self} cannot have attributes")
-
-
-Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]
-
-
-def _validate_node(node: Node) -> bool:
-    if node is None or isinstance(node, bool):
-        return False
-    if isinstance(node, (int, View, Iterator)) or callable(node):
-        return True
-    if isinstance(node, str):
-        return bool(node)
-    elif isinstance(node, Sequence):
-        return any(_validate_node(child) for child in node)
-    else:
-        raise TypeError(f"{node!r} is not a valid child element")
-
-
-def iter_node(node: Node) -> Iterator[str]:
-    if not _validate_node(node):
-        return
-    while not isinstance(node, View) and callable(node):
-        node = node()
-    if isinstance(node, View):
-        yield from node
-    elif isinstance(node, int):
-        yield str(node)
-    elif isinstance(node, str):
-        yield str(escape(node))
-    elif isinstance(node, Iterable):
-        for child in node:
-            yield from iter_node(child)
-    else:
-        raise TypeError(f"{node!r} is not a valid child element")
-
-
-def render_node(node: Node) -> Markup:
-    return Markup("".join(iter_node(node)))
