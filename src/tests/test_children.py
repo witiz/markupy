@@ -7,7 +7,6 @@ from markupsafe import Markup
 
 from markupy._private.element import Element, VoidElement
 from markupy.tag import (
-    Button,
     Dd,
     Div,
     Dl,
@@ -17,7 +16,6 @@ from markupy.tag import (
     Input,
     Li,
     MyCustomElement,
-    Template,
     Ul,
 )
 
@@ -232,7 +230,3 @@ def test_callable_in_generator() -> None:
 def test_invalid_child(not_a_child: t.Any) -> None:
     with pytest.raises(TypeError):
         str(Div[not_a_child])
-
-
-def test_render_children_only() -> None:
-    assert Template[Input, Button].render_children() == "<input><button></button>"

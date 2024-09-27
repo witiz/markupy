@@ -16,9 +16,12 @@ class Test_render_node:
         result = render_node(Div["a"])
         assert_markup(result, "<div>a</div>")
 
+    def test_multiple_element(self) -> None:
+        result = render_node(Tr["a"], Tr["b"])
+        assert_markup(result, "<tr>a</tr><tr>b</tr>")
+
     def test_list(self) -> None:
         result = render_node([Tr["a"], Tr["b"]])
-
         assert_markup(result, "<tr>a</tr><tr>b</tr>")
 
     def test_none(self) -> None:
@@ -26,8 +29,8 @@ class Test_render_node:
         assert_markup(result, "")
 
     def test_string(self) -> None:
-        result = render_node("hej!")
-        assert_markup(result, "hej!")
+        result = render_node("hello!")
+        assert_markup(result, "hello!")
 
 
 class Test_iter_node:

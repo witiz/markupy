@@ -123,19 +123,20 @@ __all__ = [
 ]
 
 
+@lru_cache(maxsize=300)
+def _get_element(name: str) -> Element:
+    if not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
+        raise AttributeError(
+            f"{name} is not a valid element name. markupy tags must be in CapitalizedCase"
+        )
+
+    #  Uppercase chars are word boundaries for tag names
+    words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
+    html_name = "-".join(words).lower()
+    return Element(html_name)
+
+
 def __getattr__(name: str) -> Element:
-    @lru_cache(maxsize=300)
-    def _get_element(name: str) -> Element:
-        if not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
-            raise AttributeError(
-                f"{name} is not a valid element name. markupy tags must be in CapitalizedCase"
-            )
-
-        #  Uppercase chars are word boundaries for tag names
-        words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
-        html_name = "-".join(words).lower()
-        return Element(html_name)
-
     return _get_element(name)
 
 

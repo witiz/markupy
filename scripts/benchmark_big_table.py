@@ -19,62 +19,70 @@ django_jinja_template = """
     <thead><tr><th>Row #</th></tr></thead>
     <tbody>
         {% for row in rows %}
-        <tr><td>{{ row }}</td></tr>
+        <tr class="row"><td data-value="{{ row }}">{{ row }}</td></tr>
         {% endfor %}
     </tbody>
 </table>
 """
 
-
-tests = [
-    (
-        "markupy",
-        lambda rows: str(
-            Table()[
-                Thead()[Tr()[Th()["Row #"]]],
-                Tbody()[(Tr(class_="row")[Td("#test.cls")[str(row)]] for row in rows)],
-            ]
-        ),
-    ),
-    (
-        "markupy_simple",
-        lambda rows: str(
-            Table()[
-                Thead[Tr[Th["Row #"]]],
-                Tbody[(Tr[Td[str(row)]] for row in rows)],
-            ]
-        ),
-    ),
-    (
-        "htpy",
-        lambda rows: str(
-            table()[
-                thead()[tr()[th()["Row #"]]],
-                tbody()[(tr(class_="row")[td("#test.cls")[str(row)]] for row in rows)],
-            ]
-        ),
-    ),
-    (
-        "htpy_simple",
-        lambda rows: str(
-            table[
-                thead[tr[th["Row #"]]],
-                tbody[(tr[td[str(row)]] for row in rows)],
-            ]
-        ),
-    ),
-    (
-        "django",
-        lambda rows: DjangoTemplate(django_jinja_template).render(
-            Context({"rows": rows})
-        ),
-    ),
-    ("jinja2", lambda rows: JinjaTemplate(django_jinja_template).render(rows=rows)),
-]
 rows = list(range(50_000))
 
-for name, func in tests:
+
+def render_markupy() -> str:
+    return str(
+        Table[
+            Thead[Tr[Th["Row #"]]],
+            Tbody[(Tr[Td[row]] for row in rows)],
+        ]
+    )
+
+
+def render_markupy_attr() -> str:
+    return str(
+        Table[
+            Thead[Tr[Th["Row #"]]],
+            Tbody[(Tr(".row")[Td(dataValue=row)[row]] for row in rows)],
+        ]
+    )
+
+
+def render_htpy() -> str:
+    return str(
+        table[
+            thead[tr[th["Row #"]]],
+            tbody[(tr[td[row]] for row in rows)],
+        ]
+    )
+
+
+def render_htpy_attr() -> str:
+    return str(
+        table[
+            thead[tr[th["Row #"]]],
+            tbody[(tr(".row")[td(data_value=row)[row]] for row in rows)],
+        ]
+    )
+
+
+def render_django() -> str:
+    return DjangoTemplate(django_jinja_template).render(Context({"rows": rows}))
+
+
+def render_jinja() -> str:
+    return JinjaTemplate(django_jinja_template).render(rows=rows)
+
+
+tests = [
+    render_markupy,
+    render_markupy_attr,
+    render_htpy,
+    render_htpy_attr,
+    render_django,
+    render_jinja,
+]
+
+for func in tests:
     start = time.perf_counter()
-    output = func(rows)
+    output = func()
     result = time.perf_counter() - start
-    print(f"{name}: {result} seconds")
+    print(f"{func.__name__}: {result} seconds")

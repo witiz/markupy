@@ -1,56 +1,45 @@
-from collections.abc import Callable, Iterable, Iterator, Sequence
-from typing import Any, TypeAlias, final, overload
+from collections.abc import Iterator
+from typing import Any, overload
 
-from markupsafe import Markup, escape
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
+from .view import Node, View, iter_node, validate_node
 
 
-class Element:
-    def __init__(self, name: str) -> None:
+class Element(View):
+    def __init__(self, name: str, *, shared: bool = True) -> None:
         self._name = name
-        self._attributes: AttributeDict | None = None
+        self._attributes: str | None = None
         self._children: Node = None
+        self._shared: bool = shared
 
     @property
     def name(self) -> str:
         return self._name
 
-    @final
-    def render(self) -> str:
-        return Markup("".join(self))
-
-    def _render_tag_opening(self) -> str:
+    def _tag_opening(self) -> str:
         if attributes := self._attributes:
-            attributes_str = str(attributes)
-            if len(attributes_str) > 0:
-                return f"<{self._name} {attributes_str}>"
+            return f"<{self._name} {attributes}>"
         return f"<{self._name}>"
 
-    def render_children(self) -> str:
-        return render_node(self._children)
-
-    def _render_tag_closing(self) -> str:
+    def _tag_closing(self) -> str:
         return f"</{self._name}>"
 
     def __iter__(self) -> Iterator[str]:
-        yield self._render_tag_opening()
+        yield self._tag_opening()
         yield from iter_node(self._children)
-        yield self._render_tag_closing()
-
-    def __str__(self) -> str:
-        return self.render()
+        yield self._tag_closing()
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} '{self._render_tag_opening()}'>"
+        return f"<{self.__class__.__name__} '{self._tag_opening()}'>"
 
     def _new_instance(self: Self) -> Self:
         # When imported, elements are loaded from a shared instance
         # Make sure we re-instantiate them on setting attributes/children
         # to avoid sharing attributes/children between multiple instances
-        if self._attributes is None and self._children is None:
-            return self.__class__(self._name)
+        if self._shared:
+            return self.__class__(self._name, shared=False)
         return self
 
     # Use call syntax () to define attributes
@@ -120,21 +109,21 @@ class Element:
                 f"Invalid keyword attributes `{attributes_kwargs}` for element {self}"
             )
 
-        if len(attributes) == 0:
-            return self
+        if attributes_str := str(attributes):
+            el = self._new_instance()
+            el._attributes = attributes_str
+            return el
 
-        el = self._new_instance()
-        el._attributes = attributes
-        return el
+        return self
 
     # Use subscriptable [] syntax to assign children
     def __getitem__(self, children: "Node") -> Self:
-        if not _validate_node(children):
-            return self
+        if validate_node(children):
+            el = self._new_instance()
+            el._children = children
+            return el
 
-        el = self._new_instance()
-        el._children = children
-        return el
+        return self
 
     # Allow starlette Response.render to directly render this element without
     # explicitly casting to str:
@@ -159,7 +148,7 @@ class HtmlElement(Element):
 class VoidElement(Element):
     @override
     def __iter__(self) -> Iterator[str]:
-        yield self._render_tag_opening()
+        yield self._tag_opening()
 
     @override
     def __getitem__(self, children: Any) -> Self:
@@ -168,53 +157,13 @@ class VoidElement(Element):
 
 class CommentElement(Element):
     @override
-    def _render_tag_opening(self) -> str:
+    def _tag_opening(self) -> str:
         return "<!--"
 
     @override
-    def _render_tag_closing(self) -> str:
+    def _tag_closing(self) -> str:
         return "-->"
 
     @override
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
         raise ValueError(f"Comment element {self} cannot have attributes")
-
-
-Node: TypeAlias = (
-    None | bool | str | int | Element | Iterable["Node"] | Callable[[], "Node"]
-)
-
-
-def _validate_node(node: Node) -> bool:
-    if node is None or isinstance(node, bool):
-        return False
-    if isinstance(node, (int, Element, Iterator)) or callable(node):
-        return True
-    if isinstance(node, str):
-        return bool(node)
-    elif isinstance(node, Sequence):
-        return any(_validate_node(child) for child in node)
-    else:
-        raise TypeError(f"{node!r} is not a valid child element")
-
-
-def iter_node(node: Node) -> Iterator[str]:
-    if not _validate_node(node):
-        return
-    while not isinstance(node, Element) and callable(node):
-        node = node()
-    if isinstance(node, Element):
-        yield from node
-    elif isinstance(node, int):
-        yield str(node)
-    elif isinstance(node, str):
-        yield str(escape(node))
-    elif isinstance(node, Iterable):
-        for child in node:
-            yield from iter_node(child)
-    else:
-        raise TypeError(f"{node!r} is not a valid child element")
-
-
-def render_node(node: Node) -> Markup:
-    return Markup("".join(iter_node(node)))
