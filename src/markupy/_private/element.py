@@ -118,12 +118,12 @@ class Element(View):
 
     # Use subscriptable [] syntax to assign children
     def __getitem__(self, children: "Node") -> Self:
-        if not validate_node(children):
-            return self
+        if validate_node(children):
+            el = self._new_instance()
+            el._children = children
+            return el
 
-        el = self._new_instance()
-        el._children = children
-        return el
+        return self
 
     # Allow starlette Response.render to directly render this element without
     # explicitly casting to str:
