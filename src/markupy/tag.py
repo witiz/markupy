@@ -124,7 +124,7 @@ __all__ = [
 
 
 @lru_cache(maxsize=300)
-def __getattr__(name: str) -> Element:
+def _get_element(name: str) -> Element:
     if not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
         raise AttributeError(
             f"{name} is not a valid element name. markupy tags must be in CapitalizedCase"
@@ -134,6 +134,10 @@ def __getattr__(name: str) -> Element:
     words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
     html_name = "-".join(words).lower()
     return Element(html_name)
+
+
+def __getattr__(name: str) -> Element:
+    return _get_element(name)
 
 
 _ = CommentElement("_")

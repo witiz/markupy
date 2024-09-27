@@ -10,7 +10,7 @@ from .view import Node, View, iter_node, validate_node
 class Element(View):
     def __init__(self, name: str) -> None:
         self._name = name
-        self._attributes: AttributeDict | None = None
+        self._attributes: str | None = None
         self._children: Node = None
 
     @property
@@ -19,9 +19,7 @@ class Element(View):
 
     def _tag_opening(self) -> str:
         if attributes := self._attributes:
-            attributes_str = str(attributes)
-            if len(attributes_str) > 0:
-                return f"<{self._name} {attributes_str}>"
+            return f"<{self._name} {attributes}>"
         return f"<{self._name}>"
 
     def _tag_closing(self) -> str:
@@ -114,7 +112,7 @@ class Element(View):
             return self
 
         el = self._new_instance()
-        el._attributes = attributes
+        el._attributes = str(attributes)
         return el
 
     # Use subscriptable [] syntax to assign children
