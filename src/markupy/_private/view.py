@@ -6,8 +6,12 @@ from markupsafe import Markup, escape
 Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]
 
 
+def _is_empty_node(node: Node) -> bool:
+    return node is None or node is True or node is False or node == ""
+
+
 def validate_node(node: Node) -> bool:
-    if node is None or node is True or node is False:
+    if _is_empty_node(node):
         return False
 
     valid_nodes = str | int | View | Callable | Generator  # type: ignore[type-arg]
@@ -28,7 +32,7 @@ def validate_node(node: Node) -> bool:
 
 
 def iter_node(node: Node) -> Iterator[str]:
-    if node is None or node is True or node is False:
+    if _is_empty_node(node):
         return
     while not isinstance(node, View) and callable(node):
         node = node()
@@ -37,8 +41,7 @@ def iter_node(node: Node) -> Iterator[str]:
     elif isinstance(node, int):
         yield str(node)
     elif isinstance(node, str):
-        if node:
-            yield str(escape(node))
+        yield str(escape(node))
     elif isinstance(node, Iterable):
         for child in node:
             yield from iter_node(child)
