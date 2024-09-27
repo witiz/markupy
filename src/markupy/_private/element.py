@@ -8,10 +8,11 @@ from .view import Node, View, iter_node, validate_node
 
 
 class Element(View):
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, *, shared: bool = True) -> None:
         self._name = name
         self._attributes: str | None = None
         self._children: Node = None
+        self._shared: bool = shared
 
     @property
     def name(self) -> str:
@@ -37,8 +38,8 @@ class Element(View):
         # When imported, elements are loaded from a shared instance
         # Make sure we re-instantiate them on setting attributes/children
         # to avoid sharing attributes/children between multiple instances
-        if self._attributes is None and self._children is None:
-            return self.__class__(self._name)
+        if self._shared:
+            return self.__class__(self._name, shared=False)
         return self
 
     # Use call syntax () to define attributes
@@ -108,12 +109,12 @@ class Element(View):
                 f"Invalid keyword attributes `{attributes_kwargs}` for element {self}"
             )
 
-        if len(attributes) == 0:
-            return self
+        if attributes_str := str(attributes):
+            el = self._new_instance()
+            el._attributes = attributes_str
+            return el
 
-        el = self._new_instance()
-        el._attributes = str(attributes)
-        return el
+        return self
 
     # Use subscriptable [] syntax to assign children
     def __getitem__(self, children: "Node") -> Self:
