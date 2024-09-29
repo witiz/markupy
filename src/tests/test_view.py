@@ -1,19 +1,19 @@
-from markupy import Node, View, tag
+from markupy import Component, Node, tag
 
 
-class ComponentElement(View):
+class ComponentElement(Component):
     def render(self) -> Node:
         return tag.Div
 
 
-class ComponentElementMultiple(View):
+class ComponentElementMultiple(Component):
     def render(self) -> Node:
         return tag.Div, tag.Img
 
 
-class ComponentInComponent(View):
+class ComponentInComponent(Component):
     def render(self) -> Node:
-        return tag.Input, ComponentElement()
+        return tag.Input, tag.Div("#parent")[ComponentElement()]
 
 
 def test_component_element() -> None:
@@ -25,4 +25,6 @@ def test_component_element_multiple() -> None:
 
 
 def test_component_in_component() -> None:
-    assert str(ComponentInComponent()) == """<input><div></div>"""
+    assert (
+        str(ComponentInComponent()) == """<input><div id="parent"><div></div></div>"""
+    )

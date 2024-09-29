@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from collections.abc import Callable, Generator, Iterable, Iterator
 from typing import TypeAlias, final
 
@@ -36,15 +37,20 @@ def iter_node(node: Node) -> Iterator[str]:
         return
     while not isinstance(node, View) and callable(node):
         node = node()
-    if isinstance(node, View):
-        yield from node
+
+    if isinstance(node, str):
+        if isinstance(node, Markup):
+            yield node
+        else:
+            yield str(escape(node))
+    elif isinstance(node, Iterable):
+        if isinstance(node, View):
+            yield from node
+        else:
+            for child in node:
+                yield from iter_node(child)
     elif isinstance(node, int):
         yield str(node)
-    elif isinstance(node, str):
-        yield str(escape(node))
-    elif isinstance(node, Iterable):
-        for child in node:
-            yield from iter_node(child)
     else:
         raise TypeError(f"{node!r} is not a valid child element")
 
@@ -54,12 +60,27 @@ def render_node(*node: Node) -> Markup:
 
 
 class View(Iterable[str]):
-    def render(self) -> Node:
-        return None
-
-    def __iter__(self) -> Iterator[str]:
-        yield from iter_node(self.render())
-
     @final
     def __str__(self) -> str:
         return Markup("".join(self))
+
+    # Allow starlette Response.render to directly render this element without
+    # explicitly casting to str:
+    # https://github.com/encode/starlette/blob/5ed55c441126687106109a3f5e051176f88cd3e6/starlette/responses.py#L44-L49
+    def encode(self, encoding: str = "utf-8", errors: str = "strict") -> bytes:
+        return str(self).encode(encoding, errors)
+
+    # Avoid having Django "call" a markupy element that is injected into a
+    # template. Setting do_not_call_in_templates will prevent Django from doing
+    # an extra call:
+    # https://docs.djangoproject.com/en/5.0/ref/templates/api/#variables-and-lookups
+    do_not_call_in_templates = True
+
+
+class Component(ABC, View):
+    @abstractmethod
+    def render(self) -> Node: ...
+
+    @final
+    def __iter__(self) -> Iterator[str]:
+        yield from iter_node(self.render())

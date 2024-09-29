@@ -4,9 +4,10 @@ from typing import Any, overload
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
-from .view import Node, View, iter_node, validate_node
+from .view import Component, Node, View, iter_node, validate_node
 
 
+@Component.register
 class Element(View):
     def __init__(self, name: str, *, shared: bool = True) -> None:
         self._name = name
@@ -91,27 +92,27 @@ class Element(View):
         if not selector and not attributes_dict and not attributes_kwargs:
             return self
 
-        attributes = AttributeDict()
+        attrs = AttributeDict()
         try:
-            attributes.add_selector(selector)
+            attrs.add_selector(selector)
         except (TypeError, ValueError):
             raise ValueError(f"Invalid selector string `{selector}` for element {self}")
         try:
-            attributes.add_dict(attributes_dict)
+            attrs.add_dict(attributes_dict)
         except (TypeError, ValueError):
             raise ValueError(
                 f"Invalid dict attributes `{attributes_dict}` for element {self}"
             )
         try:
-            attributes.add_dict(attributes_kwargs, rewrite_keys=True)
+            attrs.add_dict(attributes_kwargs, rewrite_keys=True)
         except (TypeError, ValueError):
             raise ValueError(
                 f"Invalid keyword attributes `{attributes_kwargs}` for element {self}"
             )
 
-        if attributes_str := str(attributes):
+        if attributes := str(attrs):
             el = self._new_instance()
-            el._attributes = attributes_str
+            el._attributes = attributes
             return el
 
         return self
@@ -124,18 +125,6 @@ class Element(View):
             return el
 
         return self
-
-    # Allow starlette Response.render to directly render this element without
-    # explicitly casting to str:
-    # https://github.com/encode/starlette/blob/5ed55c441126687106109a3f5e051176f88cd3e6/starlette/responses.py#L44-L49
-    def encode(self, encoding: str = "utf-8", errors: str = "strict") -> bytes:
-        return str(self).encode(encoding, errors)
-
-    # Avoid having Django "call" a markupy element that is injected into a
-    # template. Setting do_not_call_in_templates will prevent Django from doing
-    # an extra call:
-    # https://docs.djangoproject.com/en/5.0/ref/templates/api/#variables-and-lookups
-    do_not_call_in_templates = True
 
 
 class HtmlElement(Element):
