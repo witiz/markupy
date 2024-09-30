@@ -4,7 +4,9 @@ from typing import Any, overload
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
-from .view import Component, Node, View, iter_node, validate_node
+from .component import Component
+from .node import Node, iter_node, validate_node
+from .view import View
 
 
 @Component.register

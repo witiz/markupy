@@ -2,7 +2,7 @@ from typing import Any
 
 from markupsafe import Markup
 
-from markupy import iter_node, render_node
+from markupy._private.node import iter_node, render_node
 from markupy.tag import Div, Tr
 
 
