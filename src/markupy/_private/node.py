@@ -3,7 +3,7 @@ from typing import TypeAlias
 
 from markupsafe import Markup, escape
 
-from .component import Component
+from .view import View
 
 Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]
 
@@ -16,7 +16,7 @@ def validate_node(node: Node) -> bool:
     if _is_empty_node(node):
         return False
 
-    valid_nodes = str | int | Component | Callable | Generator  # type: ignore[type-arg]
+    valid_nodes = str | int | View | Callable | Generator  # type: ignore[type-arg]
     invalid_nodes = bytes | bytearray | memoryview
     if isinstance(node, valid_nodes):
         return True
@@ -36,7 +36,7 @@ def validate_node(node: Node) -> bool:
 def iter_node(node: Node) -> Iterator[str]:
     if _is_empty_node(node):
         return
-    while not isinstance(node, Component) and callable(node):
+    while not isinstance(node, View) and callable(node):
         node = node()
 
     if isinstance(node, str):
@@ -45,7 +45,7 @@ def iter_node(node: Node) -> Iterator[str]:
         else:
             yield str(escape(node))
     elif isinstance(node, Iterable):
-        if isinstance(node, Component):
+        if isinstance(node, View):
             yield from node
         else:
             for child in node:
