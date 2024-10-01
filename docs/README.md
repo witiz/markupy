@@ -1,4 +1,4 @@
-# markupy - HTML in Python
+# Overview
 
 markupy is a plain Python alternative to traditional templates engines for generating HTML code.
 
@@ -55,7 +55,7 @@ If this is you struggling with templates, then you should definitely give markup
 
 ## Inspiration
 
-markupy started as a fork of [htpy](https://htpy.dev). Even though the two projects are still conceptually very similar, we started markupy in order to support a slightly different syntax to optimize readability, reduce risk of conflicts with variables, and better support for non native html attributes syntax as python kwargs.
+markupy started as a fork of [htpy](https://htpy.dev). Even though the two projects are still conceptually very similar, we started markupy in order to support a slightly different syntax to optimize readability, reduce risk of conflicts with variables, and better support for non native html attributes syntax as python kwargs. On top of that, markupy provides a first class support for class based components.
 
 ## Key Features
 
@@ -85,7 +85,7 @@ Rather the opposite: you are encouraged the leverage the power of Python to
 structure your project. Use modules, classes, functions, decorators, list
 comprehension, generators, conditionals, static typing and any other feature of
 Python to organize your components. This gives you a lot of power and makes markupy
-scale from a single small Flask project to bigger applications.
+scale from a small one file project to bigger applications.
 
 
 ## Installation
@@ -101,3 +101,5 @@ pip install markupy
 The full documentation is available at [markupy.witiz.com](https://markupy.witiz.com):
 
 - [Usage](https://markupy.witiz.com/usage/)
+- [Components](https://markupy.witiz.com/components/)
+- [html2markupy](https://markupy.witiz.com/html2markupy/)

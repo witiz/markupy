@@ -14,6 +14,7 @@ nav:
   - README.md
   - usage.md
   - components.md
+  - html2markupy.md
 extra:
   analytics:
     provider: google
