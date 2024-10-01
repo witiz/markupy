@@ -2,22 +2,28 @@
 
 ## Elements
 
-All elements in markupy are objects derived from the `Element` class.
-Elements are imported directly from the `markupy` module as their name using the CapitalizedCase syntax. Although HTML elements are usually spelled in lower case, using CapitalizedCase avoids naming conflicts between markupy elements and your own variables and makes it easier to distinguish markupy tags vs other parts of your code.
+HTML elements are imported directly from the `markupy.tag` module as their name using the CapitalizedCase syntax. Although HTML elements are usually spelled in lower case, using CapitalizedCase in markupy avoids naming conflicts with your own variables and makes it easier to distinguish markupy tags vs other parts of your code.
 
+```python title="Importing elements"
+>>> from markupy.tag import Div
+>>> print(Div)
+<div></div>
+```
+
+## Attributes
 
 HTML attributes are specified by using parenthesis `()` syntax on an element.
 
-```python
+```python title="Element attributes"
 >>> from markupy.tag import Div
->>> print(Div(id="hi")["Hello!"])
-<div id="hi">Hello!</div>
+>>> print(Div(id="container", style="color:red"))
+<div id="container" style="color:red"></div>
 ```
 
 ## Children
 
 Children are specified using square brackets `[]` syntax on an element.
-Children can be strings, markup, other elements or lists/iterators.
+Children can be strings, ints, markup, other elements or lists/iterators.
 
 Elements can be arbitrarily nested:
 
@@ -140,10 +146,7 @@ A `list` can be used similar to a [JSX fragment](https://react.dev/reference/rea
 
 ### Custom Elements / Web Components
 
-[Custom elements / web
-components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements)
-are HTML elements that contains at least one dash (`-`). Since `-` cannot be
-used in Python identifiers, here's how you'd write them in markupy depending on your favorite syntax:
+[Custom elements / web components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) are HTML elements that contains at least one dash (`-`). Since `-` cannot be used in Python identifiers, here's how you'd write them in markupy:
 
 ```python title="Custom elements with CapitalizedCase syntax"
 >>> from markupy.tag import MyCustomElement
@@ -192,7 +195,7 @@ HTML attributes are defined by calling the element. They can be specified in a c
 
 ### Elements Without Attributes
 
-Some elements do not have attributes, they can be specified by just the element itself:
+For elements that do not have attributes, they can be specified by just the element itself:
 
 ```python
 >>> from markupy.tag import Hr
@@ -234,6 +237,7 @@ markupy also allows you to write more complex HTML attributes by using the follo
 
 HTML attribute         | markupy attribute      | HTML to markupy conversion
 -----------------------|------------------------|----------------------------
+`class="..."`          | `class_="..."`         | trailing underscore `_` is meaningless
 `data-value="..."`     | `dataValue="..."`      | `kebab-case` ➜ `mixedCase`
 `v-on:click="..."`     | `vOn__click="..."`     | colon `:` ➜ double underscore `__`
 `@click="..."`         | `_click="..."`         | leading at `@` ➜ leading underscore `_`
@@ -381,7 +385,7 @@ You may use `render_node` to achieve this:
 ```
 
 `render_node()` accepts all kinds of `Node` objects.
-You may use it to render anything that would normally be a chil of another element.
+You may use it to render anything that would normally be a child of another element.
 
 !!! note "Best practice: Only use render_node() to render non-Elements"
 

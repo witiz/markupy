@@ -3,6 +3,8 @@ site_url: https://markupy.witiz.com
 repo_url: https://github.com/witiz/markupy
 theme:
   name: material
+  palette:
+    primary: blue
   features:
     - content.code.copy
     - toc.integrate
@@ -11,6 +13,11 @@ theme:
 nav:
   - README.md
   - usage.md
+  - components.md
+extra:
+  analytics:
+    provider: google
+    property: G-NWHXG5WE1Q
 markdown_extensions:
   - admonition
   - pymdownx.highlight:

@@ -1,7 +1,3 @@
-<div style="text-align:center;margin-bottom:2em">
-    <img src="assets/img/markupy.svg" width="320" alt="markupy">
-</div>
-
 # markupy - HTML in Python
 
 markupy is a plain Python alternative to traditional templates engines for generating HTML code.
@@ -42,6 +38,8 @@ print(
   </body>
 </html>
 ```
+
+Seems interesting? Try it by yourself with our [online html2markupy converter](https://html2markupy.witiz.com).
 
 ## Motivation
 
