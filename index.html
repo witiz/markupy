@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.35">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
     
     
       
@@ -24,7 +24,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.35f28582.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.8c3ca2c6.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,6 +49,16 @@
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-NWHXG5WE1Q"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-NWHXG5WE1Q",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-NWHXG5WE1Q",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
 
     
     
@@ -53,7 +66,12 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -62,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#markupy-html-in-python" class="md-skip">
+        <a href="#overview" class="md-skip">
           Skip to content
         </a>
       
@@ -98,15 +116,15 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Overview
             
           </span>
         </div>
       </div>
     </div>
     
+      
     
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
@@ -230,7 +248,7 @@
           
   
   <span class="md-ellipsis">
-    Home
+    Overview
   </span>
   
 
@@ -241,7 +259,7 @@
         
   
   <span class="md-ellipsis">
-    Home
+    Overview
   </span>
   
 
@@ -344,6 +362,106 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="html2markupy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Converting HTML to markupy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="flask/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integrating with Flask
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="starlette/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integrating with Starlette
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="django/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integrating with Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -362,11 +480,7 @@
   
 
 
-<div style="text-align:center;margin-bottom:2em">
-    <img src="assets/img/markupy.svg" width="320" alt="markupy">
-</div>
-
-<h1 id="markupy-html-in-python">markupy - HTML in Python<a class="headerlink" href="#markupy-html-in-python" title="Permanent link">&para;</a></h1>
+<h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
 <p>markupy is a plain Python alternative to traditional templates engines for generating HTML code.</p>
 <p><strong>Writing this code in Python with markupy...</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Import &quot;tags&quot; like they were regular Python objects</span>
@@ -399,6 +513,7 @@
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </span></code></pre></div>
+<p>Seems interesting? Try it by yourself with our <a href="https://html2markupy.witiz.com">online html2markupy converter</a>.</p>
 <h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
 <p>Like most Python web developers, we have relied on template engines (Jinja, Django, ...) since forever to generate HTML on the server side. Although this is fine for simple needs, when your site grows bigger, you might start facing some issues:</p>
 <ul>
@@ -414,7 +529,7 @@
 </ul>
 <p>If this is you struggling with templates, then you should definitely give markupy a try!</p>
 <h2 id="inspiration">Inspiration<a class="headerlink" href="#inspiration" title="Permanent link">&para;</a></h2>
-<p>markupy started as a fork of <a href="https://htpy.dev">htpy</a>. Even though the two projects are still conceptually very similar, we started markupy in order to support a slightly different syntax to optimize readability, reduce risk of conflicts with variables, and better support for non native html attributes syntax as python kwargs.</p>
+<p>markupy started as a fork of <a href="https://htpy.dev">htpy</a>. Even though the two projects are still conceptually very similar, we started markupy in order to support a slightly different syntax to optimize readability, reduce risk of conflicts with variables, and better support for non native html attributes syntax as python kwargs. On top of that, markupy provides a first class support for class based components.</p>
 <h2 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
@@ -448,7 +563,7 @@ to build sophisticated web pages or applications.</p>
 structure your project. Use modules, classes, functions, decorators, list
 comprehension, generators, conditionals, static typing and any other feature of
 Python to organize your components. This gives you a lot of power and makes markupy
-scale from a single small Flask project to bigger applications.</p>
+scale from a small one file project to bigger applications.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <p><a href="https://pypi.org/project/markupy/">markupy is available on PyPI</a>. You may install the latest version using pip:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip install markupy
@@ -457,6 +572,8 @@ scale from a single small Flask project to bigger applications.</p>
 <p>The full documentation is available at <a href="https://markupy.witiz.com">markupy.witiz.com</a>:</p>
 <ul>
 <li><a href="https://markupy.witiz.com/usage/">Usage</a></li>
+<li><a href="https://markupy.witiz.com/components/">Components</a></li>
+<li><a href="https://markupy.witiz.com/html2markupy/">html2markupy</a></li>
 </ul>
 
 
@@ -466,6 +583,8 @@ scale from a single small Flask project to bigger applications.</p>
 
 
 
+
+  
 
 
 
@@ -507,7 +626,7 @@ scale from a single small Flask project to bigger applications.</p>
     <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "toc.integrate"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.56dfad97.min.js"></script>
+      <script src="assets/javascripts/bundle.525ec568.min.js"></script>
       
     
   </body>

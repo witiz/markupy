@@ -14,9 +14,11 @@
         <link rel="prev" href="..">
       
       
+        <link rel="next" href="../components/">
+      
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.35">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
     
     
       
@@ -24,7 +26,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.35f28582.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,6 +51,16 @@
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-NWHXG5WE1Q"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-NWHXG5WE1Q",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-NWHXG5WE1Q",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
 
     
     
@@ -53,7 +68,12 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -105,8 +125,8 @@
       </div>
     </div>
     
+      
     
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
@@ -221,7 +241,7 @@
         
   
   <span class="md-ellipsis">
-    Home
+    Overview
   </span>
   
 
@@ -286,6 +306,15 @@
   <a href="#elements" class="md-nav__link">
     <span class="md-ellipsis">
       Elements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributes
     </span>
   </a>
   
@@ -370,7 +399,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#attributes" class="md-nav__link">
+  <a href="#attributes_1" class="md-nav__link">
     <span class="md-ellipsis">
       Attributes
     </span>
@@ -482,6 +511,106 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html2markupy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Converting HTML to markupy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flask/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integrating with Flask
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../starlette/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integrating with Starlette
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../django/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integrating with Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -502,32 +631,20 @@
 
 <h1 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h1>
 <h2 id="elements">Elements<a class="headerlink" href="#elements" title="Permanent link">&para;</a></h2>
-<p>All elements in markupy are objects derived from the <code>Element</code> class.
-Elements are imported directly from the <code>markupy</code> module as their name using one of the 2 following syntaxes:</p>
-<ul>
-<li>CapitalizedCase : this is the recommended syntax as it avoids naming conflicts between markupy elements and your own variables and makes it easier to distinguish markupy / HTML tags vs other parts of your code.</li>
-<li>snake_case : this is mostly provided to make it easier for users transitioning from other libraries or to support personal preference.</li>
-</ul>
+<p>HTML elements are imported directly from the <code>markupy.tag</code> module as their name using the CapitalizedCase syntax. Although HTML elements are usually spelled in lower case, using CapitalizedCase in markupy avoids naming conflicts with your own variables and makes it easier to distinguish markupy tags vs other parts of your code.</p>
+<div class="language-python highlight"><span class="filename">Importing elements</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span></code></pre></div>
+<h2 id="attributes">Attributes<a class="headerlink" href="#attributes" title="Permanent link">&para;</a></h2>
 <p>HTML attributes are specified by using parenthesis <code>()</code> syntax on an element.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">CapitalizedCase</label><label for="__tabbed_1_2">snake_case</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;hi&quot;</span><span class="p">)[</span><span class="s2">&quot;Hello!&quot;</span><span class="p">])</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;hi&quot;</span><span class="o">&gt;</span><span class="n">Hello</span><span class="err">!</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Element attributes</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;container&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;color:red&quot;</span><span class="p">))</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;container&quot;</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;color:red&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">div</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">div</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;hi&quot;</span><span class="p">)[</span><span class="s2">&quot;Hello!&quot;</span><span class="p">])</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;hi&quot;</span><span class="o">&gt;</span><span class="n">Hello</span><span class="err">!</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 <h2 id="children">Children<a class="headerlink" href="#children" title="Permanent link">&para;</a></h2>
 <p>Children are specified using square brackets <code>[]</code> syntax on an element.
-Children can be strings, markup, other elements or lists/iterators.</p>
+Children can be strings, ints, markup, other elements or lists/iterators.</p>
 <p>Elements can be arbitrarily nested:</p>
 <div class="language-python highlight"><span class="filename">Nested elements</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Article</span><span class="p">,</span> <span class="n">Section</span><span class="p">,</span> <span class="n">P</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Section</span><span class="p">[</span><span class="n">Article</span><span class="p">[</span><span class="n">P</span><span class="p">[</span><span class="s2">&quot;Lorem ipsum&quot;</span><span class="p">]]])</span>
@@ -617,71 +734,56 @@ directly when the element is constructed.</p>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;a.jpg&quot;</span><span class="o">&gt;&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;b.jpg&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <h3 id="custom-elements-web-components">Custom Elements / Web Components<a class="headerlink" href="#custom-elements-web-components" title="Permanent link">&para;</a></h3>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">Custom elements / web
-components</a>
-are HTML elements that contains at least one dash (<code>-</code>). Since <code>-</code> cannot be
-used in Python identifiers, here's how you'd write them in markupy depending on your favorite syntax:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">CapitalizedCase</label><label for="__tabbed_2_2">snake_case</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">Custom elements / web components</a> are HTML elements that contains at least one dash (<code>-</code>). Since <code>-</code> cannot be used in Python identifiers, here's how you'd write them in markupy:</p>
 <div class="language-python highlight"><span class="filename">Custom elements with CapitalizedCase syntax</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">MyCustomElement</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">MyCustomElement</span><span class="p">[</span><span class="s1">&#39;hi!&#39;</span><span class="p">])</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="o">&lt;</span><span class="n">my</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">element</span><span class="o">&gt;</span><span class="n">hi</span><span class="err">!</span><span class="o">&lt;/</span><span class="n">my</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">element</span><span class="o">&gt;</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-python highlight"><span class="filename">Custom elements with snake_case syntax</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">my_custom_element</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">my_custom_element</span><span class="p">[</span><span class="s1">&#39;hi!&#39;</span><span class="p">])</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="o">&lt;</span><span class="n">my</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">element</span><span class="o">&gt;</span><span class="n">hi</span><span class="err">!</span><span class="o">&lt;/</span><span class="n">my</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">element</span><span class="o">&gt;</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 <h3 id="html-doctype">HTML Doctype<a class="headerlink" href="#html-doctype" title="Permanent link">&para;</a></h3>
 <p>The <a href="https://developer.mozilla.org/en-US/docs/Glossary/Doctype">HTML5 doctype</a> is automatically prepended to the <code>&lt;html&gt;</code> tag:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Html</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Html</span><span class="p">)</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="o">&lt;</span><span class="err">!</span><span class="n">doctype</span> <span class="n">html</span><span class="o">&gt;&lt;</span><span class="n">html</span><span class="o">&gt;&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Html</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Html</span><span class="p">)</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="o">&lt;</span><span class="err">!</span><span class="n">doctype</span> <span class="n">html</span><span class="o">&gt;&lt;</span><span class="n">html</span><span class="o">&gt;&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <h3 id="html-comments">HTML Comments<a class="headerlink" href="#html-comments" title="Permanent link">&para;</a></h3>
 <p>Since the Python code is the source of the HTML generation, to add a comment to
 the code, most of the time regular Python comments (<code>#</code>) are used.</p>
-<p>If you want to emit HTML comments that will be visible in the browser, you need to initialize a new element whose name is made of any number of <code>_</code> (for example, the following would work: <code>_</code>, <code>__</code>, <code>___</code>, etc...):</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span><span class="p">,</span> <span class="n">_</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">[</span><span class="n">_</span><span class="p">[</span><span class="s2">&quot;This is a HTML comment!&quot;</span><span class="p">]])</span>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;&lt;</span><span class="err">!</span><span class="o">--</span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">HTML</span> <span class="n">comment</span><span class="err">!</span><span class="o">--&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<p>If you want to emit HTML comments that will be visible in the browser, you need to initialize a special element whose name is <code>_</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span><span class="p">,</span> <span class="n">_</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">[</span><span class="n">_</span><span class="p">[</span><span class="s2">&quot;This is a HTML comment&quot;</span><span class="p">]])</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;&lt;</span><span class="err">!</span><span class="o">--</span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">HTML</span> <span class="n">comment</span><span class="o">--&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>Given that a comment is a <code>Element</code>, you can wrap other elements as children:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span><span class="p">,</span> <span class="n">Strong</span><span class="p">,</span> <span class="n">_</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">[</span><span class="n">_</span><span class="p">[</span><span class="s2">&quot;This is a HTML comment!&quot;</span><span class="p">,</span> <span class="n">Strong</span><span class="p">[</span><span class="s2">&quot;Hidden text&quot;</span><span class="p">]]])</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;&lt;</span><span class="err">!</span><span class="o">--</span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">HTML</span> <span class="n">comment</span><span class="err">!</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">Hidden</span> <span class="n">text</span><span class="o">&lt;/</span><span class="n">strong</span><span class="o">&gt;--&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span><span class="p">,</span> <span class="n">Strong</span><span class="p">,</span> <span class="n">_</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">[</span><span class="n">_</span><span class="p">[</span><span class="s2">&quot;This is a HTML comment&quot;</span><span class="p">,</span> <span class="n">Strong</span><span class="p">[</span><span class="s2">&quot;Hidden text&quot;</span><span class="p">]]])</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;&lt;</span><span class="err">!</span><span class="o">--</span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">HTML</span> <span class="n">comment</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">Hidden</span> <span class="n">text</span><span class="o">&lt;/</span><span class="n">strong</span><span class="o">&gt;--&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>If you need full control over the exact rendering of the comment, you can create
 comments or arbitrary text by injecting your own markup. See the <a href="#injecting-markup">Injecting
 Markup</a> section above for details.</p>
-<h2 id="attributes">Attributes<a class="headerlink" href="#attributes" title="Permanent link">&para;</a></h2>
+<h2 id="attributes_1">Attributes<a class="headerlink" href="#attributes_1" title="Permanent link">&para;</a></h2>
 <p>HTML attributes are defined by calling the element. They can be specified in a couple of different ways.</p>
 <h3 id="elements-without-attributes">Elements Without Attributes<a class="headerlink" href="#elements-without-attributes" title="Permanent link">&para;</a></h3>
-<p>Some elements do not have attributes, they can be specified by just the element itself:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Hr</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Hr</span><span class="p">)</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="o">&lt;</span><span class="n">hr</span><span class="o">&gt;</span>
+<p>For elements that do not have attributes, they can be specified by just the element itself:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Hr</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Hr</span><span class="p">)</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="o">&lt;</span><span class="n">hr</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <h3 id="keyword-arguments">Keyword Arguments<a class="headerlink" href="#keyword-arguments" title="Permanent link">&para;</a></h3>
 <p>Attributes can be specified via keyword arguments:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Img</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Img</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;picture.jpg&quot;</span><span class="p">))</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;picture.jpg&quot;</span><span class="o">&gt;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Img</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Img</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;picture.jpg&quot;</span><span class="p">))</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;picture.jpg&quot;</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>In Python, some names such as <code>class</code> and <code>for</code> are reserved and cannot be used as keyword arguments. Instead, they can be specified as <code>class_</code> or <code>for_</code> when using keyword arguments:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Label</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="n">for_</span><span class="o">=</span><span class="s2">&quot;myfield&quot;</span><span class="p">))</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;myfield&quot;</span><span class="o">&gt;&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Label</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="n">for_</span><span class="o">=</span><span class="s2">&quot;myfield&quot;</span><span class="p">))</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;myfield&quot;</span><span class="o">&gt;&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>Attributes that contains dashes <code>-</code> can be specified using mixedCase syntax:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Form</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Form</span><span class="p">(</span><span class="n">hxPost</span><span class="o">=</span><span class="s2">&quot;/foo&quot;</span><span class="p">))</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="o">&lt;</span><span class="n">form</span> <span class="n">hx</span><span class="o">-</span><span class="n">post</span><span class="o">=</span><span class="s2">&quot;/foo&quot;</span><span class="o">&gt;&lt;/</span><span class="n">form</span><span class="o">&gt;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Form</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Form</span><span class="p">(</span><span class="n">hxPost</span><span class="o">=</span><span class="s2">&quot;/foo&quot;</span><span class="p">))</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="o">&lt;</span><span class="n">form</span> <span class="n">hx</span><span class="o">-</span><span class="n">post</span><span class="o">=</span><span class="s2">&quot;/foo&quot;</span><span class="o">&gt;&lt;/</span><span class="n">form</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">But what about PEP8 ?!</p>
@@ -697,6 +799,11 @@ Markup</a> section above for details.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>class="..."</code></td>
+<td><code>class_="..."</code></td>
+<td>trailing underscore <code>_</code> is meaningless</td>
+</tr>
 <tr>
 <td><code>data-value="..."</code></td>
 <td><code>dataValue="..."</code></td>
@@ -723,17 +830,17 @@ Markup</a> section above for details.</p>
 <h3 id="idclass-selector-shorthand">Id/Class selector shorthand<a class="headerlink" href="#idclass-selector-shorthand" title="Permanent link">&para;</a></h3>
 <p>Defining <code>id</code> and <code>class</code> attributes is common when writing HTML. A string shorthand
 that looks like a CSS selector can be used to quickly define id and classes:</p>
-<div class="language-python highlight"><span class="filename">Define id</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">(</span><span class="s2">&quot;#myid&quot;</span><span class="p">))</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;myid&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Define id</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">(</span><span class="s2">&quot;#myid&quot;</span><span class="p">))</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;myid&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<div class="language-python highlight"><span class="filename">Define multiple classes</span><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">(</span><span class="s2">&quot;.foo.bar&quot;</span><span class="p">))</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;foo bar&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Define multiple classes</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">(</span><span class="s2">&quot;.foo.bar&quot;</span><span class="p">))</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;foo bar&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<div class="language-python highlight"><span class="filename">Combining both id and classes</span><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">(</span><span class="s2">&quot;#myid.foo.bar&quot;</span><span class="p">))</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;myid&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;foo bar&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Combining both id and classes</span><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Div</span><span class="p">(</span><span class="s2">&quot;#myid.foo.bar&quot;</span><span class="p">))</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;myid&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;foo bar&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Selector string format</p>
@@ -744,44 +851,44 @@ that looks like a CSS selector can be used to quickly define id and classes:</p>
 attributes that are reserved Python keywords (like <code>for</code> or <code>class</code>), when the
 attribute name contains special characters or when you want to define attributes
 dynamically.</p>
-<div class="language-python highlight"><span class="filename">Using Alpine.js with @-syntax (shorthand for x-on)</span><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">({</span><span class="s2">&quot;@click.shift&quot;</span><span class="p">:</span> <span class="s2">&quot;addToSelection()&quot;</span><span class="p">}))</span>
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="o">&lt;</span><span class="n">button</span> <span class="nd">@click</span><span class="o">.</span><span class="n">shift</span><span class="o">=</span><span class="s2">&quot;addToSelection()&quot;</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Using Alpine.js with @-syntax (shorthand for x-on)</span><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">({</span><span class="s2">&quot;@click.shift&quot;</span><span class="p">:</span> <span class="s2">&quot;addToSelection()&quot;</span><span class="p">}))</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="o">&lt;</span><span class="n">button</span> <span class="nd">@click</span><span class="o">.</span><span class="n">shift</span><span class="o">=</span><span class="s2">&quot;addToSelection()&quot;</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<div class="language-python highlight"><span class="filename">Using an attribute with a reserved keyword</span><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Label</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Label</span><span class="p">({</span><span class="s2">&quot;for&quot;</span><span class="p">:</span> <span class="s2">&quot;myfield&quot;</span><span class="p">}))</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;myfield&quot;</span><span class="o">&gt;&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Using an attribute with a reserved keyword</span><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Label</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Label</span><span class="p">({</span><span class="s2">&quot;for&quot;</span><span class="p">:</span> <span class="s2">&quot;myfield&quot;</span><span class="p">}))</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;myfield&quot;</span><span class="o">&gt;&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <h3 id="booleanempty-attributes">Boolean/Empty Attributes<a class="headerlink" href="#booleanempty-attributes" title="Permanent link">&para;</a></h3>
 <p>In HTML, boolean attributes such as <code>disabled</code> are considered "true" when they
 exist. Specifying an attribute as <code>True</code> will make it appear (without a value).
 <code>False</code> will make it hidden. This is useful and brings the semantics of <code>bool</code> to
 HTML.</p>
-<div class="language-python highlight"><span class="filename">True bool attribute</span><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">disabled</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">True bool attribute</span><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">disabled</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<div class="language-python highlight"><span class="filename">False bool attribute</span><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="o">&lt;</span><span class="n">button</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">False bool attribute</span><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="o">&lt;</span><span class="n">button</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <h3 id="conditionally-mixing-css-classes">Conditionally Mixing CSS Classes<a class="headerlink" href="#conditionally-mixing-css-classes" title="Permanent link">&para;</a></h3>
 <p>To make it easier to mix CSS classes, the <code>class</code> attribute
 accepts a list of class names or a dict. Falsey values will be ignored.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">is_primary</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;btn&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;btn-primary&quot;</span><span class="p">:</span> <span class="n">is_primary</span><span class="p">}]))</span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary&quot;</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
-</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">is_primary</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;btn&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;btn-primary&quot;</span><span class="p">:</span> <span class="n">is_primary</span><span class="p">}]))</span>
-</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn&quot;</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
-</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="o">&gt;&gt;&gt;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">is_primary</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;btn&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;btn-primary&quot;</span><span class="p">:</span> <span class="n">is_primary</span><span class="p">}]))</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary&quot;</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">is_primary</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;btn&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;btn-primary&quot;</span><span class="p">:</span> <span class="n">is_primary</span><span class="p">}]))</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn&quot;</span><span class="o">&gt;&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="o">&gt;&gt;&gt;</span>
 </span></code></pre></div>
 <h3 id="combining-modes">Combining Modes<a class="headerlink" href="#combining-modes" title="Permanent link">&para;</a></h3>
 <p>Attributes via id/class shorthand, keyword arguments and dictionary can be combined:</p>
-<div class="language-python highlight"><span class="filename">Specifying attribute via multiple arguments</span><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">htyp</span> <span class="kn">import</span> <span class="n">label</span>
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">(</span><span class="s2">&quot;#myid.foo.bar&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;for&#39;</span><span class="p">:</span> <span class="s2">&quot;somefield&quot;</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;myname&quot;</span><span class="p">,))</span>
-</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="o">&lt;</span><span class="n">label</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;myid&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;foo bar&quot;</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;somefield&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;myname&quot;</span><span class="o">&gt;&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Specifying attribute via multiple arguments</span><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">htyp</span> <span class="kn">import</span> <span class="n">label</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">(</span><span class="s2">&quot;#myid.foo.bar&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;for&#39;</span><span class="p">:</span> <span class="s2">&quot;somefield&quot;</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;myname&quot;</span><span class="p">,))</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="o">&lt;</span><span class="n">label</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;myid&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;foo bar&quot;</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;somefield&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;myname&quot;</span><span class="o">&gt;&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Order is important</p>
@@ -792,9 +899,9 @@ first should come the <strong>selector id/class string</strong>, then <strong>di
 <p>Attributes are always escaped. This makes it possible to pass arbitrary HTML
 fragments or scripts as attributes. The output may look a bit obfuscated since
 all unsafe characters are escaped but the browser will interpret it correctly:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
-</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">onclick</span><span class="o">=</span><span class="s2">&quot;let name = &#39;bob&#39;; alert(&#39;hi&#39; + name);&quot;</span><span class="p">)[</span><span class="s2">&quot;Say hi&quot;</span><span class="p">])</span>
-</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">onclick</span><span class="o">=</span><span class="s2">&quot;let name = &amp;#39;bob&amp;#39;; alert(&amp;#39;hi&amp;#39; + name);&quot;</span><span class="o">&gt;</span><span class="n">Say</span> <span class="n">hi</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Button</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">onclick</span><span class="o">=</span><span class="s2">&quot;let name = &#39;bob&#39;; alert(&#39;hi&#39; + name);&quot;</span><span class="p">)[</span><span class="s2">&quot;Say hi&quot;</span><span class="p">])</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="o">&lt;</span><span class="n">button</span> <span class="n">onclick</span><span class="o">=</span><span class="s2">&quot;let name = &amp;#39;bob&amp;#39;; alert(&amp;#39;hi&amp;#39; + name);&quot;</span><span class="o">&gt;</span><span class="n">Say</span> <span class="n">hi</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>In the browser, the parsed attribute as returned by
 <code>document.getElementById("example").getAttribute("onclick")</code> will be the
@@ -802,24 +909,24 @@ original string <code>let name = 'bob'; alert('hi' + name);</code>.</p>
 <p>Escaping will happen whether or not the value is wrapped in <code>markupsafe.Markup</code>
 or not. This may seem confusing at first but is useful when embedding HTML
 snippets as attributes:</p>
-<div class="language-python highlight"><span class="filename">Escaping of Markup</span><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Ul</span>
-</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupsafe</span> <span class="kn">import</span> <span class="n">Markup</span>
-</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="c1"># This markup may come from another library/template engine</span>
-</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">some_markup</span> <span class="o">=</span> <span class="n">Markup</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;&lt;li class=&quot;bar&quot;&gt;&lt;/li&gt;&quot;&quot;&quot;</span><span class="p">)</span>
-</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Ul</span><span class="p">(</span><span class="n">dataTemplate</span><span class="o">=</span><span class="n">some_markup</span><span class="p">))</span>
-</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="o">&lt;</span><span class="n">ul</span> <span class="n">data</span><span class="o">-</span><span class="n">template</span><span class="o">=</span><span class="s2">&quot;&amp;lt;li class=&amp;#34;bar&amp;#34;&amp;gt;&amp;lt;/li&amp;gt;&quot;</span><span class="o">&gt;&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Escaping of Markup</span><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Ul</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupsafe</span> <span class="kn">import</span> <span class="n">Markup</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="c1"># This markup may come from another library/template engine</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">some_markup</span> <span class="o">=</span> <span class="n">Markup</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;&lt;li class=&quot;bar&quot;&gt;&lt;/li&gt;&quot;&quot;&quot;</span><span class="p">)</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Ul</span><span class="p">(</span><span class="n">dataTemplate</span><span class="o">=</span><span class="n">some_markup</span><span class="p">))</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="o">&lt;</span><span class="n">ul</span> <span class="n">data</span><span class="o">-</span><span class="n">template</span><span class="o">=</span><span class="s2">&quot;&amp;lt;li class=&amp;#34;bar&amp;#34;&amp;gt;&amp;lt;/li&amp;gt;&quot;</span><span class="o">&gt;&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <h2 id="render-elements-without-a-parent-orphans">Render elements without a parent (orphans)<a class="headerlink" href="#render-elements-without-a-parent-orphans" title="Permanent link">&para;</a></h2>
 <p>In some cases such as returning partial content it is useful to render elements
 without a parent element. This is useful in HTMX partial responses.</p>
 <p>You may use <code>render_node</code> to achieve this:</p>
-<div class="language-python highlight"><span class="filename">Render elements without a parent</span><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy</span> <span class="kn">import</span> <span class="n">render_node</span>
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Tr</span>
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">render_node</span><span class="p">([</span><span class="n">Tr</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">Tr</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]))</span>
-</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="o">&lt;</span><span class="n">tr</span><span class="o">&gt;</span><span class="n">a</span><span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">tr</span><span class="o">&gt;</span><span class="n">b</span><span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<div class="language-python highlight"><span class="filename">Render elements without a parent</span><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy</span> <span class="kn">import</span> <span class="n">render_node</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Tr</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">render_node</span><span class="p">([</span><span class="n">Tr</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">Tr</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]))</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="o">&lt;</span><span class="n">tr</span><span class="o">&gt;</span><span class="n">a</span><span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">tr</span><span class="o">&gt;</span><span class="n">b</span><span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p><code>render_node()</code> accepts all kinds of <code>Node</code> objects.
-You may use it to render anything that would normally be a chil of another element.</p>
+You may use it to render anything that would normally be a child of another element.</p>
 <div class="admonition note">
 <p class="admonition-title">Best practice: Only use render_node() to render non-Elements</p>
 <p>You can render regular elements by using <code>str()</code>, e.g. <code>str(P["hi"])</code>. While
@@ -830,33 +937,37 @@ use <code>render_node()</code> when you do not have a parent element.</p>
 <h2 id="iterating-of-the-output">Iterating of the Output<a class="headerlink" href="#iterating-of-the-output" title="Permanent link">&para;</a></h2>
 <p>Iterating over a markupy element will yield the resulting contents in chunks as
 they are rendered:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Ul</span><span class="p">,</span> <span class="n">Li</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">Ul</span><span class="p">[</span><span class="n">Li</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">Li</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]:</span>
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;got a chunk: </span><span class="si">{</span><span class="n">chunk</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="o">...</span>
-</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;ul&gt;&#39;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Ul</span><span class="p">,</span> <span class="n">Li</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">Ul</span><span class="p">[</span><span class="n">Li</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">Li</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]:</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;got a chunk: </span><span class="si">{</span><span class="n">chunk</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="o">...</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;ul&gt;&#39;</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span>
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
+</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span>
+</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
+</span><span id="__span-31-12"><a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/ul&gt;&#39;</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This feature can be leveraged to stream HTML contents by returning a generator instead of a fully generated str. How to integrate this is heavily depending on which framework you are using to power your website.</p>
+</div>
+<p>Just like <a href="#render-elements-without-a-parent-orphans">render_node()</a>, there is
+<code>iter_node()</code> that can be used when you need to iterate over a list of elements
+without a parent:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy</span> <span class="kn">import</span> <span class="n">iter_node</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Li</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">iter_node</span><span class="p">([</span><span class="n">Li</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">Li</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]):</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;got a chunk: </span><span class="si">{</span><span class="n">chunk</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="o">...</span>
 </span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
 </span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span>
 </span><span id="__span-32-8"><a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
 </span><span id="__span-32-9"><a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
 </span><span id="__span-32-10"><a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span>
 </span><span id="__span-32-11"><a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
-</span><span id="__span-32-12"><a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/ul&gt;&#39;</span>
-</span></code></pre></div>
-<p>Just like <a href="#render-elements-without-a-parent-orphans">render_node()</a>, there is
-<code>iter_node()</code> that can be used when you need to iterate over a list of elements
-without a parent:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy</span> <span class="kn">import</span> <span class="n">iter_node</span>
-</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Li</span>
-</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">iter_node</span><span class="p">([</span><span class="n">Li</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">Li</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]):</span>
-</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;got a chunk: </span><span class="si">{</span><span class="n">chunk</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="o">...</span>
-</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
-</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span>
-</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
-</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
-</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span>
-</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
 </span></code></pre></div>
 
 
@@ -866,6 +977,8 @@ without a parent:</p>
 
 
 
+
+  
 
 
 
@@ -907,7 +1020,7 @@ without a parent:</p>
     <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "toc.integrate"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.56dfad97.min.js"></script>
+      <script src="../assets/javascripts/bundle.525ec568.min.js"></script>
       
     
   </body>
