@@ -9,4 +9,4 @@ __all__ = [
     "iter_node",
     "render_node",
 ]
-__version__ = "0.9.6"
+__version__ = "1.0.0"
