@@ -498,15 +498,15 @@ wheels = [
 
 [[package]]
 name = "pyright"
-version = "1.1.382.post1"
+version = "1.1.383"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nodeenv" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1b/d3/fbf59f51cb74fc62a0c2b791aaa6242c8004db551b30c726783ba4432f05/pyright-1.1.382.post1.tar.gz", hash = "sha256:66a5d4e83be9452853d73e9dd9e95ba0ac3061845270e4e331d0070a597d3445", size = 21965 }
+sdist = { url = "https://files.pythonhosted.org/packages/78/a9/4654d15f4125d8dca6318d7be36a3283a8b3039661291c59bbdd1e576dcf/pyright-1.1.383.tar.gz", hash = "sha256:1df7f12407f3710c9c6df938d98ec53f70053e6c6bbf71ce7bcb038d42f10070", size = 21971 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ed/e2/7661f69927bf052e36d9c162c5087a02c346d0269be238cea2f5ae1e80f2/pyright-1.1.382.post1-py3-none-any.whl", hash = "sha256:21a4749dd1740e209f88d3a601e9f40748670d39481ea32b9d77edf7f3f1fb2e", size = 18669 },
+    { url = "https://files.pythonhosted.org/packages/1c/55/40a6559cea209b551c81dcd31cb351a6ffdb5876e7865ee242e269af72d8/pyright-1.1.383-py3-none-any.whl", hash = "sha256:d864d1182a313f45aaf99e9bfc7d2668eeabc99b29a556b5344894fd73cb1959", size = 18577 },
 ]
 
 [[package]]

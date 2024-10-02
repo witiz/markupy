@@ -6,9 +6,34 @@ Although markupy intend to remain a generic library to allow you generate HTML, 
 
 ### Building your first component
 
-Building a component is done by subclassing the built-in `Component` abstract class and implementing the one required `render()` instance method that defines your component structure.
+Let's start by creating a component that renders a [Boostrap card](https://getbootstrap.com/docs/5.3/components/card/).
 
-Let's start by creating a component that renders a [Boostrap card](https://getbootstrap.com/docs/5.3/components/card/):
+#### Components as functions
+
+Building a function component is a simple as returning elements from a regular python function:
+
+```python
+def card_component() -> Component:
+    return Div(".card")[
+        Div(".card-body")[
+            H5(".card-title")[
+                "Card title"
+            ],
+            P(".card-text")[
+                "This is my card's content."
+            ],
+        ]
+    ]
+```
+
+!!! note
+
+    In the rest of the documentation, we will mostly focus on class based components that offer more flexibility with the ability to inherit each other but after all, it's also a matter of taste so feel free to experiment and find what works best for you.
+
+
+#### Components as classes
+
+Building a class component is done by subclassing the built-in `Component` abstract class and implementing the one required `render()` instance method that defines your component structure.
 
 ```python
 from markupy import Component, Node

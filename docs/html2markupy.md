@@ -1,4 +1,4 @@
-# Convert HTML to markupy Code
+# Converting HTML to markupy
 
 Maybe you already have a bunch of HTML, or templates that you would like to migrate to markupy.
 We got you covered in multiple ways.

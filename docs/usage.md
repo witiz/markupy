@@ -414,6 +414,11 @@ got a chunk: '</li>'
 got a chunk: '</ul>'
 ```
 
+!!! note
+
+    This feature can be leveraged to stream HTML contents by returning a generator instead of a fully generated str. How to integrate this is heavily depending on which framework you are using to power your website.
+
+
 Just like [render_node()](#render-elements-without-a-parent-orphans), there is
 `iter_node()` that can be used when you need to iterate over a list of elements
 without a parent:

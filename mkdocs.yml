@@ -15,6 +15,9 @@ nav:
   - usage.md
   - components.md
   - html2markupy.md
+  - flask.md
+  - starlette.md
+  - django.md
 extra:
   analytics:
     provider: google
