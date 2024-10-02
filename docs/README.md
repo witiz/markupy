@@ -103,3 +103,6 @@ The full documentation is available at [markupy.witiz.com](https://markupy.witiz
 - [Usage](https://markupy.witiz.com/usage/)
 - [Components](https://markupy.witiz.com/components/)
 - [html2markupy](https://markupy.witiz.com/html2markupy/)
+- [Integrating with Flask](https://markupy.witiz.com/flask/)
+- [Integrating with Starlette](https://markupy.witiz.com/starlette/)
+- [Integrating with Django](https://markupy.witiz.com/django/)
