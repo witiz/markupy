@@ -331,8 +331,8 @@ accepts a list of class names or a dict. Falsey values will be ignored.
 Attributes via id/class shorthand, keyword arguments and dictionary can be combined:
 
 ```python title="Specifying attribute via multiple arguments"
->>> from htyp import label
->>> print(label("#myid.foo.bar", {'for': "somefield"}, name="myname",))
+>>> from markupy.tag import Label
+>>> print(Label("#myid.foo.bar", {"for": "somefield"}, name="myname",))
 <label id="myid" class="foo bar" for="somefield" name="myname"></label>
 ```
 
