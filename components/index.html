@@ -366,9 +366,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pass-data-to-a-components-with-constructor" class="md-nav__link">
+  <a href="#pass-data-to-a-class-component-with-constructor" class="md-nav__link">
     <span class="md-ellipsis">
-      Pass data to a components with constructor
+      Pass data to a class component with constructor
     </span>
   </a>
   
@@ -534,7 +534,7 @@
 <p>Let's start by creating a component that renders a <a href="https://getbootstrap.com/docs/5.3/components/card/">Boostrap card</a>.</p>
 <h4 id="components-as-functions">Components as functions<a class="headerlink" href="#components-as-functions" title="Permanent link">&para;</a></h4>
 <p>Building a function component is a simple as returning elements from a regular python function:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">card_component</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">card_component</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Node</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">return</span> <span class="n">Div</span><span class="p">(</span><span class="s2">&quot;.card&quot;</span><span class="p">)[</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="n">Div</span><span class="p">(</span><span class="s2">&quot;.card-body&quot;</span><span class="p">)[</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>            <span class="n">H5</span><span class="p">(</span><span class="s2">&quot;.card-title&quot;</span><span class="p">)[</span>
@@ -575,7 +575,7 @@
 <p>See how this can save you from repeating a lot of code?
 But we're not there yet, because right now our card always has the same title and content.
 Time to keep improving our component.</p>
-<h3 id="pass-data-to-a-components-with-constructor">Pass data to a components with constructor<a class="headerlink" href="#pass-data-to-a-components-with-constructor" title="Permanent link">&para;</a></h3>
+<h3 id="pass-data-to-a-class-component-with-constructor">Pass data to a class component with constructor<a class="headerlink" href="#pass-data-to-a-class-component-with-constructor" title="Permanent link">&para;</a></h3>
 <p>Let's make our card data dynamic by adding a constructor to our component. Let's say our card is in charge of displaying a <code>Post</code> object:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">markupy</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">Node</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span> <span class="nn">markupy.tag</span> <span class="kn">import</span> <span class="n">Div</span><span class="p">,</span> <span class="n">H5</span><span class="p">,</span> <span class="n">P</span>
