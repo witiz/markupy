@@ -71,7 +71,7 @@ def test_to_markupy() -> None:
 
 def test_escape() -> None:
     html = """<a href="{{ url_for(".index") }}">Hello</a>"""
-    py = """from markupy.tag import A\nA(href='{{ url_for(".index") }}')["Hello"]"""
+    py = """from markupy.tag import A\nA(href="{{ url_for(\\".index\\") }}")["Hello"]"""
     assert to_markupy(html) == py
 
 

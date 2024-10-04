@@ -1,6 +1,7 @@
-import keyword
-import re
 from html.parser import HTMLParser
+from json import dumps as json_dumps
+from keyword import iskeyword
+from re import sub as re_sub
 from typing import Iterator
 
 from markupsafe import escape
@@ -22,7 +23,7 @@ def _is_void_element(name: str) -> bool:
 
 
 def _format_attribute_key(key: str) -> str:
-    if keyword.iskeyword(key):
+    if iskeyword(key):
         return f"{key}_"
     if key.startswith("@"):
         key = f"_{key[1:]}"
@@ -33,15 +34,10 @@ def _format_attribute_key(key: str) -> str:
     return key
 
 
-def _quote(value: str) -> str:
-    quote = '"' if '"' not in value else "'" if "'" not in value else '"""'
-    return f"{quote}{value}{quote}"
-
-
 def _format_attribute_value(value: str | None) -> str:
     if value is None:
         return "True"
-    return _quote(value)
+    return json_dumps(value)
 
 
 def _format_attrs_dict(attrs: dict[str, str | None]) -> str:
@@ -180,7 +176,7 @@ class MarkupyParser(HTMLParser):
                 continue
             if len(self.unclosed_stack) == 0:
                 self.count_top_level += 1
-            self.code_stack.push(_quote(line))
+            self.code_stack.push(json_dumps(line))
             self.code_stack.push(",")
 
     def output_imports(self) -> str:
@@ -200,20 +196,20 @@ class MarkupyParser(HTMLParser):
 
 def _template_process(html: str) -> str:
     # Replace opening `block`
-    html = re.sub(
+    html = re_sub(
         r"{%[+-]?\s+block\s+([a-zA-Z_]+)\s+[+-]?%}",
         lambda match: f"<block-{match.group(1).lower().replace('_','-')}>",
         html,
     )
     # Replace closing `block`
-    html = re.sub(
+    html = re_sub(
         r"{%[+-]?\s+endblock(?:\s+[a-zA-Z_]+)?\s+[+-]?%}",
         # we can use whatever closing tag name we want here as it'll end up being replace with a closing bracket
         "</endblock>",
         html,
     )
     # Escape template contents
-    html = re.sub(
+    html = re_sub(
         r"{{.*?}}|{%.*?%}|{#.*?#}",
         lambda match: escape(match.group(0)),
         html,
