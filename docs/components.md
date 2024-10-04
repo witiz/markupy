@@ -13,7 +13,7 @@ Let's start by creating a component that renders a [Boostrap card](https://getbo
 Building a function component is a simple as returning elements from a regular python function:
 
 ```python
-def card_component() -> Component:
+def card_component() -> Node:
     return Div(".card")[
         Div(".card-body")[
             H5(".card-title")[
@@ -65,7 +65,7 @@ See how this can save you from repeating a lot of code?
 But we're not there yet, because right now our card always has the same title and content.
 Time to keep improving our component.
 
-### Pass data to a components with constructor
+### Pass data to a class component with constructor
 
 Let's make our card data dynamic by adding a constructor to our component. Let's say our card is in charge of displaying a `Post` object:
 
