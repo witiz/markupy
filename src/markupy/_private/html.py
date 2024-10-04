@@ -76,7 +76,7 @@ def _format_attrs(
             attrs_dict[key] = _format_attribute_value(value)
 
     if selector:
-        arguments.append(f'"{selector}"')
+        arguments.append(_format_attribute_value(selector))
     if attrs_kwargs:
         arguments += attrs_kwargs
     if attrs_dict:
