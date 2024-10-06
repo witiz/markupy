@@ -11,6 +11,8 @@ from .view import View
 
 @Component.register
 class Element(View):
+    __slots__ = ("_name", "_attributes", "_children", "_shared")
+
     def __init__(self, name: str, *, shared: bool = True) -> None:
         self._name = name
         self._attributes: str | None = None
@@ -130,6 +132,8 @@ class Element(View):
 
 
 class HtmlElement(Element):
+    __slots__ = ()
+
     @override
     def __iter__(self) -> Iterator[str]:
         yield "<!doctype html>"
@@ -137,6 +141,8 @@ class HtmlElement(Element):
 
 
 class VoidElement(Element):
+    __slots__ = ()
+
     @override
     def __iter__(self) -> Iterator[str]:
         yield self._tag_opening()
@@ -147,6 +153,8 @@ class VoidElement(Element):
 
 
 class CommentElement(Element):
+    __slots__ = ()
+
     @override
     def _tag_opening(self) -> str:
         return "<!--"
