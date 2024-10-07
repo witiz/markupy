@@ -667,6 +667,10 @@ It is convenient and safe to directly insert variable data via f-strings:</p>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">H1</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;hello </span><span class="si">{</span><span class="n">user_supplied_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">hello</span> <span class="n">bobby</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">/</span><span class="n">h1</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">An exception for <code>script</code> and <code>style</code> tags</p>
+<p>Script and style tags are special because they usually expect their content to be respectively javascript and css code. In order for code to work properly, <code>Script</code> and <code>Style</code> child nodes will not be automatically escaped. Keep in mind that you will need to escape sensitive values yourself inside these 2 tags. </p>
+</div>
 <h3 id="injecting-markup">Injecting Markup<a class="headerlink" href="#injecting-markup" title="Permanent link">&para;</a></h3>
 <p>If you have HTML markup that you want to insert without further escaping, wrap
 it in <code>Markup</code> from the <a href="https://markupsafe.palletsprojects.com/">markupsafe</a>
