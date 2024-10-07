@@ -57,6 +57,11 @@ It is convenient and safe to directly insert variable data via f-strings:
 <h1>hello bobby &lt;/h1&gt;</h1>
 ```
 
+!!! warning "An exception for `script` and `style` tags"
+
+    Script and style tags are special because they usually expect their content to be respectively javascript and css code. In order for code to work properly, `Script` and `Style` child nodes will not be automatically escaped. Keep in mind that you will need to escape sensitive values yourself inside these 2 tags. 
+
+
 ### Injecting Markup
 
 If you have HTML markup that you want to insert without further escaping, wrap

@@ -16,6 +16,8 @@ from markupy.tag import (
     Input,
     Li,
     MyCustomElement,
+    Script,
+    Style,
     Ul,
 )
 
@@ -34,6 +36,18 @@ def test_void_element() -> None:
 
     with pytest.raises(ValueError):
         element["child"]
+
+
+def test_safe_script_element() -> None:
+    # The ' quotes don't get escaped
+    result = """<script type="text/javascript">alert('test');</script>"""
+    assert str(Script(type="text/javascript")["alert('test');"]) == result
+
+
+def test_safe_style_element() -> None:
+    # The > symbol doesn't get escaped
+    result = """<style type="text/css">body>.test {color:red}</style>"""
+    assert str(Style(type="text/css")["body>.test {color:red}"]) == result
 
 
 def test_children() -> None:

@@ -11,13 +11,14 @@ from .view import View
 
 @Component.register
 class Element(View):
-    __slots__ = ("_name", "_attributes", "_children", "_shared")
+    __slots__ = ("_name", "_attributes", "_children", "_shared", "_safe")
 
     def __init__(self, name: str, *, shared: bool = True) -> None:
         self._name = name
         self._attributes: str | None = None
         self._children: Node = None
         self._shared: bool = shared
+        self._safe: bool = False
 
     @property
     def name(self) -> str:
@@ -33,7 +34,7 @@ class Element(View):
 
     def __iter__(self) -> Iterator[str]:
         yield self._tag_opening()
-        yield from iter_node(self._children)
+        yield from iter_node(self._children, safe=self._safe)
         yield self._tag_closing()
 
     def __repr__(self) -> str:
@@ -166,3 +167,11 @@ class CommentElement(Element):
     @override
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
         raise ValueError(f"Comment element {self} cannot have attributes")
+
+
+class SafeElement(Element):
+    __slots__ = ()
+
+    def __init__(self, name: str, *, shared: bool = True) -> None:
+        super().__init__(name, shared=shared)
+        self._safe = True

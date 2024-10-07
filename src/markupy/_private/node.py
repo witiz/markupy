@@ -33,7 +33,11 @@ def validate_node(node: Node) -> bool:
         raise TypeError(f"{node!r} is not a valid child element")
 
 
-def iter_node(node: Node) -> Iterator[str]:
+def iter_unsafe_node(node: Node) -> Iterator[str]:
+    return iter_node(node)
+
+
+def iter_node(node: Node, *, safe: bool = False) -> Iterator[str]:
     if _is_empty_node(node):
         return
     while not isinstance(node, View) and callable(node):
@@ -42,6 +46,8 @@ def iter_node(node: Node) -> Iterator[str]:
     if isinstance(node, str):
         if isinstance(node, Markup):
             yield node
+        elif safe:
+            yield Markup(node)
         else:
             yield str(escape(node))
     elif isinstance(node, Iterable):
@@ -49,7 +55,7 @@ def iter_node(node: Node) -> Iterator[str]:
             yield from node
         else:
             for child in node:
-                yield from iter_node(child)
+                yield from iter_node(child, safe=safe)
     elif isinstance(node, int):
         yield str(node)
     else:

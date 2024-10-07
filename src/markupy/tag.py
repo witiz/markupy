@@ -2,7 +2,13 @@ from functools import lru_cache
 from re import match as re_fullmatch
 from re import sub as re_sub
 
-from ._private.element import CommentElement, Element, HtmlElement, VoidElement
+from ._private.element import (
+    CommentElement,
+    Element,
+    HtmlElement,
+    SafeElement,
+    VoidElement,
+)
 
 __all__ = [
     "_",
@@ -142,6 +148,10 @@ def __getattr__(name: str) -> Element:
 
 _ = CommentElement("_")
 
+# Script and Style contents do not need to be wrapped inside Markup()
+Script = SafeElement("script")
+Style = SafeElement("style")
+
 # https://developer.mozilla.org/en-US/docs/Glossary/Doctype
 Html = HtmlElement("html")
 
@@ -238,7 +248,6 @@ Rt = Element("rt")
 Ruby = Element("ruby")
 S = Element("s")
 Samp = Element("samp")
-Script = Element("script")
 Search = Element("search")
 Section = Element("section")
 Select = Element("select")
@@ -246,7 +255,6 @@ Slot = Element("slot")
 Small = Element("small")
 Span = Element("span")
 Strong = Element("strong")
-Style = Element("style")
 Sub = Element("sub")
 Summary = Element("summary")
 Sup = Element("sup")
