@@ -31,8 +31,10 @@ def test_none_value() -> None:
 
 
 def test_empty_value() -> None:
-    assert str(Input(disabled="")) == "<input disabled>"
-    assert str(Input(attr="")) == "<input>"
+    # Different behaviour for boolean attributes vs regular
+    assert str(Input(disabled="")) == """<input disabled>"""
+    assert str(Input(attr="")) == """<input attr="">"""
+    assert str(Input(id="", class_="")) == """<input>"""
 
 
 def test_comment() -> None:

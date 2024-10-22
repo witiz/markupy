@@ -99,8 +99,8 @@ class AttributeDict(dict[str, AttributeValue]):
             if isinstance(value, int) and not bool(value):
                 return
             value = True
-        elif value == "":
-            # Discard empty string valued attributes for non boolean attributes
+        elif value == "" and key in {"id", "class"}:
+            # Discard empty id or class attributes
             return
         return super().__setitem__(key, value)
 
