@@ -102,7 +102,11 @@ class AttributeDict(dict[str, AttributeValue]):
         elif value == "" and key in {"id", "class"}:
             # Discard empty id or class attributes
             return
-        return super().__setitem__(key, value)
+
+        if key == "class" and self.get(key):
+            return super().__setitem__(key, f'{self["class"]} {value}')
+        else:
+            return super().__setitem__(key, value)
 
     def __str__(self) -> str:
         return " ".join(_format_key_value(k, v) for k, v in self.items())

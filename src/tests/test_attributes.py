@@ -90,6 +90,10 @@ class Test_class_names:
         result = str(Div(class_={"foo": False}))
         assert result == "<div></div>"
 
+    def test_selector_attr_mixed(self) -> None:
+        result = str(Div(".foo", class_={"bar": True, "baz": False}))
+        assert result == """<div class="foo bar"></div>"""
+
 
 def test_dict_attributes() -> None:
     result = Div({"@click": 'hi = "hello"'})
@@ -229,10 +233,10 @@ def test_attrs_and_kwargs() -> None:
 
 def test_class_priority() -> None:
     result = Div(".a", {"class": "b"}, class_="c")
-    assert str(result) == """<div class="c"></div>"""
+    assert str(result) == """<div class="a b c"></div>"""
 
     result = Div(".a", {"class": "b"})
-    assert str(result) == """<div class="b"></div>"""
+    assert str(result) == """<div class="a b"></div>"""
 
 
 def test_attribute_priority() -> None:
