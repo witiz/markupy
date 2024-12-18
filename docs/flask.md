@@ -105,7 +105,7 @@ Same as above, if you prefer a cleaner syntax that will apply streaming to all y
 
 ```python
 from flask import Flask, stream_with_context
-from markupy import Component
+import Component
 
 class MarkupyStreamFlask(Flask):
     # Here we override make_response to be able to stream Component instances

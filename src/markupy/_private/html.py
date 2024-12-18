@@ -24,6 +24,7 @@ def _is_void_element(name: str) -> bool:
 
 def _format_attribute_key(key: str) -> str:
     if iskeyword(key):
+        # Escape python reserved keywords
         return f"{key}_"
     if key.startswith("@"):
         key = f"_{key[1:]}"
@@ -46,7 +47,7 @@ def _format_attrs_dict(attrs: dict[str, str | None]) -> str:
 
 # Process attrs as they are received from the html parser
 def _format_attrs(
-    attrs: list[tuple[str, str | None]], *, use_selector: bool
+    attrs: list[tuple[str, str | None]], *, use_selector: bool, use_dict: bool
 ) -> str | None:
     if not attrs:
         return None
@@ -69,11 +70,14 @@ def _format_attrs(
             selector = f"{selector}.{'.'.join(value.split())}"
             continue
 
-        py_key = _format_attribute_key(key)
-        if py_key.isidentifier():
-            attrs_kwargs.append(f"{py_key}={_format_attribute_value(value)}")
-        else:
+        if use_dict:
             attrs_dict[key] = _format_attribute_value(value)
+        else:
+            py_key = _format_attribute_key(key)
+            if py_key.isidentifier():
+                attrs_kwargs.append(f"{py_key}={_format_attribute_value(value)}")
+            else:
+                attrs_dict[key] = _format_attribute_value(value)
 
     if selector:
         arguments.append(_format_attribute_value(selector))
@@ -115,12 +119,15 @@ class Stack:
 
 
 class MarkupyParser(HTMLParser):
-    def __init__(self, *, use_selector: bool, use_import_tag: bool) -> None:
+    def __init__(
+        self, *, use_selector: bool, use_dict: bool, use_import_tag: bool
+    ) -> None:
         self.count_top_level: int = 0
         self.code_stack: Stack = Stack()
         self.unclosed_stack: Stack = Stack()
         self.imports: set[str] = set()
         self.use_import_tag: bool = use_import_tag
+        self.use_dict: bool = use_dict
         self.use_selector: bool = use_selector
         super().__init__()
 
@@ -137,7 +144,9 @@ class MarkupyParser(HTMLParser):
 
         self.imports.add(markupy_tag)
         self.code_stack.push(markupy_tag)
-        if attributes_str := _format_attrs(attrs, use_selector=self.use_selector):
+        if attributes_str := _format_attrs(
+            attrs, use_selector=self.use_selector, use_dict=self.use_dict
+        ):
             self.code_stack.push(attributes_str)
         if _is_void_element(tag):
             self.code_stack.push(",")
@@ -218,9 +227,15 @@ def _template_process(html: str) -> str:
 
 
 def to_markupy(
-    html: str, *, use_selector: bool = True, use_import_tag: bool = False
+    html: str,
+    *,
+    use_selector: bool = True,
+    use_dict: bool = False,
+    use_import_tag: bool = False,
 ) -> str:
-    parser = MarkupyParser(use_selector=use_selector, use_import_tag=use_import_tag)
+    parser = MarkupyParser(
+        use_selector=use_selector, use_dict=use_dict, use_import_tag=use_import_tag
+    )
     parser.feed(_template_process(html))
     parser.close()
     if tag := parser.unclosed_stack.pop():

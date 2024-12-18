@@ -87,8 +87,8 @@ $ html2markupy index.html | ruff format -
 Say you have the following HTML snippet.
 
 ```html title="example.html"
-<section id="main-section" class="hero is-link">
-  <p class="subtitle is-3 is-spaced">Welcome</p>
+<section id="main-section" class="container">
+  <a class="btn btn-primary" href="/index">Home</a>
 </section>
 ```
 
@@ -103,10 +103,10 @@ If this is you, you can use the `--tag-prefix` option to get corresponding outpu
 === "--no-tag-prefix (default)"
 
     ```python
-    from markupy import P, Section
+    from markupy.tag import A, Section
 
-    Section("#main-section.hero.is-link")[
-        P(".subtitle.is-3.is-spaced")["Welcome"]
+    Section("#main-section.container")[
+        A(".btn.btn-primary", href="/index")["Home"]
     ]
     ```
 
@@ -115,32 +115,56 @@ If this is you, you can use the `--tag-prefix` option to get corresponding outpu
     ```python
     from markupy import tag
 
-    tag.Section("#main-section.hero.is-link")[
-        tag.P(".subtitle.is-3.is-spaced")["Welcome"]
+    tag.Section("#main-section.container")[
+        tag.A(".btn.btn-primary", href="/index")["Home"]
     ]
     ```
 
 
-#### Explicit ID and Class Kwargs
+#### Explicit `id` and `class` kwargs
 
 If you prefer the explicit `id="id", class_="class"` kwargs syntax over the default markupy shorthand `#id.class` syntax, you can get it by passing the `--no-selector` flag.
 
 === "--selector (default)"
 
     ```python
-    from markupy import P, Section
+    from markupy.tag import A, Section
 
-    Section("#main-section.hero.is-link")[
-        P(".subtitle.is-3.is-spaced")["Welcome"]
+    Section("#main-section.container")[
+        A(".btn.btn-primary", href="/index")["Home"]
     ]
     ```
 
 === "--no-selector"
 
     ```python
-    from markupy import P, Section
+    from markupy.tag import A, Section
 
-    Section(id="main-section", class_="hero is-link")[
-        P(class_="subtitle is-3 is-spaced")["Welcome"]
+    Section(id="main-section" class_="container")[
+        A(class_="btn btn-primary", href="/index")["Home"]
+    ]
+    ```
+
+#### Attributes as dict vs arguments
+
+The `--dict-args` flag lets you declare attributes as a dictionary instead of the default python arguments.
+
+=== "--no-dict-args (default)"
+
+    ```python
+    from markupy.tag import A, Section
+
+    Section("#main-section.container")[
+        A(".btn.btn-primary", href="/index")["Home"]
+    ]
+    ```
+
+=== "--dict-args"
+
+    ```python
+    from markupy.tag import A, Section
+
+    Section("#main-section.container")[
+        A(".btn.btn-primary", {"href": "/index"})["Home"]
     ]
     ```

@@ -14,6 +14,12 @@ def main() -> None:
         default=True,
     )
     parser.add_argument(
+        "--dict-attrs",
+        action=argparse.BooleanOptionalAction,
+        help="Prefer dict attributes",
+        default=False,
+    )
+    parser.add_argument(
         "--tag-prefix",
         action=argparse.BooleanOptionalAction,
         help="Output mode for imports of markupy elements",
@@ -35,6 +41,14 @@ def main() -> None:
         sys.exit(1)
 
     use_selector: bool = args.selector
+    use_dict: bool = args.dicts_attrs
     use_import_tag: bool = args.tag_prefix
 
-    print(to_markupy(html, use_selector=use_selector, use_import_tag=use_import_tag))
+    print(
+        to_markupy(
+            html,
+            use_selector=use_selector,
+            use_dict=use_dict,
+            use_import_tag=use_import_tag,
+        )
+    )

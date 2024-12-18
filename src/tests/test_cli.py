@@ -109,9 +109,21 @@ def test_use_import_tag() -> None:
 
 
 def test_use_selector() -> None:
-    html = """<div id="myid" class="cls1 cls2">hello</div>"""
-    py = """from markupy.tag import Div\nDiv(id="myid",class_="cls1 cls2")["hello"]"""
+    html = """<div id="myid" class="cls1 cls2" del="ok">hello</div>"""
+    py = """from markupy.tag import Div\nDiv(id="myid",class_="cls1 cls2",del_="ok")["hello"]"""
     assert to_markupy(html, use_selector=False) == py
+
+
+def test_use_dict_noselector() -> None:
+    html = """<div id="myid" class="cls1 cls2" del="ok">hello</div>"""
+    py = """from markupy.tag import Div\nDiv({"id":"myid","class":"cls1 cls2","del":"ok"})["hello"]"""
+    assert to_markupy(html, use_dict=True, use_selector=False) == py
+
+
+def test_use_dict_selector() -> None:
+    html = """<div id="myid" class="cls1 cls2" del="ok">hello</div>"""
+    py = """from markupy.tag import Div\nDiv("#myid.cls1.cls2",{"del":"ok"})["hello"]"""
+    assert to_markupy(html, use_dict=True, use_selector=True) == py
 
 
 def test_jinja_block() -> None:

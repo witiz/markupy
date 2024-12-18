@@ -32,7 +32,7 @@ existing template based Django project:
 ```py title="views.py"
 from django.shortcuts import render
 
-from markupy import H1
+from markupy.tag import H1
 
 
 def index(request):
