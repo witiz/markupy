@@ -4,8 +4,7 @@ set -euo pipefail
 
 . ${BASH_SOURCE%/*}/test.sh
 
-echo ---- docs deploy ----
-uv run mkdocs gh-deploy --force
+. ${BASH_SOURCE%/*}/docs.sh
 
 echo --- pypi publish ----
 uv run flit publish

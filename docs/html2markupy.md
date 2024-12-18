@@ -16,7 +16,7 @@ The utility command `html2markupy` ships with `markupy`, and can be used to tran
 
 ```bash
 $ html2markupy -h
-usage: html2markupy [-h] [--selector | --no-selector] [--tag-prefix | --no-tag-prefix] [input]
+usage: html2markupy [-h] [--selector | --no-selector] [--dict-attrs | --no-dict-attrs] [--tag-prefix | --no-tag-prefix] [input]
 
 positional arguments:
   input                 input HTML from file or stdin
@@ -25,6 +25,8 @@ options:
   -h, --help            show this help message and exit
   --selector, --no-selector
                         Use the selector #id.class syntax instead of explicit `id` and `class_` attributes (default: True)
+  --dict-attrs, --no-dict-attrs
+                        Prefer dict attributes (default: False)
   --tag-prefix, --no-tag-prefix
                         Output mode for imports of markupy elements (default: False)
 ```
