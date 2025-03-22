@@ -20,6 +20,9 @@ class Fragment(View):
     def __iter__(self) -> Iterator[str]:
         yield from iter_node(self._children)
 
+    def __copy__(self):
+        return type(self)()
+
     def _new_instance(self: Self) -> Self:
         # When imported, elements are loaded from a shared instance
         # Make sure we re-instantiate them on setting attributes/children
