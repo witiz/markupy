@@ -244,3 +244,8 @@ def test_callable_in_generator() -> None:
 def test_invalid_child(not_a_child: t.Any) -> None:
     with pytest.raises(TypeError):
         str(Div[not_a_child])
+
+
+def test_children_redefinition() -> None:
+    with pytest.raises(Exception):
+        str(Div["Hello"]["World"])

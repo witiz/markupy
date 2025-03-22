@@ -104,7 +104,7 @@ class AttributeDict(dict[str, AttributeValue]):
             return
 
         if key == "class" and self.get(key):
-            return super().__setitem__(key, f'{self["class"]} {value}')
+            return super().__setitem__(key, f"{self['class']} {value}")
         else:
             return super().__setitem__(key, value)
 

@@ -4,21 +4,20 @@ from typing import Any, overload
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
-from .component import Component
-from .node import Node, iter_node, validate_node
-from .view import View
+from .fragment import Fragment
+from .node import iter_node
 
 
-@Component.register
-class Element(View):
-    __slots__ = ("_name", "_attributes", "_children", "_shared", "_safe")
+class Element(Fragment):
+    __slots__ = ("_name", "_attributes")
 
-    def __init__(self, name: str, *, shared: bool = True) -> None:
+    def __init__(self, name: str) -> None:
+        super().__init__()
         self._name = name
         self._attributes: str | None = None
-        self._children: Node = None
-        self._shared: bool = shared
-        self._safe: bool = False
+
+    def __copy__(self) -> Self:
+        return type(self)(self.name)
 
     @property
     def name(self) -> str:
@@ -39,14 +38,6 @@ class Element(View):
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} '{self._tag_opening()}'>"
-
-    def _new_instance(self: Self) -> Self:
-        # When imported, elements are loaded from a shared instance
-        # Make sure we re-instantiate them on setting attributes/children
-        # to avoid sharing attributes/children between multiple instances
-        if self._shared:
-            return self.__class__(self._name, shared=False)
-        return self
 
     # Use call syntax () to define attributes
     @overload
@@ -122,15 +113,6 @@ class Element(View):
 
         return self
 
-    # Use subscriptable [] syntax to assign children
-    def __getitem__(self, children: "Node") -> Self:
-        if validate_node(children):
-            el = self._new_instance()
-            el._children = children
-            return el
-
-        return self
-
 
 class HtmlElement(Element):
     __slots__ = ()
@@ -172,6 +154,6 @@ class CommentElement(Element):
 class SafeElement(Element):
     __slots__ = ()
 
-    def __init__(self, name: str, *, shared: bool = True) -> None:
-        super().__init__(name, shared=shared)
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
         self._safe = True

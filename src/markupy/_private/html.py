@@ -207,7 +207,7 @@ def _template_process(html: str) -> str:
     # Replace opening `block`
     html = re_sub(
         r"{%[+-]?\s+block\s+([a-zA-Z_]+)\s+[+-]?%}",
-        lambda match: f"<block-{match.group(1).lower().replace('_','-')}>",
+        lambda match: f"<block-{match.group(1).lower().replace('_', '-')}>",
         html,
     )
     # Replace closing `block`
