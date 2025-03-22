@@ -32,16 +32,20 @@ You can avoid that by subclassing `Flask` and overriding the `make_response` met
 
 ```python
 from flask import Flask
-from markupy import Component
+from markupy import View
 
 class MarkupyFlask(Flask):
-    # Here we override make_response to be able to return Component instances
+    # Here we override make_response to be able to return View instances
     # from our routes directly without having to cast them to str()
     def make_response(self, rv):
-        if isinstance(rv, Component):
+        if isinstance(rv, View):
             rv = str(rv)
         return super().make_response(rv)
 ```
+
+!!! note
+
+    Here we check if our object to be rendered is a subclass of `markupy.View`, which is the base class for all markupy `Element`, `Fragment` and `Component`.
 
 And then our previous example becomes like this (basically we instantiate MarkupyFlask instead of Flask previously and do not need the calls to `str` anymore):
 
@@ -105,13 +109,13 @@ Same as above, if you prefer a cleaner syntax that will apply streaming to all y
 
 ```python
 from flask import Flask, stream_with_context
-import Component
+from markupy import View
 
 class MarkupyStreamFlask(Flask):
-    # Here we override make_response to be able to stream Component instances
+    # Here we override make_response to be able to stream View instances
     # from our routes directly when returning them
     def make_response(self, rv):
-        if isinstance(rv, Component):
+        if isinstance(rv, View):
             rv = stream_with_context(chunk for chunk in rv)
         return super().make_response(rv)
 ```
@@ -131,13 +135,13 @@ If you prefer to apply this change on a route per route basis, you could also cr
 ```python
 from functools import wraps
 from flask import stream_with_context
-from markupy import Component
+from markupy import View
 
 def markupy_stream(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         rv = f(*args, **kwargs)
-        if isinstance(rv, Component):
+        if isinstance(rv, View):
             return stream_with_context(chunk for chunk in rv)
         return rv
 

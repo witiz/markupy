@@ -125,6 +125,20 @@ You can use this to conditionally render content with inline `and` and `or`.
 <div>Access denied</div>
 ```
 
+### Fragments
+
+Fragments allow you to wrap a group of nodes (not necessarily elements) so that they can be rendered without a wrapping element.
+
+```python
+>>> from markupy.tag import P, I, Fragment
+>>> content = Fragment["Hello ", None, I["world!"]]
+>>> print(content)
+Hello <i>world!</i>
+
+>>> print(P[content])
+<p>Hello <i>world!</i></p>
+```
+
 ### Loops / Iterating Over Children
 
 You can pass a list, tuple or generator to generate multiple children:
@@ -422,22 +436,3 @@ got a chunk: '</ul>'
 !!! note
 
     This feature can be leveraged to stream HTML contents by returning a generator instead of a fully generated str. How to integrate this is heavily depending on which framework you are using to power your website.
-
-
-Just like [render_node()](#render-elements-without-a-parent-orphans), there is
-`iter_node()` that can be used when you need to iterate over a list of elements
-without a parent:
-
-```python
->>> from markupy import iter_node
->>> from markupy.tag import Li
->>> for chunk in iter_node([Li["a"], Li["b"]]):
-...     print(f"got a chunk: {chunk!r}")
-...
-got a chunk: '<li>'
-got a chunk: 'a'
-got a chunk: '</li>'
-got a chunk: '<li>'
-got a chunk: 'b'
-got a chunk: '</li>'
-```
