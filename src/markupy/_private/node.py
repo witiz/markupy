@@ -60,7 +60,3 @@ def iter_node(node: Node, *, safe: bool = False) -> Iterator[str]:
         yield str(node)
     else:
         raise TypeError(f"{node!r} is not a valid child element")
-
-
-def render_node(*node: Node) -> Markup:
-    return Markup("".join(iter_node(node)))

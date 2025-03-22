@@ -1,5 +1,5 @@
 from markupy import Fragment
-from markupy.tag import I, P
+from markupy.tag import Div, I, P, Tr
 
 
 def test_render_direct() -> None:
@@ -35,3 +35,28 @@ def test_iter() -> None:
         "World",
         "</i>",
     ]
+
+
+def test_element() -> None:
+    result = Fragment[Div["a"]]
+    assert str(result) == "<div>a</div>"
+
+
+def test_multiple_element() -> None:
+    result = Fragment[Tr["a"], Tr["b"]]
+    assert str(result) == "<tr>a</tr><tr>b</tr>"
+
+
+def test_list() -> None:
+    result = Fragment[[Tr["a"], Tr["b"]]]
+    assert str(result) == "<tr>a</tr><tr>b</tr>"
+
+
+def test_none() -> None:
+    result = Fragment[None]
+    assert str(result) == ""
+
+
+def test_string() -> None:
+    result = Fragment["hello!"]
+    assert str(result) == "hello!"
