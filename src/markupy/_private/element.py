@@ -18,7 +18,7 @@ class Element(Fragment):
         self._name = name
         self._attributes: str | None = None
 
-    def __copy__(self):
+    def __copy__(self) -> Self:
         return type(self)(self.name)
 
     @property

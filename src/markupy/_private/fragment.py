@@ -20,7 +20,7 @@ class Fragment(View):
     def __iter__(self) -> Iterator[str]:
         yield from iter_node(self._children)
 
-    def __copy__(self):
+    def __copy__(self) -> Self:
         return type(self)()
 
     def _new_instance(self: Self) -> Self:
