@@ -1,14 +1,13 @@
 from collections.abc import Iterator
 from copy import copy
+from typing import final
 
 from typing_extensions import Self
 
-from .component import Component
 from .node import Node, iter_node, validate_node
 from .view import View
 
 
-@Component.register
 class Fragment(View):
     __slots__ = ("_children", "_shared", "_safe")
 
@@ -23,6 +22,7 @@ class Fragment(View):
     def __copy__(self) -> Self:
         return type(self)()
 
+    @final
     def _new_instance(self: Self) -> Self:
         # When imported, elements are loaded from a shared instance
         # Make sure we re-instantiate them on setting attributes/children
@@ -34,8 +34,10 @@ class Fragment(View):
         return self
 
     # Use subscriptable [] syntax to assign children
-    def __getitem__(self, children: "Node") -> Self:
-        if validate_node(children):
+    def __getitem__(self, children: Node) -> Self:
+        if self._children is not None:
+            raise Exception(f"Illegal attempt to redefine children for element {self}")
+        elif validate_node(children):
             instance = self._new_instance()
             instance._children = children
             return instance

@@ -4,12 +4,10 @@ from typing import Any, overload
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
-from .component import Component
 from .fragment import Fragment
 from .node import iter_node
 
 
-@Component.register
 class Element(Fragment):
     __slots__ = ("_name", "_attributes")
 

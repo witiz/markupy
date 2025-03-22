@@ -20,3 +20,5 @@ class View(Iterable[str]):
     # an extra call:
     # https://docs.djangoproject.com/en/5.0/ref/templates/api/#variables-and-lookups
     do_not_call_in_templates = True
+
+    __html__ = __str__
