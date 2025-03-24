@@ -17,7 +17,7 @@ class Fragment(View):
         self._safe: bool = False
 
     def __iter__(self) -> Iterator[str]:
-        yield from iter_node(self._children)
+        yield from iter_node(self._children, safe=self._safe)
 
     def __copy__(self) -> Self:
         return type(self)()
