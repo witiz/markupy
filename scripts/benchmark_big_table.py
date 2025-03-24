@@ -83,6 +83,6 @@ tests = [
 
 for func in tests:
     start = time.perf_counter()
-    output = func()
+    func()
     result = time.perf_counter() - start
     print(f"{func.__name__}: {result} seconds")
