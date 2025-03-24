@@ -33,10 +33,6 @@ def validate_node(node: Node) -> bool:
         raise TypeError(f"{node!r} is not a valid child element")
 
 
-def iter_unsafe_node(node: Node) -> Iterator[str]:
-    return iter_node(node)
-
-
 def iter_node(node: Node, *, safe: bool = False) -> Iterator[str]:
     if _is_empty_node(node):
         return
