@@ -7,6 +7,9 @@ from .view import View
 
 Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]
 
+ValidNode = str | int | View | Callable | Generator  # type: ignore[type-arg]
+InvalidNode = bytes | bytearray | memoryview
+
 
 def _is_empty_node(node: Node) -> bool:
     return node is None or node is True or node is False or node == ""
@@ -15,20 +18,16 @@ def _is_empty_node(node: Node) -> bool:
 def validate_node(node: Node) -> bool:
     if _is_empty_node(node):
         return False
-
-    valid_nodes = str | int | View | Callable | Generator  # type: ignore[type-arg]
-    invalid_nodes = bytes | bytearray | memoryview
-    if isinstance(node, valid_nodes):
+    elif isinstance(node, ValidNode):
         return True
-    elif isinstance(node, Iterable) and not isinstance(node, invalid_nodes):
+    elif isinstance(node, Iterable) and not isinstance(node, InvalidNode):
         # Must return True if any child is valid
         # Must return False if all child not valid
         # Must loop over all items to raise exception any invalid child
-        result = False
         for child in node:
             if validate_node(child):
-                result = True
-        return result
+                return True
+        return False
     else:
         raise TypeError(f"{node!r} is not a valid child element")
 

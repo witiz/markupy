@@ -6,5 +6,5 @@ from ._private.view import View
 
 Fragment = _Fragment()
 
-__all__ = ["Component", "Fragment", "View", "Node", "html2markupy"]
+__all__ = ["Component", "Fragment", "Node", "View", "html2markupy"]
 __version__ = "1.1.0"
