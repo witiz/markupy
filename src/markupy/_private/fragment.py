@@ -4,7 +4,7 @@ from typing import final
 
 from typing_extensions import Self
 
-from .exception import MarkupyError
+from ..exception import MarkupyError
 from .node import Node, iter_node, validate_node
 from .view import View
 

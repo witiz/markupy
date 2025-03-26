@@ -6,7 +6,7 @@ import pytest
 from markupsafe import Markup
 
 from markupy._private.element import Element, VoidElement
-from markupy._private.exception import MarkupyError
+from markupy.exception import MarkupyError
 from markupy.tag import (
     Dd,
     Div,

@@ -3,8 +3,8 @@ from typing import Any, overload
 
 from typing_extensions import Self, override
 
+from ..exception import MarkupyError
 from .attribute import AttributeDict, AttributeValue
-from .exception import MarkupyError
 from .fragment import Fragment
 from .node import iter_node
 

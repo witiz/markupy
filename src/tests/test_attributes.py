@@ -3,7 +3,7 @@ import typing as t
 import pytest
 from markupsafe import Markup
 
-from markupy._private.exception import MarkupyError
+from markupy.exception import MarkupyError
 from markupy.tag import Button, Div, Input, Th, _
 
 

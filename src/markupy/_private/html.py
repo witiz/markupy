@@ -8,9 +8,9 @@ from markupsafe import escape
 
 from markupy import tag
 
+from ..exception import MarkupyError
 from .attribute import is_boolean_attribute
 from .element import VoidElement
-from .exception import MarkupyError
 
 _void_elements: set[str] = {
     element.name

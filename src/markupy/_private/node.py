@@ -3,7 +3,7 @@ from typing import TypeAlias
 
 from markupsafe import Markup, escape
 
-from .exception import MarkupyError
+from ..exception import MarkupyError
 from .view import View
 
 Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]

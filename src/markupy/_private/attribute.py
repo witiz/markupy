@@ -5,7 +5,7 @@ from typing import TypeAlias
 
 from markupsafe import escape
 
-from .exception import MarkupyError
+from ..exception import MarkupyError
 
 ClassNamesDict: TypeAlias = dict[str, bool | None]
 ClassNamesSequence: TypeAlias = Sequence[None | str | ClassNamesDict]

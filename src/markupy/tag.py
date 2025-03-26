@@ -9,7 +9,7 @@ from ._private.element import (
     SafeElement,
     VoidElement,
 )
-from ._private.exception import MarkupyError
+from .exception import MarkupyError
 
 __all__ = [
     "_",
@@ -136,7 +136,7 @@ def _get_element(name: str) -> Element:
         raise AttributeError()
     elif not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
         raise MarkupyError(
-            f"{name} is not a valid element name. markupy tags must be in CapitalizedCase"
+            f"`{name}` is not a valid element name (must use CapitalizedCase)"
         )
 
     #  Uppercase chars are word boundaries for tag names
