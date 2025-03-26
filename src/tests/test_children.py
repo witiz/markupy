@@ -6,6 +6,7 @@ import pytest
 from markupsafe import Markup
 
 from markupy._private.element import Element, VoidElement
+from markupy._private.exception import MarkupyError
 from markupy.tag import (
     Dd,
     Div,
@@ -34,7 +35,7 @@ def test_void_element() -> None:
     result = str(element)
     assert str(result) == '<input name="foo">'
 
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         element["child"]
 
 
@@ -131,7 +132,7 @@ def test_html_tag_with_doctype() -> None:
 
 
 def test_void_element_children() -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         Img["hey"]
 
 
@@ -242,10 +243,10 @@ def test_callable_in_generator() -> None:
 
 @pytest.mark.parametrize("not_a_child", [12.34, object(), object])
 def test_invalid_child(not_a_child: t.Any) -> None:
-    with pytest.raises(TypeError):
+    with pytest.raises(MarkupyError):
         str(Div[not_a_child])
 
 
 def test_children_redefinition() -> None:
-    with pytest.raises(Exception):
+    with pytest.raises(MarkupyError):
         str(Div["Hello"]["World"])

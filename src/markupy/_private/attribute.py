@@ -5,6 +5,8 @@ from typing import TypeAlias
 
 from markupsafe import escape
 
+from .exception import MarkupyError
+
 ClassNamesDict: TypeAlias = dict[str, bool | None]
 ClassNamesSequence: TypeAlias = Sequence[None | str | ClassNamesDict]
 ClassAttributeValue: TypeAlias = ClassNamesSequence | ClassNamesDict
@@ -118,7 +120,7 @@ class AttributeDict(dict[str, AttributeValue]):
 
         first_char = selector[0]
         if first_char not in "#.":
-            raise ValueError("Selector string must start with # (id) or . (class)")
+            raise MarkupyError("Selector string must start with # (id) or . (class)")
 
         parts = selector.split(".")
         if first_char == "#":
@@ -138,7 +140,7 @@ class AttributeDict(dict[str, AttributeValue]):
             return
         for key, value in dct.items():
             if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]
-                raise TypeError("Attribute key must be a string")
+                raise MarkupyError("Attribute key must be a string")
 
             if key != "_" and rewrite_keys:
                 # Preserve single _ for hyperscript
@@ -156,4 +158,4 @@ class AttributeDict(dict[str, AttributeValue]):
                 self[key] = _classes_to_str(classes)
                 continue
 
-            raise TypeError(f"Invalid value type `{value!r}` for attribute `{key}`")
+            raise MarkupyError(f"Invalid value type `{value!r}` for attribute `{key}`")

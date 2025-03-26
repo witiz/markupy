@@ -4,6 +4,7 @@ from typing import Any, overload
 from typing_extensions import Self, override
 
 from .attribute import AttributeDict, AttributeValue
+from .exception import MarkupyError
 from .fragment import Fragment
 from .node import iter_node
 
@@ -68,22 +69,24 @@ class Element(Fragment):
                 # element({"foo": "bar"})
                 attributes_dict = arg
             else:
-                raise TypeError(
+                raise MarkupyError(
                     f"Invalid argument type `{arg!r}` for element {self}, expected `str` or `dict`"
                 )
         elif len(args) == 2:
             # element(".foo", {"bar": "baz"})
             if not isinstance(args[0], str):
-                raise TypeError(
+                raise MarkupyError(
                     f"Invalid first argument type `{args[0]!r}` for element {self}, expected `str`"
                 )
             if not isinstance(args[1], dict):
-                raise TypeError(
+                raise MarkupyError(
                     f"Invalid second argument type `{args[1]!r}` for element {self}, expected `dict`"
                 )
             selector, attributes_dict = args
         elif len(args) > 2:
-            raise ValueError(f"Invalid number of arguments provided for element {self}")
+            raise MarkupyError(
+                f"Invalid number of arguments provided for element {self}"
+            )
 
         if not selector and not attributes_dict and not attributes_kwargs:
             return self
@@ -91,18 +94,20 @@ class Element(Fragment):
         attrs = AttributeDict()
         try:
             attrs.add_selector(selector)
-        except (TypeError, ValueError):
-            raise ValueError(f"Invalid selector string `{selector}` for element {self}")
+        except MarkupyError:
+            raise MarkupyError(
+                f"Invalid selector string `{selector}` for element {self}"
+            )
         try:
             attrs.add_dict(attributes_dict)
-        except (TypeError, ValueError):
-            raise ValueError(
+        except MarkupyError:
+            raise MarkupyError(
                 f"Invalid dict attributes `{attributes_dict}` for element {self}"
             )
         try:
             attrs.add_dict(attributes_kwargs, rewrite_keys=True)
-        except (TypeError, ValueError):
-            raise ValueError(
+        except MarkupyError:
+            raise MarkupyError(
                 f"Invalid keyword attributes `{attributes_kwargs}` for element {self}"
             )
 
@@ -132,7 +137,7 @@ class VoidElement(Element):
 
     @override
     def __getitem__(self, children: Any) -> Self:
-        raise ValueError(f"Void element {self} cannot contain children")
+        raise MarkupyError(f"Void element {self} cannot contain children")
 
 
 class CommentElement(Element):
@@ -148,7 +153,7 @@ class CommentElement(Element):
 
     @override
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
-        raise ValueError(f"Comment element {self} cannot have attributes")
+        raise MarkupyError(f"Comment element {self} cannot have attributes")
 
 
 class SafeElement(Element):

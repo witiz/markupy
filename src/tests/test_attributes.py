@@ -3,6 +3,7 @@ import typing as t
 import pytest
 from markupsafe import Markup
 
+from markupy._private.exception import MarkupyError
 from markupy.tag import Button, Div, Input, Th, _
 
 
@@ -38,7 +39,7 @@ def test_empty_value() -> None:
 
 
 def test_comment() -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         _(attr="foo")
 
 
@@ -207,17 +208,17 @@ def test_id_class_empty_classes() -> None:
 
 
 def test_id_class_bad_format() -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         Div("foo")
 
 
 def test_id_class_bad_type() -> None:
-    with pytest.raises(TypeError):
+    with pytest.raises(MarkupyError):
         Div({"oops": "yes"}, {})  # type: ignore
 
 
 def test_invalid_number_of_attributes() -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         Div("#id.cls", {"attr": "val"}, "other")  # type: ignore
 
 
@@ -246,7 +247,7 @@ def test_attribute_priority() -> None:
 
 @pytest.mark.parametrize("not_an_attr", [1234, b"foo", object(), object, 1, 0, None])
 def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         str(Div({not_an_attr: "foo"}))
 
 
@@ -255,5 +256,5 @@ def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
     [12.34, b"foo", object(), object],
 )
 def test_invalid_attribute_value(not_an_attr: t.Any) -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         Div(foo=not_an_attr)

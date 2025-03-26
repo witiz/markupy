@@ -9,6 +9,7 @@ from ._private.element import (
     SafeElement,
     VoidElement,
 )
+from ._private.exception import MarkupyError
 
 __all__ = [
     "_",
@@ -131,8 +132,10 @@ __all__ = [
 
 @lru_cache(maxsize=300)
 def _get_element(name: str) -> Element:
-    if not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
-        raise AttributeError(
+    if name == "__path__":
+        raise AttributeError()
+    elif not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
+        raise MarkupyError(
             f"{name} is not a valid element name. markupy tags must be in CapitalizedCase"
         )
 

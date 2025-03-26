@@ -10,6 +10,7 @@ from markupy import tag
 
 from .attribute import is_boolean_attribute
 from .element import VoidElement
+from .exception import MarkupyError
 
 _void_elements: set[str] = {
     element.name
@@ -101,7 +102,7 @@ class Stack:
 
     def push(self, item: str) -> None:
         if not item:
-            raise ValueError("Can't push None or empty string into stack")
+            raise MarkupyError("Can't push None or empty string into stack")
         self._list.append(item)
 
     def peek(self) -> str | None:
@@ -158,13 +159,13 @@ class MarkupyParser(HTMLParser):
         if not _is_void_element(tag):
             last_open_tag = self.unclosed_stack.pop()
             if last_open_tag is None:
-                raise ValueError(f"Unexpected closing tag `</{tag}>`")
+                raise MarkupyError(f"Unexpected closing tag `</{tag}>`")
             elif tag != "endblock" and tag != last_open_tag:
-                raise ValueError(
+                raise MarkupyError(
                     f"Invalid closing tag `</{tag}>`, expected `</{last_open_tag}>`"
                 )
             elif tag == "endblock" and not last_open_tag.startswith("block-"):
-                raise ValueError(
+                raise MarkupyError(
                     f"Invalid template `endblock`, expected `</{last_open_tag}>`"
                 )
 
@@ -239,7 +240,7 @@ def to_markupy(
     parser.feed(_template_process(html))
     parser.close()
     if tag := parser.unclosed_stack.pop():
-        raise ValueError(f"Opening tag `<{tag}>` was not closed")
+        raise MarkupyError(f"Opening tag `<{tag}>` was not closed")
     if code := parser.output_code():
         return f"{parser.output_imports()}{code}"
     return ""

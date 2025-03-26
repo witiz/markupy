@@ -4,6 +4,7 @@ from typing import final
 
 from typing_extensions import Self
 
+from .exception import MarkupyError
 from .node import Node, iter_node, validate_node
 from .view import View
 
@@ -36,7 +37,9 @@ class Fragment(View):
     # Use subscriptable [] syntax to assign children
     def __getitem__(self, children: Node) -> Self:
         if self._children is not None:
-            raise Exception(f"Illegal attempt to redefine children for element {self}")
+            raise MarkupyError(
+                f"Illegal attempt to redefine children for element {self}"
+            )
         elif validate_node(children):
             instance = self._new_instance()
             instance._children = children

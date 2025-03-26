@@ -3,6 +3,7 @@ from typing import TypeAlias
 
 from markupsafe import Markup, escape
 
+from .exception import MarkupyError
 from .view import View
 
 Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]
@@ -29,7 +30,7 @@ def validate_node(node: Node) -> bool:
                 return True
         return False
     else:
-        raise TypeError(f"{node!r} is not a valid child element")
+        raise MarkupyError(f"{node!r} is not a valid child element")
 
 
 def iter_node(node: Node, *, safe: bool = False) -> Iterator[str]:
@@ -54,4 +55,4 @@ def iter_node(node: Node, *, safe: bool = False) -> Iterator[str]:
     elif isinstance(node, int):
         yield str(node)
     else:
-        raise TypeError(f"{node!r} is not a valid child element")
+        raise MarkupyError(f"{node!r} is not a valid child element")
