@@ -57,6 +57,11 @@ class Element(Fragment):
     @overload
     def __call__(self, **kwargs: AttributeValue) -> Self: ...
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
+        if self._attributes is not None:
+            raise MarkupyError(
+                f"Illegal attempt to redefine attributes for element `{self}`"
+            )
+
         selector: str | None = None
         attributes_dict: dict[str, AttributeValue] | None = None
         attributes_kwargs: dict[str, AttributeValue] = kwargs

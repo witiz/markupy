@@ -38,7 +38,7 @@ class Fragment(View):
     def __getitem__(self, children: Node) -> Self:
         if self._children is not None:
             raise MarkupyError(
-                f"Illegal attempt to redefine children for element {self}"
+                f"Illegal attempt to redefine children for element `{self}`"
             )
         elif validate_node(children):
             instance = self._new_instance()
