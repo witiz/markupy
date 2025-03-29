@@ -2,7 +2,8 @@ from abc import ABCMeta, abstractmethod
 from collections.abc import Iterator
 from typing import final
 
-from .node import Node, iter_node
+from .fragment import Fragment
+from .node import Node
 from .view import View
 
 
@@ -12,4 +13,4 @@ class Component(View, metaclass=ABCMeta):
 
     @final
     def __iter__(self) -> Iterator[str]:
-        yield from iter_node(self.render())
+        yield from Fragment(self.render())

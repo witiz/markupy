@@ -5,20 +5,27 @@ from typing import final
 from typing_extensions import Self
 
 from ..exception import MarkupyError
-from .node import Node, iter_node, validate_node
+from .node import Node, iter_node
 from .view import View
 
 
 class Fragment(View):
     __slots__ = ("_children", "_shared", "_safe")
 
-    def __init__(self) -> None:
-        self._children: Node = None
+    def __init__(self, children: Node = None, safe: bool = False) -> None:
+        self._children: list[str | View] | None = Fragment._children_list(
+            children, safe=safe
+        )
         self._shared: bool = True
-        self._safe: bool = False
+        self._safe: bool = safe
 
     def __iter__(self) -> Iterator[str]:
-        yield from iter_node(self._children, safe=self._safe)
+        if self._children is not None:
+            for node in self._children:
+                if isinstance(node, View):
+                    yield from node
+                else:
+                    yield node
 
     def __copy__(self) -> Self:
         return type(self)()
@@ -34,15 +41,19 @@ class Fragment(View):
             return obj
         return self
 
+    @staticmethod
+    def _children_list(node: Node, *, safe: bool) -> list[str | View] | None:
+        if node is not None:
+            return [s for s in iter_node(node, safe=safe)]
+
     # Use subscriptable [] syntax to assign children
-    def __getitem__(self, children: Node) -> Self:
+    def __getitem__(self, node: Node) -> Self:
         if self._children is not None:
-            raise MarkupyError(
-                f"Illegal attempt to redefine children for element `{self}`"
-            )
-        elif validate_node(children):
+            raise MarkupyError(f"Illegal attempt to redefine children of `{self!r}`")
+
+        if new_children := Fragment._children_list(node, safe=self._safe):
             instance = self._new_instance()
-            instance._children = children
+            instance._children = new_children
             return instance
 
         return self

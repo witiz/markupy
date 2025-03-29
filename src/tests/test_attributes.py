@@ -262,4 +262,4 @@ def test_invalid_attribute_value(not_an_attr: t.Any) -> None:
 
 def test_attribute_redefinition() -> None:
     with pytest.raises(MarkupyError):
-        str(Div(id="hello")(class_="world"))
+        Div(id="hello")(class_="world")

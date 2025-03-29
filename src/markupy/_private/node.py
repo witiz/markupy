@@ -1,58 +1,33 @@
-from collections.abc import Callable, Generator, Iterable, Iterator
+from collections.abc import Iterable, Iterator
 from typing import TypeAlias
 
-from markupsafe import Markup, escape
+from markupsafe import escape
 
 from ..exception import MarkupyError
 from .view import View
 
-Node: TypeAlias = None | bool | str | int | Iterable["Node"] | Callable[[], "Node"]
-
-ValidNode = str | int | View | Callable | Generator  # type: ignore[type-arg]
-InvalidNode = bytes | bytearray | memoryview
+Node: TypeAlias = None | bool | str | int | Iterable["Node"]
 
 
-def _is_empty_node(node: Node) -> bool:
-    return node is None or node is True or node is False or node == ""
-
-
-def validate_node(node: Node) -> bool:
-    if _is_empty_node(node):
-        return False
-    elif isinstance(node, ValidNode):
-        return True
-    elif isinstance(node, Iterable) and not isinstance(node, InvalidNode):
-        # Must return True if any child is valid
-        # Must return False if all child not valid
-        # Must loop over all items to raise exception any invalid child
-        for child in node:
-            if validate_node(child):
-                return True
-        return False
-    else:
-        raise MarkupyError(f"{node!r} is not a valid child element")
-
-
-def iter_node(node: Node, *, safe: bool = False) -> Iterator[str]:
-    if _is_empty_node(node):
+def iter_node(node: Node, *, safe: bool = False) -> Iterator[str | View]:
+    # bool is int
+    if isinstance(node, bool):
         return
-    while not isinstance(node, View) and callable(node):
-        node = node()
-
-    if isinstance(node, str):
-        if isinstance(node, Markup):
-            yield node
+    # str is Iterable
+    elif isinstance(node, str | int):
+        if node == "":
+            return
         elif safe:
-            yield Markup(node)
+            yield str(node)
         else:
             yield str(escape(node))
+    # View is Iterable
+    elif isinstance(node, View):
+        yield node
     elif isinstance(node, Iterable):
-        if isinstance(node, View):
-            yield from node
-        else:
-            for child in node:
-                yield from iter_node(child, safe=safe)
-    elif isinstance(node, int):
-        yield str(node)
+        for child in node:
+            yield from iter_node(child, safe=safe)
+    elif node is None:
+        return
     else:
         raise MarkupyError(f"{node!r} is not a valid child element")

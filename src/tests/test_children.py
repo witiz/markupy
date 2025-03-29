@@ -23,7 +23,7 @@ from markupy.tag import (
 )
 
 if t.TYPE_CHECKING:
-    from collections.abc import Callable, Generator
+    from collections.abc import Generator
 
     from markupy import Node
 
@@ -152,31 +152,6 @@ def test_ignored(ignored_value: t.Any) -> None:
     assert str(Div[ignored_value]) == "<div></div>"
 
 
-def test_iter() -> None:
-    trace = "not started"
-
-    def generate_list() -> Generator[Element, None, None]:
-        nonlocal trace
-
-        trace = "before yield"
-        yield Li("#a")
-
-        trace = "done"
-
-    iterator = iter(Ul[generate_list()])
-
-    assert next(iterator) == "<ul>"
-    assert trace == "not started"
-
-    assert next(iterator) == '<li id="a">'
-    assert trace == "before yield"
-    assert next(iterator) == "</li>"
-    assert trace == "before yield"
-
-    assert next(iterator) == "</ul>"
-    assert trace == "done"
-
-
 def test_iter_str() -> None:
     _, child, _ = Div["a"]
 
@@ -193,23 +168,6 @@ def test_iter_markup() -> None:
     assert type(child) is str
 
 
-def test_callable() -> None:
-    called = False
-
-    def generate_img() -> Element:
-        nonlocal called
-        called = True
-        return Img
-
-    iterator = iter(Div[generate_img])
-
-    assert next(iterator) == "<div>"
-    assert called is False
-    assert next(iterator) == "<img>"
-    assert called is True
-    assert next(iterator) == "</div>"
-
-
 def test_escape_children() -> None:
     result = str(Div['>"'])
     assert result == "<div>&gt;&#34;</div>"
@@ -220,33 +178,12 @@ def test_safe_children() -> None:
     assert result == "<div><hello></hello></div>"
 
 
-def test_nested_callable_generator() -> None:
-    def func() -> Generator[str, None, None]:
-        return (x for x in "abc")
-
-    assert str(Div[func]) == "<div>abc</div>"
-
-
-def test_nested_callables() -> None:
-    def first() -> Callable[[], Node]:
-        return second
-
-    def second() -> Node:
-        return "hi"
-
-    assert str(Div[first]) == "<div>hi</div>"
-
-
-def test_callable_in_generator() -> None:
-    assert str(Div[((lambda: "hi") for _ in range(1))]) == "<div>hi</div>"
-
-
 @pytest.mark.parametrize("not_a_child", [12.34, object(), object])
 def test_invalid_child(not_a_child: t.Any) -> None:
     with pytest.raises(MarkupyError):
-        str(Div[not_a_child])
+        Div[not_a_child]
 
 
 def test_children_redefinition() -> None:
     with pytest.raises(MarkupyError):
-        str(Div["Hello"]["World"])
+        Div["Hello"]["World"]

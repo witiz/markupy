@@ -6,14 +6,13 @@ from typing_extensions import Self, override
 from ..exception import MarkupyError
 from .attribute import AttributeDict, AttributeValue
 from .fragment import Fragment
-from .node import iter_node
 
 
 class Element(Fragment):
     __slots__ = ("_name", "_attributes")
 
-    def __init__(self, name: str) -> None:
-        super().__init__()
+    def __init__(self, name: str, safe: bool = False) -> None:
+        super().__init__(safe=safe)
         self._name = name
         self._attributes: str | None = None
 
@@ -34,7 +33,7 @@ class Element(Fragment):
 
     def __iter__(self) -> Iterator[str]:
         yield self._tag_opening()
-        yield from iter_node(self._children, safe=self._safe)
+        yield from super().__iter__()
         yield self._tag_closing()
 
     def __repr__(self) -> str:
@@ -59,7 +58,7 @@ class Element(Fragment):
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
         if self._attributes is not None:
             raise MarkupyError(
-                f"Illegal attempt to redefine attributes for element `{self}`"
+                f"Illegal attempt to redefine attributes for element `{self!r}`"
             )
 
         selector: str | None = None
@@ -75,22 +74,22 @@ class Element(Fragment):
                 attributes_dict = arg
             else:
                 raise MarkupyError(
-                    f"Invalid argument type `{arg!r}` for element {self}, expected `str` or `dict`"
+                    f"Invalid argument type `{arg!r}` for element {self!r}, expected `str` or `dict`"
                 )
         elif len(args) == 2:
             # element(".foo", {"bar": "baz"})
             if not isinstance(args[0], str):
                 raise MarkupyError(
-                    f"Invalid first argument type `{args[0]!r}` for element {self}, expected `str`"
+                    f"Invalid first argument type `{args[0]!r}` for element {self!r}, expected `str`"
                 )
             if not isinstance(args[1], dict):
                 raise MarkupyError(
-                    f"Invalid second argument type `{args[1]!r}` for element {self}, expected `dict`"
+                    f"Invalid second argument type `{args[1]!r}` for element {self!r}, expected `dict`"
                 )
             selector, attributes_dict = args
         elif len(args) > 2:
             raise MarkupyError(
-                f"Invalid number of arguments provided for element {self}"
+                f"Invalid number of arguments provided for element {self!r}"
             )
 
         if not selector and not attributes_dict and not attributes_kwargs:
@@ -101,19 +100,19 @@ class Element(Fragment):
             attrs.add_selector(selector)
         except MarkupyError:
             raise MarkupyError(
-                f"Invalid selector string `{selector}` for element {self}"
+                f"Invalid selector string `{selector}` for element {self!r}"
             )
         try:
             attrs.add_dict(attributes_dict)
         except MarkupyError:
             raise MarkupyError(
-                f"Invalid dict attributes `{attributes_dict}` for element {self}"
+                f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
             )
         try:
             attrs.add_dict(attributes_kwargs, rewrite_keys=True)
         except MarkupyError:
             raise MarkupyError(
-                f"Invalid keyword attributes `{attributes_kwargs}` for element {self}"
+                f"Invalid keyword attributes `{attributes_kwargs}` for element {self!r}"
             )
 
         if attributes := str(attrs):
@@ -142,7 +141,7 @@ class VoidElement(Element):
 
     @override
     def __getitem__(self, children: Any) -> Self:
-        raise MarkupyError(f"Void element {self} cannot contain children")
+        raise MarkupyError(f"Void element {self!r} cannot contain children")
 
 
 class CommentElement(Element):
@@ -158,12 +157,11 @@ class CommentElement(Element):
 
     @override
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
-        raise MarkupyError(f"Comment element {self} cannot have attributes")
+        raise MarkupyError(f"Comment element {self!r} cannot have attributes")
 
 
 class SafeElement(Element):
     __slots__ = ()
 
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self._safe = True
+        super().__init__(name, safe=True)
