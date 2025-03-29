@@ -25,8 +25,6 @@ from markupy.tag import (
 if t.TYPE_CHECKING:
     from collections.abc import Generator
 
-    from markupy import Node
-
 
 def test_void_element() -> None:
     element = Input(name="foo")
@@ -72,13 +70,13 @@ def test_list_children() -> None:
 
 
 def test_list_children_with_element_and_none() -> None:
-    children: list[Node] = [None, Li["b"]]
+    children: list[t.Any] = [None, Li["b"]]
     result = Ul[children]
     assert str(result) == "<ul><li>b</li></ul>"
 
 
 def test_list_children_with_none() -> None:
-    children: list[Node] = [None]
+    children: list[t.Any] = [None]
     result = Ul[children]
     assert str(result) == "<ul></ul>"
 
@@ -176,12 +174,6 @@ def test_escape_children() -> None:
 def test_safe_children() -> None:
     result = str(Div[Markup("<hello></hello>")])
     assert result == "<div><hello></hello></div>"
-
-
-@pytest.mark.parametrize("not_a_child", [12.34, object(), object])
-def test_invalid_child(not_a_child: t.Any) -> None:
-    with pytest.raises(MarkupyError):
-        Div[not_a_child]
 
 
 def test_children_redefinition() -> None:

@@ -1,18 +1,20 @@
-from markupy import Component, Node, tag
+from typing import Any
+
+from markupy import Component, tag
 
 
 class ComponentElement(Component):
-    def render(self) -> Node:
+    def render(self) -> Any:
         return tag.Div
 
 
 class ComponentElementMultiple(Component):
-    def render(self) -> Node:
+    def render(self) -> Any:
         return tag.Div, tag.Img
 
 
 class ComponentInComponent(Component):
-    def render(self) -> Node:
+    def render(self) -> Any:
         return tag.Input, tag.Div("#parent")[ComponentElement()]
 
 

@@ -1,21 +1,40 @@
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from copy import copy
-from typing import final
+from typing import Any, final
 
+from markupsafe import escape
 from typing_extensions import Self
 
 from ..exception import MarkupyError
-from .node import Node, iter_node
 from .view import View
+
+
+def iter_node(node: Any, *, safe: bool = False) -> Iterator[str | View]:
+    if node is None or node == "" or isinstance(node, bool):
+        return
+    # View is Iterable
+    elif isinstance(node, View):
+        yield node
+    elif isinstance(node, Iterable) and not isinstance(node, str):
+        for child in node:  # type: ignore[unused-ignore]
+            yield from iter_node(child, safe=safe)
+    elif safe:
+        yield str(node)
+    else:
+        yield str(escape(node))
+
+
+def list_node(node: Any, *, safe: bool) -> list[str | View] | None:
+    if node is not None:
+        return list(iter_node(node, safe=safe))
+    return None
 
 
 class Fragment(View):
     __slots__ = ("_children", "_shared", "_safe")
 
-    def __init__(self, children: Node = None, safe: bool = False) -> None:
-        self._children: list[str | View] | None = Fragment._children_list(
-            children, safe=safe
-        )
+    def __init__(self, children: Any = None, safe: bool = False) -> None:
+        self._children: list[str | View] | None = list_node(children, safe=safe)
         self._shared: bool = True
         self._safe: bool = safe
 
@@ -41,17 +60,12 @@ class Fragment(View):
             return obj
         return self
 
-    @staticmethod
-    def _children_list(node: Node, *, safe: bool) -> list[str | View] | None:
-        if node is not None:
-            return [s for s in iter_node(node, safe=safe)]
-
     # Use subscriptable [] syntax to assign children
-    def __getitem__(self, node: Node) -> Self:
+    def __getitem__(self, node: Any) -> Self:
         if self._children is not None:
             raise MarkupyError(f"Illegal attempt to redefine children of `{self!r}`")
 
-        if new_children := Fragment._children_list(node, safe=self._safe):
+        if new_children := list_node(node, safe=self._safe):
             instance = self._new_instance()
             instance._children = new_children
             return instance
