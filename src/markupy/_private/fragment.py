@@ -33,7 +33,7 @@ def list_node(node: Any, *, safe: bool) -> list[str | View] | None:
 class Fragment(View):
     __slots__ = ("_children", "_shared", "_safe")
 
-    def __init__(self, children: Any = None, safe: bool = False) -> None:
+    def __init__(self, children: Any = None, *, safe: bool = False) -> None:
         self._children: list[str | View] | None = list_node(children, safe=safe)
         self._shared: bool = True
         self._safe: bool = safe
