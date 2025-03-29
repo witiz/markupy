@@ -11,7 +11,7 @@ from .fragment import Fragment
 class Element(Fragment):
     __slots__ = ("_name", "_attributes")
 
-    def __init__(self, name: str, safe: bool = False) -> None:
+    def __init__(self, name: str, *, safe: bool = False) -> None:
         super().__init__(safe=safe)
         self._name = name
         self._attributes: str | None = None
