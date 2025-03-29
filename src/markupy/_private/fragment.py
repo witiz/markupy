@@ -38,6 +38,9 @@ class Fragment(View):
         self._shared: bool = True
         self._safe: bool = safe
 
+    def __repr__(self) -> str:
+        return "<markupy.Fragment>"
+
     def __iter__(self) -> Iterator[str]:
         if self._children is not None:
             for node in self._children:

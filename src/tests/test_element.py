@@ -28,11 +28,11 @@ def test_instance_cache() -> None:
 
 
 def test_element_repr() -> None:
-    assert repr(Div("#a")) == """<Element '<div id="a">'>"""
+    assert repr(Div("#a")) == """<markupy.Element `<div id="a">`>"""
 
 
 def test_void_element_repr() -> None:
-    assert repr(Hr("#a")) == """<VoidElement '<hr id="a">'>"""
+    assert repr(Hr("#a")) == """<markupy.VoidElement `<hr id="a">`>"""
 
 
 def test_markup_str() -> None:
