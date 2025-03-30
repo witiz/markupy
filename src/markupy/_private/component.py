@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 from collections.abc import Iterator
 from typing import final
 
+from ..exception import MarkupyError
 from .view import View
 
 
@@ -11,4 +12,10 @@ class Component(View, metaclass=ABCMeta):
 
     @final
     def __iter__(self) -> Iterator[str]:
-        yield from self.render()
+        node = self.render()
+        if isinstance(node, View):  # type: ignore[unused-ignore]
+            yield from self.render()
+        else:
+            raise MarkupyError(
+                f"{type(self).__name__}.render() must return an instance of markupy.View (can be Element, Fragment or Component)"
+            )

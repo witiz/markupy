@@ -37,7 +37,7 @@ class Element(Fragment):
         yield self._tag_closing()
 
     def __repr__(self) -> str:
-        return f"<markupy.{self.__class__.__name__} `{self._tag_opening()}`>"
+        return f"<markupy.{type(self).__name__} `{self._tag_opening()}`>"
 
     # Use call syntax () to define attributes
     @overload
