@@ -24,17 +24,11 @@ def iter_node(node: Any, *, safe: bool = False) -> Iterator[str | View]:
         yield str(escape(node))
 
 
-def list_node(node: Any, *, safe: bool) -> list[str | View] | None:
-    if node is not None:
-        return list(iter_node(node, safe=safe))
-    return None
-
-
 class Fragment(View):
     __slots__ = ("_children", "_shared", "_safe")
 
-    def __init__(self, children: Any = None, *, safe: bool = False) -> None:
-        self._children: list[str | View] | None = list_node(children, safe=safe)
+    def __init__(self, *, safe: bool = False) -> None:
+        self._children: list[str | View] | None = None
         self._shared: bool = True
         self._safe: bool = safe
 
@@ -68,7 +62,7 @@ class Fragment(View):
         if self._children is not None:
             raise MarkupyError(f"Illegal attempt to redefine children of `{self!r}`")
 
-        if new_children := list_node(node, safe=self._safe):
+        if new_children := list(iter_node(node, safe=self._safe)):
             instance = self._new_instance()
             instance._children = new_children
             return instance
