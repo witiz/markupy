@@ -14,7 +14,7 @@ class Component(View, metaclass=ABCMeta):
     def __iter__(self) -> Iterator[str]:
         node = self.render()
         if isinstance(node, View):  # type: ignore[unused-ignore]
-            yield from self.render()
+            yield from node
         else:
             raise MarkupyError(
                 f"{type(self).__name__}.render() must return an instance of markupy.View (can be Element, Fragment or Component)"
