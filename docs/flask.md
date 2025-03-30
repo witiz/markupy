@@ -6,18 +6,18 @@ Rendering markupy elements or components in flask is as easy as return a stringi
 
 ```python
 from flask import Flask
-from markupy import Component, Node
+from markupy import Component, View
 from markupy.tag import H1
 
 app = Flask(__name__)
 
 @app.route("/page")
 def page():
-    return str(H1["Hello!"])
+    return str(H1["Page with element"])
 
 class MyComponent(Component):
-    def render(self) -> Node:
-        return H1["Hello!"]
+    def render(self) -> View:
+        return H1["Page with component"]
 
 @app.route("/component")
 def component():
@@ -52,7 +52,7 @@ And then our previous example becomes like this (basically we instantiate Markup
 ```python
 
 from my_flask import MarkupyFlask
-from markupy import Component, Node
+from markupy import Component, View
 from markupy.tag import H1
 
 app = MarkupyFlask(__name__)
@@ -62,7 +62,7 @@ def page():
     return H1["Hello!"]
 
 class MyComponent(Component):
-    def render(self) -> Node:
+    def render(self) -> View:
         return H1["Hello!"]
 
 @app.route("/component")
@@ -84,19 +84,19 @@ Flask supports streaming out of the box ([see docs](https://flask.palletsproject
 
 ```python
 from flask import Flask, stream_with_context
-from markupy import Component, Node
+from markupy import Component, View
 from markupy.tag import H1
 
 app = Flask(__name__)
 
 @app.route("/page")
 def page():
-    my_element = H1["Hello!"]
+    my_element = H1["Streaming element"]
     return stream_with_context(chunk for chunk in my_element)
 
 class MyComponent(Component):
-    def render(self) -> Node:
-        return H1["Hello!"]
+    def render(self) -> View:
+        return H1["Streaming component"]
 
 @app.route("/component")
 def component():

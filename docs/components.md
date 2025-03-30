@@ -13,14 +13,14 @@ Let's start by creating a component that renders a [Boostrap card](https://getbo
 Building a function component is a simple as returning elements from a regular python function:
 
 ```python
-def card_component() -> Node:
+def card_component(title:str, content:str) -> View:
     return Div(".card")[
         Div(".card-body")[
             H5(".card-title")[
-                "Card title"
+                title
             ],
             P(".card-text")[
-                "This is my card's content."
+                content
             ],
         ]
     ]
@@ -36,11 +36,11 @@ def card_component() -> Node:
 Building a class component is done by subclassing the built-in `Component` abstract class and implementing the one required `render()` instance method that defines your component structure.
 
 ```python
-from markupy import Component, Node
+from markupy import Component, View
 from markupy.tag import Div, H5, P
 
 class CardComponent(Component):
-    def render(self) -> Node:
+    def render(self) -> View:
         return Div(".card")[
             Div(".card-body")[
                 H5(".card-title")[
@@ -59,7 +59,7 @@ And then to generate the actual HTML for this component, you just need to instan
 >>> str(CardComponent())
 ```
 
-Note that the component `render()` method can return any valid `Node`, meaning that any valid element child (including strings or elements themselves) can be rendered as part of a component.
+Note that the component `render()` method needs to return a `View`, which means it can be any of an `Element`, `Fragment` or another `Component`.
 
 See how this can save you from repeating a lot of code?
 But we're not there yet, because right now our card always has the same title and content.
@@ -70,7 +70,7 @@ Time to keep improving our component.
 Let's make our card data dynamic by adding a constructor to our component. Let's say our card is in charge of displaying a `Post` object:
 
 ```python
-from markupy import Component, Node
+from markupy import Component, View
 from markupy.tag import Div, H5, P
 from my_models import Post
 
@@ -78,7 +78,7 @@ class PostCardComponent(Component):
     def __init__(self, *, post: Post) -> None:
         self.post = post
 
-    def render(self) -> Node:
+    def render(self) -> View:
         return Div(".card")[
             Div(".card-body")[
                 H5(".card-title")[
@@ -96,7 +96,7 @@ class PostCardComponent(Component):
 Usually, cards are displayed as part of a collection. Let's say we have a blog that is managing a list of posts, let's create a new component that would be in charge of displaying a list of cards:
 
 ```python
-from markupy import Component, Node
+from markupy import Component, View
 from markupy.tag import Div, H5, P
 from my_models import Post
 
@@ -104,7 +104,7 @@ class PostCardListComponent(Component):
     def __init__(self, *, posts: list[Post]) -> None:
         self.posts = posts
 
-    def render(self) -> Node:
+    def render(self) -> View:
         return Div(".card-group")[
             (PostCardComponent(post=post) for post in self.posts)
         ]
@@ -125,17 +125,17 @@ Another very interesting use for components is to define your pages layouts.
 Below is a very basic layout that specifies a default head and body, with some placeholders that we can implement when inheriting this layout.
 
 ```python
-from markupy import Component, Node
+from markupy import Component, View
 from markupy.tag import H1, Body, Footer, Head, Header, Html, Main, Title
 
 class BaseLayout(Component):
-    def render_title() -> str:
+    def render_title(self) -> str:
         return "My website"
 
-    def render_main() -> Node:
+    def render_main(self) -> View:
         return None
 
-    def render(self) -> Node:
+    def render(self) -> View:
         return Html[
             Head[
                 Title[self.render_title()],
@@ -158,6 +158,7 @@ class BaseLayout(Component):
 Then when we need to define a specific page, we need to subclass the layout an override the needed placeholders:
 
 ```python
+from markupy import Fragment, View
 from markupy.tag import H2
 from my_components import PostCardListComponent
 from my_models import Post
@@ -166,11 +167,11 @@ class BlogPage(BaseLayout):
     def __init__(self, *, posts:list[Post]) -> None:
         self.posts = posts
 
-    def render_title() -> str:
+    def render_title(self) -> str:
         return f"Blog | {super().render_title()}"
 
-    def render_main() -> Node:
-        return [
+    def render_main(self) -> View:
+        return Fragment[
             H2["Blog posts"],
             PostCardListComponent(posts=self.posts)
         ]
