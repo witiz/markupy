@@ -74,7 +74,7 @@ class Element(Fragment):
                 attributes_dict = arg
             else:
                 raise MarkupyError(
-                    f"Invalid argument type `{arg!r}` for element {self!r}, expected `str` or `dict`"
+                    f"Invalid argument type `{arg!r}` for element {self!r}, expected `str` or `Mapping`"
                 )
         elif len(args) == 2:
             # element(".foo", {"bar": "baz"})
@@ -82,9 +82,9 @@ class Element(Fragment):
                 raise MarkupyError(
                     f"Invalid first argument type `{args[0]!r}` for element {self!r}, expected `str`"
                 )
-            if not isinstance(args[1], dict):
+            if not isinstance(args[1], Mapping):
                 raise MarkupyError(
-                    f"Invalid second argument type `{args[1]!r}` for element {self!r}, expected `dict`"
+                    f"Invalid second argument type `{args[1]!r}` for element {self!r}, expected `Mapping`"
                 )
             selector, attributes_dict = args
         elif len(args) > 2:
