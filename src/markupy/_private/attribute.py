@@ -1,4 +1,4 @@
-from collections.abc import Iterable, Iterator, Sequence
+from collections.abc import Iterable, Iterator, Mapping, Sequence
 from functools import lru_cache
 from re import sub as re_sub
 from typing import TypeAlias
@@ -7,7 +7,7 @@ from markupsafe import escape
 
 from ..exception import MarkupyError
 
-ClassNamesDict: TypeAlias = dict[str, bool | None]
+ClassNamesDict: TypeAlias = Mapping[str, bool | None]
 ClassNamesSequence: TypeAlias = Sequence[None | str | ClassNamesDict]
 ClassAttributeValue: TypeAlias = ClassNamesSequence | ClassNamesDict
 OtherAttributeValue: TypeAlias = None | bool | str | int
@@ -28,7 +28,7 @@ def _iter_classes_seq(seq: ClassNamesSequence) -> Iterator[str]:
     for v in seq:
         if not v:
             continue
-        if isinstance(v, dict):
+        if isinstance(v, Mapping):
             yield from _iter_classes_dict(v)
         else:
             yield v
@@ -131,7 +131,7 @@ class AttributeDict(dict[str, AttributeValue]):
 
     def add_dict(
         self,
-        dct: dict[str, AttributeValue] | None,
+        dct: Mapping[str, AttributeValue] | None,
         *,
         rewrite_keys: bool = False,
     ) -> None:
@@ -151,7 +151,7 @@ class AttributeDict(dict[str, AttributeValue]):
                 continue
 
             elif key == "class":
-                if isinstance(value, dict):
+                if isinstance(value, Mapping):
                     classes = _iter_classes_dict(value)
                 else:
                     classes = _iter_classes_seq(value)

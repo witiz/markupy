@@ -1,3 +1,4 @@
+from collections.abc import Mapping
 from html.parser import HTMLParser
 from json import dumps as json_dumps
 from keyword import iskeyword
@@ -42,7 +43,7 @@ def _format_attribute_value(value: str | None) -> str:
     return json_dumps(value)
 
 
-def _format_attrs_dict(attrs: dict[str, str | None]) -> str:
+def _format_attrs_dict(attrs: Mapping[str, str | None]) -> str:
     return "{" + ",".join(f'"{key}":{value}' for key, value in attrs.items()) + "}"
 
 

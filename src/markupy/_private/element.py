@@ -1,4 +1,4 @@
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from typing import Any, overload
 
 from typing_extensions import Self, override
@@ -44,14 +44,14 @@ class Element(Fragment):
     def __call__(
         self,
         selector: str,
-        attributes: dict[str, AttributeValue],
+        attributes: Mapping[str, AttributeValue],
         **kwargs: AttributeValue,
     ) -> Self: ...
     @overload
     def __call__(self, selector: str, **kwargs: AttributeValue) -> Self: ...
     @overload
     def __call__(
-        self, attributes: dict[str, AttributeValue], **kwargs: AttributeValue
+        self, attributes: Mapping[str, AttributeValue], **kwargs: AttributeValue
     ) -> Self: ...
     @overload
     def __call__(self, **kwargs: AttributeValue) -> Self: ...
@@ -62,14 +62,14 @@ class Element(Fragment):
             )
 
         selector: str | None = None
-        attributes_dict: dict[str, AttributeValue] | None = None
-        attributes_kwargs: dict[str, AttributeValue] = kwargs
+        attributes_dict: Mapping[str, AttributeValue] | None = None
+        attributes_kwargs: Mapping[str, AttributeValue] = kwargs
         if len(args) == 1:
             arg = args[0]
             if isinstance(arg, str):
                 # element(".foo")
                 selector = arg
-            elif isinstance(arg, dict):
+            elif isinstance(arg, Mapping):
                 # element({"foo": "bar"})
                 attributes_dict = arg
             else:
