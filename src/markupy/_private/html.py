@@ -1,3 +1,4 @@
+from collections.abc import Mapping
 from html.parser import HTMLParser
 from json import dumps as json_dumps
 from keyword import iskeyword
@@ -8,6 +9,7 @@ from markupsafe import escape
 
 from markupy import tag
 
+from ..exception import MarkupyError
 from .attribute import is_boolean_attribute
 from .element import VoidElement
 
@@ -41,7 +43,7 @@ def _format_attribute_value(value: str | None) -> str:
     return json_dumps(value)
 
 
-def _format_attrs_dict(attrs: dict[str, str | None]) -> str:
+def _format_attrs_dict(attrs: Mapping[str, str | None]) -> str:
     return "{" + ",".join(f'"{key}":{value}' for key, value in attrs.items()) + "}"
 
 
@@ -101,7 +103,7 @@ class Stack:
 
     def push(self, item: str) -> None:
         if not item:
-            raise ValueError("Can't push None or empty string into stack")
+            raise MarkupyError("Can't push None or empty string into stack")
         self._list.append(item)
 
     def peek(self) -> str | None:
@@ -158,13 +160,13 @@ class MarkupyParser(HTMLParser):
         if not _is_void_element(tag):
             last_open_tag = self.unclosed_stack.pop()
             if last_open_tag is None:
-                raise ValueError(f"Unexpected closing tag `</{tag}>`")
+                raise MarkupyError(f"Unexpected closing tag `</{tag}>`")
             elif tag != "endblock" and tag != last_open_tag:
-                raise ValueError(
+                raise MarkupyError(
                     f"Invalid closing tag `</{tag}>`, expected `</{last_open_tag}>`"
                 )
             elif tag == "endblock" and not last_open_tag.startswith("block-"):
-                raise ValueError(
+                raise MarkupyError(
                     f"Invalid template `endblock`, expected `</{last_open_tag}>`"
                 )
 
@@ -239,7 +241,7 @@ def to_markupy(
     parser.feed(_template_process(html))
     parser.close()
     if tag := parser.unclosed_stack.pop():
-        raise ValueError(f"Opening tag `<{tag}>` was not closed")
+        raise MarkupyError(f"Opening tag `<{tag}>` was not closed")
     if code := parser.output_code():
         return f"{parser.output_imports()}{code}"
     return ""

@@ -1,15 +1,45 @@
-from collections.abc import Iterable, Iterator, Sequence
+from collections.abc import Iterable, Iterator, Mapping, Sequence
 from functools import lru_cache
 from re import sub as re_sub
 from typing import TypeAlias
 
 from markupsafe import escape
 
-ClassNamesDict: TypeAlias = dict[str, bool | None]
+from ..exception import MarkupyError
+
+ClassNamesDict: TypeAlias = Mapping[str, bool | None]
 ClassNamesSequence: TypeAlias = Sequence[None | str | ClassNamesDict]
 ClassAttributeValue: TypeAlias = ClassNamesSequence | ClassNamesDict
 OtherAttributeValue: TypeAlias = None | bool | str | int
 AttributeValue: TypeAlias = OtherAttributeValue | ClassAttributeValue
+
+# https://html.spec.whatwg.org/multipage/indices.html#attributes-3
+BOOLEAN_ATTRIBUTES: set[str] = {
+    "allowfullscreen",
+    "async",
+    "autofocus",
+    "autoplay",
+    "checked",
+    "controls",
+    "default",
+    "defer",
+    "disabled",
+    "formnovalidate",
+    "inert",
+    "ismap",
+    "itemscope",
+    "loop",
+    "multiple",
+    "muted",
+    "nomodule",
+    "novalidate",
+    "open",
+    "playsinline",
+    "readonly",
+    "required",
+    "reversed",
+    "selected",
+}
 
 
 def _classes_to_str(classes: Iterable[str]) -> str:
@@ -26,7 +56,7 @@ def _iter_classes_seq(seq: ClassNamesSequence) -> Iterator[str]:
     for v in seq:
         if not v:
             continue
-        if isinstance(v, dict):
+        if isinstance(v, Mapping):
             yield from _iter_classes_dict(v)
         else:
             yield v
@@ -50,33 +80,7 @@ def _rewrite_attr_key(key: str) -> str:
 
 @lru_cache(maxsize=1000)
 def is_boolean_attribute(name: str) -> bool:
-    # https://html.spec.whatwg.org/multipage/indices.html#attributes-3
-    return name in {
-        "allowfullscreen",
-        "async",
-        "autofocus",
-        "autoplay",
-        "checked",
-        "controls",
-        "default",
-        "defer",
-        "disabled",
-        "formnovalidate",
-        "inert",
-        "ismap",
-        "itemscope",
-        "loop",
-        "multiple",
-        "muted",
-        "nomodule",
-        "novalidate",
-        "open",
-        "playsinline",
-        "readonly",
-        "required",
-        "reversed",
-        "selected",
-    }
+    return name in BOOLEAN_ATTRIBUTES
 
 
 def _format_key_value(key: str, value: AttributeValue) -> str:
@@ -118,7 +122,7 @@ class AttributeDict(dict[str, AttributeValue]):
 
         first_char = selector[0]
         if first_char not in "#.":
-            raise ValueError("Selector string must start with # (id) or . (class)")
+            raise MarkupyError("Selector string must start with # (id) or . (class)")
 
         parts = selector.split(".")
         if first_char == "#":
@@ -129,7 +133,7 @@ class AttributeDict(dict[str, AttributeValue]):
 
     def add_dict(
         self,
-        dct: dict[str, AttributeValue] | None,
+        dct: Mapping[str, AttributeValue] | None,
         *,
         rewrite_keys: bool = False,
     ) -> None:
@@ -138,7 +142,7 @@ class AttributeDict(dict[str, AttributeValue]):
             return
         for key, value in dct.items():
             if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]
-                raise TypeError("Attribute key must be a string")
+                raise MarkupyError("Attribute key must be a string")
 
             if key != "_" and rewrite_keys:
                 # Preserve single _ for hyperscript
@@ -149,11 +153,11 @@ class AttributeDict(dict[str, AttributeValue]):
                 continue
 
             elif key == "class":
-                if isinstance(value, dict):
+                if isinstance(value, Mapping):
                     classes = _iter_classes_dict(value)
                 else:
                     classes = _iter_classes_seq(value)
                 self[key] = _classes_to_str(classes)
                 continue
 
-            raise TypeError(f"Invalid value type `{value!r}` for attribute `{key}`")
+            raise MarkupyError(f"Invalid value type `{value!r}` for attribute `{key}`")

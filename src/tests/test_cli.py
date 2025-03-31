@@ -1,6 +1,7 @@
 import pytest
 
 from markupy._private.html import to_markupy
+from markupy.exception import MarkupyError
 
 
 def test_nested_void() -> None:
@@ -47,19 +48,19 @@ def test_empty_kwargs() -> None:
 
 def test_invalid_html_unclosed() -> None:
     html = """<div>"""
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         to_markupy(html)
 
 
 def test_invalid_html_toomany_closed() -> None:
     html = """<div></div></div>"""
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         to_markupy(html)
 
 
 def test_invalid_html_not_matching() -> None:
     html = """<div></pre>"""
-    with pytest.raises(ValueError):
+    with pytest.raises(MarkupyError):
         to_markupy(html)
 
 

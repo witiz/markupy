@@ -1,0 +1,2 @@
+class MarkupyError(Exception):
+    pass

@@ -73,20 +73,20 @@ def my_form(request: HttpRequest) -> HttpResponse:
 from django.http import HttpRequest
 from django.template.backends.utils import csrf_input
 
-from markupy import Component, Node
+from markupy import View
 from markupy.tag import Body, Button, Form, H1, Head, Html, Title
 
 from .forms import MyForm
 
 
-def base_page(title: str, content: Node) -> Component:
+def base_page(title: str, content: View) -> View:
     return Html[
         Head[Title[title]],
         Body[content],
     ]
 
 
-def my_form_page(request: HttpRequest, *, form: MyForm) -> Component:
+def my_form_page(request: HttpRequest, *, form: MyForm) -> View:
     return base_page(
         "My form",
         form(method="post")[
@@ -98,7 +98,7 @@ def my_form_page(request: HttpRequest, *, form: MyForm) -> Component:
     )
 
 
-def my_form_success_page() -> Component:
+def my_form_success_page() -> View:
     return base_page(
         "Success!",
         H1["Success! The form was valid!"],

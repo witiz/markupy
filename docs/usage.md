@@ -389,30 +389,6 @@ snippets as attributes:
 <ul data-template="&lt;li class=&#34;bar&#34;&gt;&lt;/li&gt;"></ul>
 ```
 
-## Render elements without a parent (orphans)
-
-In some cases such as returning partial content it is useful to render elements
-without a parent element. This is useful in HTMX partial responses.
-
-You may use `render_node` to achieve this:
-
-```python title="Render elements without a parent"
->>> from markupy import render_node
->>> from markupy.tag import Tr
->>> print(render_node([Tr["a"], Tr["b"]]))
-<tr>a</tr><tr>b</tr>
-```
-
-`render_node()` accepts all kinds of `Node` objects.
-You may use it to render anything that would normally be a child of another element.
-
-!!! note "Best practice: Only use render_node() to render non-Elements"
-
-    You can render regular elements by using `str()`, e.g. `str(P["hi"])`. While
-    `render_node()` would give the same result, it is more straightforward and
-    better practice to just use `str()` when rendering a regular element. Only
-    use `render_node()` when you do not have a parent element.
-
 ## Iterating of the Output
 
 Iterating over a markupy element will yield the resulting contents in chunks as
