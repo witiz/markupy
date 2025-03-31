@@ -32,30 +32,11 @@ class Fragment(View):
         self._shared: bool = True
         self._safe: bool = safe
 
-    def __repr__(self) -> str:
-        return "<markupy.Fragment>"
-
-    def __iter__(self) -> Iterator[str]:
-        if self._children is not None:
-            for node in self._children:
-                if isinstance(node, View):
-                    yield from node
-                else:
-                    yield node
-
     def __copy__(self) -> Self:
         return type(self)()
 
-    @final
-    def _new_instance(self: Self) -> Self:
-        # When imported, elements are loaded from a shared instance
-        # Make sure we re-instantiate them on setting attributes/children
-        # to avoid sharing attributes/children between multiple instances
-        if self._shared:
-            obj = copy(self)
-            obj._shared = False
-            return obj
-        return self
+    def __repr__(self) -> str:
+        return "<markupy.Fragment>"
 
     # Use subscriptable [] syntax to assign children
     def __getitem__(self, node: Any) -> Self:
@@ -67,4 +48,23 @@ class Fragment(View):
             instance._children = new_children
             return instance
 
+        return self
+
+    def __iter__(self) -> Iterator[str]:
+        if self._children is not None:
+            for node in self._children:
+                if isinstance(node, View):
+                    yield from node
+                else:
+                    yield node
+
+    @final
+    def _new_instance(self: Self) -> Self:
+        # When imported, elements are loaded from a shared instance
+        # Make sure we re-instantiate them on setting attributes/children
+        # to avoid sharing attributes/children between multiple instances
+        if self._shared:
+            obj = copy(self)
+            obj._shared = False
+            return obj
         return self
