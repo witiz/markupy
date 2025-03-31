@@ -13,6 +13,34 @@ ClassAttributeValue: TypeAlias = ClassNamesSequence | ClassNamesDict
 OtherAttributeValue: TypeAlias = None | bool | str | int
 AttributeValue: TypeAlias = OtherAttributeValue | ClassAttributeValue
 
+# https://html.spec.whatwg.org/multipage/indices.html#attributes-3
+BOOLEAN_ATTRIBUTES: set[str] = {
+    "allowfullscreen",
+    "async",
+    "autofocus",
+    "autoplay",
+    "checked",
+    "controls",
+    "default",
+    "defer",
+    "disabled",
+    "formnovalidate",
+    "inert",
+    "ismap",
+    "itemscope",
+    "loop",
+    "multiple",
+    "muted",
+    "nomodule",
+    "novalidate",
+    "open",
+    "playsinline",
+    "readonly",
+    "required",
+    "reversed",
+    "selected",
+}
+
 
 def _classes_to_str(classes: Iterable[str]) -> str:
     return " ".join(filter(None, classes))
@@ -52,33 +80,7 @@ def _rewrite_attr_key(key: str) -> str:
 
 @lru_cache(maxsize=1000)
 def is_boolean_attribute(name: str) -> bool:
-    # https://html.spec.whatwg.org/multipage/indices.html#attributes-3
-    return name in {
-        "allowfullscreen",
-        "async",
-        "autofocus",
-        "autoplay",
-        "checked",
-        "controls",
-        "default",
-        "defer",
-        "disabled",
-        "formnovalidate",
-        "inert",
-        "ismap",
-        "itemscope",
-        "loop",
-        "multiple",
-        "muted",
-        "nomodule",
-        "novalidate",
-        "open",
-        "playsinline",
-        "readonly",
-        "required",
-        "reversed",
-        "selected",
-    }
+    return name in BOOLEAN_ATTRIBUTES
 
 
 def _format_key_value(key: str, value: AttributeValue) -> str:
