@@ -1,13 +1,11 @@
 from collections.abc import Iterable
 from typing import final
 
-from markupsafe import Markup
-
 
 class View(Iterable[str]):
     @final
     def __str__(self) -> str:
-        return Markup("".join(self))
+        return "".join(self)
 
     # Allow starlette Response.render to directly render this element without
     # explicitly casting to str:
