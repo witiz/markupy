@@ -191,17 +191,29 @@ class MarkupyParser(HTMLParser):
             self.code_stack.push(",")
 
     def output_imports(self) -> str:
+        str_markupy_imports: str = ""
+        str_markupy_tag_imports: str = ""
+        markupy_imports: set[str] = set()
+        if self.count_top_level > 1:
+            markupy_imports.add("Fragment")
         if self.imports:
             if self.use_import_tag:
-                return "from markupy import tag\n"
+                markupy_imports.add("tag")
+                # return "from markupy import tag\n"
             else:
-                return f"from markupy.tag import {','.join(sorted(self.imports))}\n"
-        return ""
+                str_markupy_tag_imports = (
+                    f"from markupy.tag import {','.join(sorted(self.imports))}\n"
+                )
+        if markupy_imports:
+            str_markupy_imports = (
+                f"from markupy import {','.join(sorted(markupy_imports))}\n"
+            )
+        return str_markupy_imports + str_markupy_tag_imports
 
     def output_code(self) -> str:
         code = "".join(self.code_stack).strip(",")
         if self.count_top_level > 1:
-            return f"[{code}]"
+            return f"Fragment[{code}]"
         return code
 
 
@@ -243,5 +255,5 @@ def to_markupy(
     if tag := parser.unclosed_stack.pop():
         raise MarkupyError(f"Opening tag `<{tag}>` was not closed")
     if code := parser.output_code():
-        return f"{parser.output_imports()}{code}"
+        return f"{parser.output_imports()}print({code})"
     return ""
