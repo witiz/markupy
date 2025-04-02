@@ -43,7 +43,7 @@ BOOLEAN_ATTRIBUTES: set[str] = {
 
 
 def _classes_to_str(classes: Iterable[str]) -> str:
-    return " ".join(filter(None, classes))
+    return " ".join(map(lambda c: c.strip(), filter(None, classes)))
 
 
 def _iter_classes_dict(dct: ClassNamesDict) -> Iterator[str]:
@@ -84,10 +84,10 @@ def is_boolean_attribute(name: str) -> bool:
 
 
 def _format_key_value(key: str, value: AttributeValue) -> str:
-    key_str = escape(str(key))
+    key_str: str = escape(str(key))
     if value is True:
         return key_str
-    value_str = escape(str(value))
+    value_str: str = escape(str(value).strip())
     return f'{key_str}="{value_str}"'
 
 
@@ -96,7 +96,7 @@ class AttributeDict(dict[str, AttributeValue]):
         if value is False or value is None:
             # Discard False and None valued attributes for all attributes
             return
-        key = key.lower()
+        key = key.strip().lower()
         if value is True:
             pass
         elif is_boolean_attribute(key):
@@ -120,6 +120,7 @@ class AttributeDict(dict[str, AttributeValue]):
             # Empty selector or None
             return
 
+        selector = selector.strip()
         first_char = selector[0]
         if first_char not in "#.":
             raise MarkupyError("Selector string must start with # (id) or . (class)")

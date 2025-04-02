@@ -263,3 +263,10 @@ def test_invalid_attribute_value(not_an_attr: t.Any) -> None:
 def test_attribute_redefinition() -> None:
     with pytest.raises(MarkupyError):
         Div(id="hello")(class_="world")
+
+
+def test_strip() -> None:
+    result = Div(" # myid . myclass . other ", {" foo ": " a "}, bar=" b ")
+    assert (
+        str(result) == """<div id="myid" class="myclass other" foo="a" bar="b"></div>"""
+    )
