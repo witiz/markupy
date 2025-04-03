@@ -283,7 +283,7 @@ def test_invalid_key(key: str) -> None:
 
 
 def test_attribute_case() -> None:
-    result = Div({"BAR": "foo"}, bar="baz")
+    result = Div({"BAR": "foo", "bAr": "hello"}, bar="baz")
     # If not properly managed, could become <div BAR="foo" bar="baz"></div>
     assert str(result) == """<div bar="baz"></div>"""
 
