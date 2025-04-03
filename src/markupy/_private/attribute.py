@@ -1,5 +1,6 @@
 from collections.abc import Iterable, Iterator, Mapping, Sequence
 from functools import lru_cache
+from re import match as re_match
 from re import sub as re_sub
 from typing import TypeAlias
 
@@ -87,7 +88,7 @@ def _format_key_value(key: str, value: AttributeValue) -> str:
     key_str: str = escape(str(key))
     if value is True:
         return key_str
-    value_str: str = escape(str(value).strip())
+    value_str: str = escape(str(value))
     return f'{key_str}="{value_str}"'
 
 
@@ -96,7 +97,11 @@ class AttributeDict(dict[str, AttributeValue]):
         if value is False or value is None:
             # Discard False and None valued attributes for all attributes
             return
-        key = key.strip().lower()
+
+        key = key.lower()
+        if not re_match(r"^\S+$", key):
+            raise MarkupyError(f"Attribute `{key}` has invalid name")
+
         if value is True:
             pass
         elif is_boolean_attribute(key):
@@ -120,15 +125,26 @@ class AttributeDict(dict[str, AttributeValue]):
             # Empty selector or None
             return
 
-        selector = selector.strip()
-        first_char = selector[0]
-        if first_char not in "#.":
-            raise MarkupyError("Selector string must start with # (id) or . (class)")
+        selector = selector.replace(".", " ").strip()
+        parts = selector.split()
+        hash_indexes = [i for i, c in enumerate(selector) if c == "#"]
 
-        parts = selector.split(".")
-        if first_char == "#":
-            self["id"] = parts[0][1:]
-            self["class"] = _classes_to_str(parts[1:])
+        if len(hash_indexes) > 1:
+            raise MarkupyError("Id must be defined only once in selector")
+
+        elif len(hash_indexes) == 1:
+            if hash_indexes[0] != 0:
+                raise MarkupyError("Id must be defined at the start of selector")
+
+            if len(parts[0]) > 1:
+                # If selector starts with '#id'
+                self["id"] = parts[0][1:]
+                self["class"] = _classes_to_str(parts[1:])
+            elif len(parts) > 1:
+                # If selector starts with '# id'
+                self["id"] = parts[1]
+                self["class"] = _classes_to_str(parts[2:])
+
         else:
             self["class"] = _classes_to_str(parts)
 
