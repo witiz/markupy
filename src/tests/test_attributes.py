@@ -282,6 +282,12 @@ def test_invalid_key(key: str) -> None:
         Div({key: "a"})
 
 
+def test_attribute_case() -> None:
+    result = Div({"BAR": "foo"}, bar="baz")
+    # If not properly managed, could become <div BAR="foo" bar="baz"></div>
+    assert str(result) == """<div bar="baz"></div>"""
+
+
 def test_selector_invalid_id_position() -> None:
     with pytest.raises(MarkupyError):
         Div(".bar#foo")
