@@ -116,7 +116,7 @@ class Element(Fragment):
             ) from e
 
         if attributes := str(attrs):
-            el = self._new_instance()
+            el = self._get_instance()
             el._attributes = attributes
             return el
 

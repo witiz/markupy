@@ -55,7 +55,7 @@ class Fragment(View):
             raise MarkupyError(f"Invalid child provided for {self!r}") from e
 
         if children:
-            instance = self._new_instance()
+            instance = self._get_instance()
             instance._children = children
             return instance
 
@@ -70,7 +70,7 @@ class Fragment(View):
                     yield node
 
     @final
-    def _new_instance(self: Self) -> Self:
+    def _get_instance(self: Self) -> Self:
         # When imported, elements are loaded from a shared instance
         # Make sure we re-instantiate them on setting attributes/children
         # to avoid sharing attributes/children between multiple instances
