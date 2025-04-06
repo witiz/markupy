@@ -136,14 +136,8 @@ class AttributeDict(dict[str, AttributeValue]):
             if hash_indexes[0] != 0:
                 raise MarkupyError("Id must be defined at the start of selector")
 
-            if len(parts[0]) > 1:
-                # If selector starts with '#id'
-                self["id"] = parts[0][1:]
-                self["class"] = _classes_to_str(parts[1:])
-            elif len(parts) > 1:
-                # If selector starts with '# id'
-                self["id"] = parts[1]
-                self["class"] = _classes_to_str(parts[2:])
+            self["id"] = parts[0][1:]
+            self["class"] = _classes_to_str(parts[1:])
 
         else:
             self["class"] = _classes_to_str(parts)

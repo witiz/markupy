@@ -272,7 +272,7 @@ def test_empty_selector(selector: str) -> None:
 
 
 def test_selector_strip() -> None:
-    result = Div("  #  myid  .  myclass  .  other  ")
+    result = Div(" #myid .myclass .other ")
     assert str(result) == """<div id="myid" class="myclass other"></div>"""
 
 
@@ -296,3 +296,8 @@ def test_selector_invalid_id_position() -> None:
 def test_selector_multiple_id() -> None:
     with pytest.raises(MarkupyError):
         Div("#foo#bar")
+
+
+def test_selector_empty_id() -> None:
+    assert str(Div("# foo bar")) == """<div class="foo bar"></div>"""
+    assert str(Div("#.foo.bar")) == """<div class="foo bar"></div>"""
