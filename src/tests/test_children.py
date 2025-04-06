@@ -179,3 +179,11 @@ def test_safe_children() -> None:
 def test_children_redefinition() -> None:
     with pytest.raises(MarkupyError):
         Div["Hello"]["World"]
+
+
+def test_callable() -> None:
+    def hello() -> str:
+        return "world"
+
+    with pytest.raises(MarkupyError):
+        Div[hello]

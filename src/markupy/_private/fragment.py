@@ -12,9 +12,15 @@ from .view import View
 def iter_node(node: Any, *, safe: bool = False) -> Iterator[str | View]:
     if node is None or node == "" or isinstance(node, bool):
         return
-    # View is Iterable
     elif isinstance(node, View):
+        # View is callable and Iterable, must be checked in priority
+        # callable views are Element and Fragment instances
         yield node
+    elif callable(node):
+        # Allows to catch uncalled functions or uninstanciated classes
+        raise MarkupyError(
+            f"Invalid node `{node!r}`. Did you mean `{node.__name__}()` ?"
+        )
     elif isinstance(node, Iterable) and not isinstance(node, str):
         for child in node:  # type: ignore[unused-ignore]
             yield from iter_node(child, safe=safe)
@@ -43,9 +49,14 @@ class Fragment(View):
         if self._children is not None:
             raise MarkupyError(f"Illegal attempt to redefine children of `{self!r}`")
 
-        if new_children := list(iter_node(node, safe=self._safe)):
+        try:
+            children = list(iter_node(node, safe=self._safe))
+        except Exception as e:
+            raise MarkupyError(f"Invalid child provided for {self!r}") from e
+
+        if children:
             instance = self._new_instance()
-            instance._children = new_children
+            instance._children = children
             return instance
 
         return self
@@ -68,3 +79,11 @@ class Fragment(View):
             obj._shared = False
             return obj
         return self
+
+    def __call__(self) -> Self:
+        return self
+
+    # Avoid having Django "call" a markupy fragment (or element) that is injected into a template.
+    # Setting do_not_call_in_templates will prevent Django from doing an extra call:
+    # https://docs.djangoproject.com/en/5.0/ref/templates/api/#variables-and-lookups
+    do_not_call_in_templates = True
