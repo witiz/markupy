@@ -68,7 +68,7 @@ class Fragment(View):
         return self
 
     def __iter__(self) -> Iterator[str]:
-        if self._children is not None:
+        if self._children:
             for node in self._children:
                 if isinstance(node, View):
                     yield from node
