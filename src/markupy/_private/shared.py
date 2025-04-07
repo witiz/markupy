@@ -9,12 +9,12 @@ from .fragment import Fragment
 class Shared(Fragment):
     __slots__ = ("_shared",)
 
-    def __init__(self, *, safe: bool = False) -> None:
+    def __init__(self, *, safe: bool = False, shared: bool = True) -> None:
         super().__init__(safe=safe)
-        self._shared: bool = True
+        self._shared: bool = shared
 
     def __copy__(self) -> Self:
-        return type(self)()
+        return type(self)(shared=False)
 
     def __call__(self) -> Self:
         return self
@@ -25,9 +25,7 @@ class Shared(Fragment):
         # Make sure we re-instantiate them on setting attributes/children
         # to avoid sharing attributes/children between multiple instances
         if self._shared:
-            obj = copy(self)
-            obj._shared = False
-            return obj
+            return copy(self)
         return self
 
     # Avoid having Django "call" a markupy fragment (or element) that is injected into a template.

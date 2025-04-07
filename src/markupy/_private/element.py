@@ -11,13 +11,13 @@ from .shared import Shared
 class Element(Shared):
     __slots__ = ("_attributes", "_name")
 
-    def __init__(self, name: str, *, safe: bool = False) -> None:
-        super().__init__(safe=safe)
+    def __init__(self, name: str, *, safe: bool = False, shared: bool = True) -> None:
+        super().__init__(safe=safe, shared=shared)
         self._name = name
         self._attributes: str | None = None
 
     def __copy__(self) -> Self:
-        return type(self)(self.name)
+        return type(self)(self.name, shared=False)
 
     @property
     def name(self) -> str:
@@ -168,5 +168,5 @@ class CommentElement(Element):
 class SafeElement(Element):
     __slots__ = ()
 
-    def __init__(self, name: str) -> None:
-        super().__init__(name, safe=True)
+    def __init__(self, name: str, *, shared: bool = True) -> None:
+        super().__init__(name, safe=True, shared=shared)
