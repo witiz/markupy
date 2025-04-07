@@ -19,3 +19,6 @@ class Component(View, metaclass=ABCMeta):
             raise MarkupyError(
                 f"{type(self).__name__}.render() must return an instance of markupy.View (can be Element, Fragment or Component)"
             )
+
+    def __repr__(self) -> str:
+        return f"<markupy.Component.{type(self).__name__}>"
