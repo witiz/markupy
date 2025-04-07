@@ -255,5 +255,5 @@ def to_markupy(
     if tag := parser.unclosed_stack.pop():
         raise MarkupyError(f"Opening tag `<{tag}>` was not closed")
     if code := parser.output_code():
-        return f"{parser.output_imports()}print({code})"
+        return f"{parser.output_imports()}{code}"
     return ""
