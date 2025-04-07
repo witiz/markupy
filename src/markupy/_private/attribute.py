@@ -79,7 +79,6 @@ def _rewrite_attr_key(key: str) -> str:
     return key
 
 
-@lru_cache(maxsize=1000)
 def is_boolean_attribute(name: str) -> bool:
     return name in BOOLEAN_ATTRIBUTES
 
