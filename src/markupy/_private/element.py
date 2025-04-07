@@ -61,6 +61,11 @@ class Element(Fragment):
                 f"Illegal attempt to redefine attributes for element `{self!r}`"
             )
 
+        if self._children:
+            raise MarkupyError(
+                f"Illegal attempt to define attributes after children for element `{self!r}`"
+            )
+
         selector: str | None = None
         attributes_dict: Mapping[str, AttributeValue] | None = None
         attributes_kwargs: Mapping[str, AttributeValue] = kwargs

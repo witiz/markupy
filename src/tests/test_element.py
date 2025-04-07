@@ -1,9 +1,12 @@
+import pytest
+
 from markupy._private.element import (
     CommentElement,
     Element,
     HtmlElement,
     VoidElement,
 )
+from markupy.exception import MarkupyError
 from markupy.tag import Div, Hr, Html, Input, MyElement, Unknown, _
 
 
@@ -51,3 +54,8 @@ def test_element_type() -> None:
 def test_comment() -> None:
     assert str(_["Hello"]) == "<!--Hello-->"
     assert str(_[Div["Hello"]]) == "<!--<div>Hello</div>-->"
+
+
+def test_attributes_after_children() -> None:
+    with pytest.raises(MarkupyError):
+        Div["hello"](id="world")
