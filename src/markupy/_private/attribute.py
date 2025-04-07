@@ -92,6 +92,8 @@ def _format_key_value(key: str, value: AttributeValue) -> str:
 
 
 class AttributeDict(dict[str, AttributeValue]):
+    __slots__ = ()
+
     def __setitem__(self, key: str, value: AttributeValue) -> None:
         if value is False or value is None:
             # Discard False and None valued attributes for all attributes

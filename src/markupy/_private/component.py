@@ -3,10 +3,11 @@ from collections.abc import Iterator
 from typing import final
 
 from ..exception import MarkupyError
+from .fragment import Fragment
 from .view import View
 
 
-class Component(View):
+class Component(Fragment):
     __slots__ = ()
 
     def __init__(self) -> None:
