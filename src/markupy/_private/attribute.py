@@ -171,4 +171,4 @@ class AttributeDict(dict[str, AttributeValue]):
                 self[key] = _classes_to_str(classes)
                 continue
 
-            raise MarkupyError(f"Invalid value type `{value!r}` for attribute `{key}`")
+            raise MarkupyError(f"Invalid value type {value!r} for attribute `{key}`")

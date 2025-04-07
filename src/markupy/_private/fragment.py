@@ -9,25 +9,17 @@ from ..exception import MarkupyError
 from .view import View
 
 
-def iter_node(node: Any, *, safe: bool = False) -> Iterator[str | View]:
-    if node is None or node == "" or isinstance(node, bool):
+def iter_node(node: Any) -> Iterator[tuple[Any, bool]]:
+    if node is None or isinstance(node, bool):
         return
     elif isinstance(node, View):
-        # View is callable and Iterable, must be checked in priority
-        # callable views are Element and Fragment instances
-        yield node
-    elif callable(node):
-        # Allows to catch uncalled functions or uninstanciated classes
-        raise MarkupyError(
-            f"Invalid node `{node!r}`. Did you mean `{node.__name__}()` ?"
-        )
+        # View is Iterable, must check in priority
+        yield node, True
     elif isinstance(node, Iterable) and not isinstance(node, str):
         for child in node:  # type: ignore[unused-ignore]
-            yield from iter_node(child, safe=safe)
-    elif safe:
-        yield str(node)
+            yield from iter_node(child)
     else:
-        yield str(escape(node))
+        yield node, False
 
 
 class Fragment(View):
@@ -45,14 +37,28 @@ class Fragment(View):
         return "<markupy.Fragment>"
 
     # Use subscriptable [] syntax to assign children
-    def __getitem__(self, node: Any) -> Self:
+    def __getitem__(self, content: Any) -> Self:
         if self._children is not None:
-            raise MarkupyError(f"Illegal attempt to redefine children of `{self!r}`")
+            raise MarkupyError(f"Illegal attempt to redefine children of {self!r}")
 
-        try:
-            children = list(iter_node(node, safe=self._safe))
-        except Exception as e:
-            raise MarkupyError(f"Invalid child provided for {self!r}") from e
+        children: list[str | View] = list()
+        for node, is_view in iter_node(content):
+            if is_view:
+                # Some View instances are callable, it must be checked in priority
+                children.append(node)
+            elif callable(node):
+                # Allows to catch uncalled functions or uninstanciated classes
+                raise MarkupyError(
+                    f"Invalid child node {node!r} provided for {self!r}; Did you mean `{node.__name__}()` ?"
+                )
+            else:
+                try:
+                    if s := str(node if self._safe else escape(node)):
+                        children.append(s)
+                except Exception as e:
+                    raise MarkupyError(
+                        f"Invalid child node {node!r} provided for {self!r}"
+                    ) from e
 
         if children:
             instance = self._get_instance()

@@ -37,7 +37,7 @@ class Element(Fragment):
         yield self._tag_closing()
 
     def __repr__(self) -> str:
-        return f"<markupy.{type(self).__name__} `{self._tag_opening()}`>"
+        return f"<markupy.{type(self).__name__}.{self._name}>"
 
     # Use call syntax () to define attributes
     @overload
@@ -58,12 +58,12 @@ class Element(Fragment):
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
         if self._attributes is not None:
             raise MarkupyError(
-                f"Illegal attempt to redefine attributes for element `{self!r}`"
+                f"Illegal attempt to redefine attributes for element {self!r}"
             )
 
         if self._children:
             raise MarkupyError(
-                f"Illegal attempt to define attributes after children for element `{self!r}`"
+                f"Illegal attempt to define attributes after children for element {self!r}"
             )
 
         selector: str | None = None
@@ -79,17 +79,17 @@ class Element(Fragment):
                 attributes_dict = arg
             else:
                 raise MarkupyError(
-                    f"Invalid argument type `{arg!r}` for element {self!r}, expected `str` or `Mapping`"
+                    f"Invalid argument type {arg!r} for element {self!r}, expected `str` or `Mapping`"
                 )
         elif len(args) == 2:
             # element(".foo", {"bar": "baz"})
             if not isinstance(args[0], str):
                 raise MarkupyError(
-                    f"Invalid first argument type `{args[0]!r}` for element {self!r}, expected `str`"
+                    f"Invalid first argument type {args[0]!r} for element {self!r}, expected `str`"
                 )
             if not isinstance(args[1], Mapping):
                 raise MarkupyError(
-                    f"Invalid second argument type `{args[1]!r}` for element {self!r}, expected `Mapping`"
+                    f"Invalid second argument type {args[1]!r} for element {self!r}, expected `Mapping`"
                 )
             selector, attributes_dict = args
         elif len(args) > 2:
