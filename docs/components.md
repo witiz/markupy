@@ -76,6 +76,7 @@ from my_models import Post
 
 class PostCardComponent(Component):
     def __init__(self, *, post: Post) -> None:
+        super().__init__()
         self.post = post
 
     def render(self) -> View:
@@ -102,6 +103,7 @@ from my_models import Post
 
 class PostCardListComponent(Component):
     def __init__(self, *, posts: list[Post]) -> None:
+        super().__init__()
         self.posts = posts
 
     def render(self) -> View:
@@ -114,6 +116,37 @@ And that's it, we are looping over a list of posts to generate card components t
 
 ```python
 >>> str(PostCardListComponent(posts=my_posts))
+```
+
+### Passing children to components
+
+Content can be assigned to component the same way we are doing for Fragments or Elements.
+To tell your component where such content needs to be injected when rendering, you need to call the `self.content()` reserved method:
+
+```python
+from markupy import Component, tag
+
+class Title(Component):
+    def __init__(self, id: str) -> None:
+        super().__init__()
+        self.id = id
+
+    def render(self) -> View:
+        return tag.H1(".title.header", id=self.id)[self.content()]
+```
+
+Then to use this component:
+
+```python
+>>> str(Title(id="headline")["hello ", tag.I(".star.icon")])
+```
+
+This will render as:
+
+```html
+<h1 class="title header" id="headline">
+    hello <i class="star icon"></i>
+</h1>
 ```
 
 ## Using components to define layouts
@@ -165,6 +198,7 @@ from my_models import Post
 
 class BlogPage(BaseLayout):
     def __init__(self, *, posts:list[Post]) -> None:
+        super().__init__()
         self.posts = posts
 
     def render_title(self) -> str:
