@@ -21,12 +21,11 @@ def iter_node(node: Any) -> Iterator[tuple[Any, bool]]:
 
 
 class View(Iterable[str]):
-    # Not using slots here so that subclasses can benefit from
-    # auto-initialized instance vars without having to call super()
-    _safe: bool = False
-    _children: list["str | View"] | None = None
+    __slots__ = ("_children", "_safe")
 
     def __init__(self, *, safe: bool = False) -> None:
+        super().__init__()
+        self._children: list[str | View] | None = None
         self._safe: bool = safe
 
     # Use subscriptable [] syntax to assign children

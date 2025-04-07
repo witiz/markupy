@@ -7,10 +7,11 @@ from .view import View
 
 
 class Fragment(View):
-    _shared: bool = True
+    __slots__ = ("_shared",)
 
     def __init__(self, *, safe: bool = False) -> None:
         super().__init__(safe=safe)
+        self._shared: bool = True
 
     def __copy__(self) -> Self:
         return type(self)()

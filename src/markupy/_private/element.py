@@ -9,12 +9,12 @@ from .fragment import Fragment
 
 
 class Element(Fragment):
-    _name: str
-    _attributes: str | None = None
+    __slots__ = ("_attributes", "_name")
 
     def __init__(self, name: str, *, safe: bool = False) -> None:
         super().__init__(safe=safe)
         self._name = name
+        self._attributes: str | None = None
 
     def __copy__(self) -> Self:
         return type(self)(self.name)
@@ -129,6 +129,8 @@ class Element(Fragment):
 
 
 class HtmlElement(Element):
+    __slots__ = ()
+
     @override
     def __iter__(self) -> Iterator[str]:
         yield "<!doctype html>"
@@ -136,6 +138,8 @@ class HtmlElement(Element):
 
 
 class VoidElement(Element):
+    __slots__ = ()
+
     @override
     def __iter__(self) -> Iterator[str]:
         yield self._tag_opening()
@@ -146,6 +150,8 @@ class VoidElement(Element):
 
 
 class CommentElement(Element):
+    __slots__ = ()
+
     @override
     def _tag_opening(self) -> str:
         return "<!--"
@@ -160,5 +166,7 @@ class CommentElement(Element):
 
 
 class SafeElement(Element):
+    __slots__ = ()
+
     def __init__(self, name: str) -> None:
         super().__init__(name, safe=True)

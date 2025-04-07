@@ -1,4 +1,4 @@
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 from collections.abc import Iterator
 from typing import final
 
@@ -6,9 +6,11 @@ from ..exception import MarkupyError
 from .view import View
 
 
-class Component(View, metaclass=ABCMeta):
+class Component(View):
+    __slots__ = ()
+
     def __init__(self) -> None:
-        # Implementation here is useless but present to have a nice
+        # Implementation here is useless but allows for a nice
         # argument-less super().__init__() autocomplete in user's IDE
         super().__init__()
 
@@ -29,5 +31,6 @@ class Component(View, metaclass=ABCMeta):
                 f"{type(self).__name__}.render() must return an instance of markupy.View (can be Element, Fragment or Component)"
             )
 
+    @final
     def __repr__(self) -> str:
         return f"<markupy.Component.{type(self).__name__}>"

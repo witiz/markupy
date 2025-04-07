@@ -29,6 +29,7 @@ class ComponentAsComponent(Component):
 
 class ContentComponent(Component):
     def __init__(self, id: str) -> None:
+        super().__init__()
         self.id = id
 
     def render(self) -> View:
