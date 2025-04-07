@@ -7,8 +7,17 @@ from .view import View
 
 
 class Component(View, metaclass=ABCMeta):
+    def __init__(self) -> None:
+        # Implementation here is useless but present to have a nice
+        # argument-less super().__init__() autocomplete in user's IDE
+        super().__init__()
+
     @abstractmethod
     def render(self) -> View: ...
+
+    @final
+    def content(self) -> list[str | View] | None:
+        return self._children
 
     @final
     def __iter__(self) -> Iterator[str]:

@@ -27,6 +27,14 @@ class ComponentAsComponent(Component):
         return ComponentElement("other")
 
 
+class ContentComponent(Component):
+    def __init__(self, id: str) -> None:
+        self.id = id
+
+    def render(self) -> View:
+        return tag.H1(".title.header", id=self.id)[self.content()]
+
+
 def test_component_element() -> None:
     assert str(ComponentElement("component")) == """<div id="component"></div>"""
 
@@ -41,6 +49,13 @@ def test_component_in_component() -> None:
 
 def test_component_as_component() -> None:
     assert str(ComponentAsComponent()) == """<div id="other"></div>"""
+
+
+def test_component_content() -> None:
+    assert (
+        str(ContentComponent(id="test")["Hello", tag.Div[tag.Input]])
+        == """<h1 class="title header" id="test">Hello<div><input></div></h1>"""
+    )
 
 
 def test_uninitialized_component() -> None:
