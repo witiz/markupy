@@ -1,3 +1,5 @@
+from typing import Iterator
+
 import pytest
 
 from markupy import Fragment
@@ -67,13 +69,13 @@ def test_string() -> None:
 
 def test_class() -> None:
     class Test:
-        def __call__(self):
+        def __call__(self) -> str:
             return self.message()
 
-        def __str__(self):
+        def __str__(self) -> str:
             return self()
 
-        def message(self):
+        def message(self) -> str:
             return "hello"
 
     assert str(Fragment[Test()]) == "hello"
@@ -90,7 +92,7 @@ def test_lambda() -> None:
 
 
 def test_function() -> None:
-    def test():
+    def test() -> str:
         return "hello"
 
     assert str(Fragment[test()]) == "hello"
@@ -99,7 +101,7 @@ def test_function() -> None:
 
 
 def test_generator() -> None:
-    def generator():
+    def generator() -> Iterator[str]:
         yield "hello"
         yield "world"
 
