@@ -1,4 +1,7 @@
+import pytest
+
 from markupy import Fragment
+from markupy.exception import MarkupyError
 from markupy.tag import Div, I, P, Tr
 
 
@@ -60,3 +63,46 @@ def test_none() -> None:
 def test_string() -> None:
     result = Fragment["hello!"]
     assert str(result) == "hello!"
+
+
+def test_class() -> None:
+    class Test:
+        def __call__(self):
+            return self.message()
+
+        def __str__(self):
+            return self()
+
+        def message(self):
+            return "hello"
+
+    assert str(Fragment[Test()]) == "hello"
+    assert str(Fragment[Test().message()]) == "hello"
+    with pytest.raises(MarkupyError):
+        Fragment[Test]
+    with pytest.raises(MarkupyError):
+        Fragment[Test().message]
+
+
+def test_lambda() -> None:
+    with pytest.raises(MarkupyError):
+        Fragment[lambda: "hello"]
+
+
+def test_function() -> None:
+    def test():
+        return "hello"
+
+    assert str(Fragment[test()]) == "hello"
+    with pytest.raises(MarkupyError):
+        Fragment[test]
+
+
+def test_generator() -> None:
+    def generator():
+        yield "hello"
+        yield "world"
+
+    assert str(Fragment[generator()]) == "helloworld"
+    with pytest.raises(MarkupyError):
+        Fragment[generator]

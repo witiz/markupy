@@ -1,4 +1,5 @@
 from collections.abc import Iterable, Iterator
+from inspect import isclass, isfunction, ismethod
 from typing import Any
 
 from markupsafe import escape
@@ -39,8 +40,8 @@ class Fragment(View):
             if is_view:
                 # Some View instances are callable, it must be checked in priority
                 children.append(node)
-            elif callable(node):
-                # Allows to catch uncalled functions or uninstanciated classes
+            elif isfunction(node) or ismethod(node) or isclass(node):
+                # Allows to catch uncalled functions/methods or uninstanciated classes
                 raise MarkupyError(
                     f"Invalid child node {node!r} provided for {self!r}; Did you mean `{node.__name__}()` ?"
                 )
