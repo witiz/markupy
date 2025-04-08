@@ -121,7 +121,7 @@ And that's it, we are looping over a list of posts to generate card components t
 ### Passing children to components
 
 Content can be assigned to component the same way we are doing for Fragments or Elements.
-To tell your component where such content needs to be injected when rendering, you need to call the `self.content()` reserved method:
+To tell your component where such content needs to be injected when rendering, you need to call the `self.render_content()` reserved method:
 
 ```python
 from markupy import Component, tag
@@ -132,7 +132,7 @@ class Title(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.H1(".title.header", id=self.id)[self.content()]
+        return tag.H1(".title.header", id=self.id)[self.render_content()]
 ```
 
 Then to use this component:

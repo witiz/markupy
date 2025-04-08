@@ -19,8 +19,17 @@ class Component(Fragment):
     def render(self) -> View: ...
 
     @final
-    def content(self) -> list[str | View] | None:
-        return self._children
+    def render_content(self) -> View:
+        if self._children:
+            if len(self._children) == 1 and isinstance(self._children[0], View):
+                # Only 1 view child: return it
+                return self._children[0]
+            else:
+                # One non-view child or multiple children: wrap in a fragment
+                return Fragment()[self._children]
+        else:
+            # No children: return empty view
+            return View()
 
     @final
     def __iter__(self) -> Iterator[str]:

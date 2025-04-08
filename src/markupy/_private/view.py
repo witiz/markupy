@@ -9,7 +9,7 @@ class View(Iterable[str]):
         super().__init__()
 
     def __iter__(self) -> Iterator[str]:
-        yield ""
+        yield from ()
 
     @final
     def __str__(self) -> str:

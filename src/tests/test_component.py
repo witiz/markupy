@@ -33,7 +33,7 @@ class ContentComponent(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.H1(".title.header", id=self.id)[self.content()]
+        return tag.H1(".title.header", id=self.id)[self.render_content()]
 
 
 def test_component_element() -> None:
