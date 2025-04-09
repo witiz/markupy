@@ -1,4 +1,5 @@
 import pytest
+from markupsafe import Markup
 
 from markupy._private.element import (
     CommentElement,
@@ -39,6 +40,7 @@ def test_void_element_repr() -> None:
 def test_markup_str() -> None:
     result = str(Div(id="a"))
     assert isinstance(result, str)
+    assert isinstance(result, Markup)
     assert result == '<div id="a"></div>'
 
 

@@ -1,6 +1,8 @@
 from collections.abc import Iterable, Iterator
 from typing import final
 
+from markupsafe import Markup
+
 
 class View(Iterable[str]):
     __slots__ = ()
@@ -13,7 +15,9 @@ class View(Iterable[str]):
 
     @final
     def __str__(self) -> str:
-        return "".join(self)
+        # Return needs to be Markup and not plain str
+        # to be properly injected in template engines
+        return Markup("".join(self))
 
     def __repr__(self) -> str:
         return "<markupy.View>"
