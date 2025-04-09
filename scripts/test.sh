@@ -15,7 +15,7 @@ uv run pytest
 echo
 
 echo ------- mypy --------
-uv run mypy src/markupy
+uv run mypy src
 echo
 
 echo ----- pyright -------
