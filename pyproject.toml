@@ -53,6 +53,7 @@ dev-dependencies = [
     "uvicorn>=0.34.0",
     "httpx>=0.28.1",
     "pytest-django>=4.11.1",
+    "flask>=3.1.0",
 ]
 
 [tool.mypy]
