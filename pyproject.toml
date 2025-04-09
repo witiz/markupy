@@ -49,6 +49,8 @@ dev-dependencies = [
     "mypy>=1.11.2",
     "ruff>=0.6.5",
     "pyright>=1.1.381",
+    "starlette>=0.46.1",
+    "uvicorn>=0.34.0",
 ]
 
 [tool.mypy]
