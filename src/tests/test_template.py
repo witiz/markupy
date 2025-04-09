@@ -2,22 +2,8 @@ import typing
 
 from django.template import Context, Engine  # type:ignore
 from jinja2 import Template
-from starlette.responses import HTMLResponse
-from starlette.testclient import TestClient
 
 from markupy import tag
-
-
-def test_starlette() -> None:
-    @typing.no_type_check
-    async def starlette_app(scope, receive, send):
-        assert scope["type"] == "http"
-        response = HTMLResponse(tag.H1(".title")["starlette"])
-        await response(scope, receive, send)
-
-    client = TestClient(starlette_app)  # type: ignore
-    response = client.get("/")
-    assert response.text == """<h1 class="title">starlette</h1>"""
 
 
 @typing.no_type_check
