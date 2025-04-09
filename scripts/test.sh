@@ -3,11 +3,11 @@
 set -euo pipefail
 
 echo ---- ruff format ----
-uv run ruff format --check .
+uv run ruff format --check src
 echo
 
 echo ----- ruff lint -----
-uv run ruff check .
+uv run ruff check src
 echo
 
 echo ------ pytest -------
