@@ -62,3 +62,29 @@ def test_component_content() -> None:
 def test_uninitialized_component() -> None:
     with pytest.raises(MarkupyError):
         tag.P[ComponentFragment]
+
+
+class TypeErrorComponent(Component):
+    def render(self) -> str:  # type:ignore
+        return "Hello"
+
+
+def test_type_error_component() -> None:
+    with pytest.raises(MarkupyError):
+        str(TypeErrorComponent())
+
+
+class SuperErrorComponent(Component):
+    def __init__(self, *, id: str) -> None:
+        # Missing the call to super().__init()
+        # calls to __getitem__() will fail
+        self.id = id
+
+    def render(self) -> View:
+        return tag.H1(id=self.id)
+
+
+def test_super_error_component() -> None:
+    assert str(SuperErrorComponent(id="foo")) == """<h1 id="foo"></h1>"""
+    with pytest.raises(MarkupyError):
+        SuperErrorComponent(id="foo")["bar"]

@@ -1,6 +1,8 @@
 from abc import abstractmethod
 from collections.abc import Iterator
-from typing import final
+from typing import Any, final
+
+from typing_extensions import Self
 
 from ..exception import MarkupyError
 from .fragment import Fragment
@@ -15,20 +17,30 @@ class Component(Fragment):
         # argument-less super().__init__() autocomplete in user's IDE
         super().__init__()
 
+    @final
+    def __getitem__(self, content: Any) -> Self:
+        if not hasattr(self, "_children"):
+            raise MarkupyError(
+                "Subclasses of <markupy.Component> must call `super().__init__()` if they override the default initializer."
+            )
+
+        return super().__getitem__(content)
+
     @abstractmethod
     def render(self) -> View: ...
 
     @final
     def render_content(self) -> View:
-        if self._children:
-            if len(self._children) == 1 and isinstance(self._children[0], View):
+        if children := getattr(self, "_children", None):
+            if len(children) == 1 and isinstance(children[0], View):
                 # Only 1 view child: return it
-                return self._children[0]
+                return children[0]
             else:
                 # One non-view child or multiple children: wrap in a fragment
-                return Fragment()[self._children]
+                return Fragment()[children]
         else:
-            # No children: return empty view
+            # No children or super().__init__() hasn't been called and we are
+            # missing the _children attribute: return empty view
             return View()
 
     @final
@@ -38,7 +50,7 @@ class Component(Fragment):
             yield from node
         else:
             raise MarkupyError(
-                f"{type(self).__name__}.render() must return an instance of markupy.View (can be Element, Fragment or Component)"
+                f"`{type(self).__name__}.render()` must return an instance of <markupy.View> or one of its subclasses (Element, Fragment, Component)"
             )
 
     @final
