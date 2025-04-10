@@ -1,17 +1,29 @@
 # type: ignore
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, StreamingResponse
 from starlette.testclient import TestClient
 
 from markupy import tag
 
 
-async def starlette_app(scope, receive, send):
+async def render(scope, receive, send):
     assert scope["type"] == "http"
-    response = HTMLResponse(tag.H1(".title")["starlette"])
+    response = HTMLResponse(tag.H1(".title")["render"])
     await response(scope, receive, send)
 
 
-def test_starlette() -> None:
-    client = TestClient(starlette_app)
+async def stream(scope, receive, send):
+    assert scope["type"] == "http"
+    response = StreamingResponse(iter(tag.H1(".title")["stream"]))
+    await response(scope, receive, send)
+
+
+def test_render() -> None:
+    client = TestClient(render)
     response = client.get("/")
-    assert response.text == """<h1 class="title">starlette</h1>"""
+    assert response.text == """<h1 class="title">render</h1>"""
+
+
+def test_stream() -> None:
+    client = TestClient(stream)
+    response = client.get("/")
+    assert response.text == """<h1 class="title">stream</h1>"""
