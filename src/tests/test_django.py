@@ -1,6 +1,6 @@
 # type: ignore
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.urls import path
 
 from markupy import tag
@@ -12,17 +12,31 @@ settings.configure(
 
 
 # --- The view ---
-def hello_world(request):
-    return HttpResponse(tag.H1(".title")["django"])
+def render(request):
+    return HttpResponse(tag.H1(".title")["render"])
+
+
+def stream(request):
+    return StreamingHttpResponse(iter(tag.H1(".title")["stream"]))
 
 
 # --- URL config ---
 urlpatterns = [
-    path("hello/", hello_world),
+    path("render/", render),
+    path("stream/", stream),
 ]
 
 
-def test_hello_world_response(client):
-    response = client.get("/hello/")
+def test_render(client):
+    response = client.get("/render/")
     assert response.status_code == 200
-    assert response.content.decode() == """<h1 class="title">django</h1>"""
+    assert response.content.decode() == """<h1 class="title">render</h1>"""
+
+
+def test_stream(client):
+    response = client.get("/stream/")
+    assert response.status_code == 200
+    assert (
+        b"".join(response.streaming_content).decode()
+        == """<h1 class="title">stream</h1>"""
+    )
