@@ -1,10 +1,10 @@
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from typing import final
 
 from markupsafe import Markup
 
 
-class View(Iterable[str]):
+class View:
     __slots__ = ()
 
     def __init__(self) -> None:
