@@ -2,30 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://markupy.witiz.com/</loc>
-         <lastmod>2025-04-09</lastmod>
+         <lastmod>2025-04-10</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/components/</loc>
-         <lastmod>2025-04-09</lastmod>
+         <lastmod>2025-04-10</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/django/</loc>
-         <lastmod>2025-04-09</lastmod>
+         <lastmod>2025-04-10</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/flask/</loc>
-         <lastmod>2025-04-09</lastmod>
+         <lastmod>2025-04-10</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/html2markupy/</loc>
-         <lastmod>2025-04-09</lastmod>
+         <lastmod>2025-04-10</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/starlette/</loc>
-         <lastmod>2025-04-09</lastmod>
+         <lastmod>2025-04-10</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/usage/</loc>
-         <lastmod>2025-04-09</lastmod>
+         <lastmod>2025-04-10</lastmod>
     </url>
 </urlset>
