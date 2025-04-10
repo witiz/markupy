@@ -126,9 +126,10 @@ def test_generator_children() -> None:
 
 def test_generator_exhaustion() -> None:
     top_three = Ul[(Li[i] for i in range(1, 4))]
-    assert str(top_three) == "<ul><li>1</li><li>2</li><li>3</li></ul>"
+    result = "<ul><li>1</li><li>2</li><li>3</li></ul>"
+    assert str(top_three) == result
     # we make sure rendering is not impacted by generator exhaustion after initial run
-    assert str(top_three) == "<ul><li>1</li><li>2</li><li>3</li></ul>"
+    assert str(top_three) == result
 
 
 def test_html_tag_with_doctype() -> None:
