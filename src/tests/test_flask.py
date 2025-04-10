@@ -1,6 +1,6 @@
 # type:ignore
 import pytest
-from flask import Flask
+from flask import Flask, request, stream_with_context
 
 from markupy import tag
 
@@ -14,7 +14,14 @@ def render():
 
 @app.route("/stream")
 def stream():
-    return iter(tag.H1(".title")["stream"])
+    return iter(tag.H1(".title")[request.args["name"]])
+
+
+@app.route("/stream_context")
+def stream_context():
+    # Here stream_with_context is useless since the View is build before
+    # the streaming starts and context is no longer needed
+    return stream_with_context(tag.H1(".title")[request.args["name"]])
 
 
 @pytest.fixture
@@ -30,6 +37,12 @@ def test_render(client):
 
 
 def test_stream(client):
-    response = client.get("/stream")
+    response = client.get("/stream?name=stream")
     assert response.status_code == 200
     assert response.data.decode() == """<h1 class="title">stream</h1>"""
+
+
+def test_stream_context(client):
+    response = client.get("/stream_context?name=context")
+    assert response.status_code == 200
+    assert response.data.decode() == """<h1 class="title">context</h1>"""
