@@ -83,7 +83,7 @@ Flask supports streaming out of the box ([see docs](https://flask.palletsproject
 ### Streaming by returning a generator
 
 ```python
-from flask import Flask, stream_with_context
+from flask import Flask
 from markupy import Component, View
 from markupy.tag import H1
 
@@ -91,8 +91,7 @@ app = Flask(__name__)
 
 @app.route("/page")
 def page():
-    my_element = H1["Streaming element"]
-    return stream_with_context(chunk for chunk in my_element)
+    return iter(H1["Streaming element"])
 
 class MyComponent(Component):
     def render(self) -> View:
@@ -100,7 +99,7 @@ class MyComponent(Component):
 
 @app.route("/component")
 def component():
-    return stream_with_context(chunk for chunk in MyComponent())
+    return iter(MyComponent())
 ```
 
 ### Streaming by subclassing Flask
@@ -108,7 +107,7 @@ def component():
 Same as above, if you prefer a cleaner syntax that will apply streaming to all your routes, we can adapt our `Flask` subclass:
 
 ```python
-from flask import Flask, stream_with_context
+from flask import Flask
 from markupy import View
 
 class MarkupyStreamFlask(Flask):
@@ -116,7 +115,7 @@ class MarkupyStreamFlask(Flask):
     # from our routes directly when returning them
     def make_response(self, rv):
         if isinstance(rv, View):
-            rv = stream_with_context(chunk for chunk in rv)
+            rv = iter(rv)
         return super().make_response(rv)
 ```
 
@@ -134,7 +133,6 @@ If you prefer to apply this change on a route per route basis, you could also cr
 
 ```python
 from functools import wraps
-from flask import stream_with_context
 from markupy import View
 
 def markupy_stream(f):
@@ -142,7 +140,7 @@ def markupy_stream(f):
     def wrapper(*args, **kwargs):
         rv = f(*args, **kwargs)
         if isinstance(rv, View):
-            return stream_with_context(chunk for chunk in rv)
+            return iter(rv)
         return rv
 
     return wrapper
