@@ -57,7 +57,7 @@ def _iter_classes_seq(seq: ClassNamesSequence) -> Iterator[str]:
     for v in seq:
         if not v:
             continue
-        if isinstance(v, Mapping):
+        elif isinstance(v, Mapping):
             yield from _iter_classes_dict(v)
         else:
             yield v
