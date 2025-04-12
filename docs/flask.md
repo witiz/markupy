@@ -126,31 +126,3 @@ And then in your routes:
 def page():
     return H1["Hello!"]
 ```
-
-### Streaming with route decorators
-
-If you prefer to apply this change on a route per route basis, you could also create a decorator that will take care of the component to stream conversion:
-
-```python
-from functools import wraps
-from markupy import View
-
-def markupy_stream(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        rv = f(*args, **kwargs)
-        if isinstance(rv, View):
-            return iter(rv)
-        return rv
-
-    return wrapper
-```
-
-And then in your routes:
-
-```python
-@app.route("/page")
-@markupy_stream
-def page():
-    return H1["Hello!"]
-```
