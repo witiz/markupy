@@ -59,6 +59,14 @@ def test_component_content() -> None:
     )
 
 
+def test_component_content_escape() -> None:
+    # Make sure component contents are not re-escaped when assigned to element children
+    assert (
+        str(ContentComponent(id="test")['He>"llo'])
+        == """<h1 class="title header" id="test">He&gt;&#34;llo</h1>"""
+    )
+
+
 def test_uninitialized_component() -> None:
     with pytest.raises(MarkupyError):
         tag.P[ComponentFragment]

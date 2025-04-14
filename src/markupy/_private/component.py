@@ -31,13 +31,18 @@ class Component(Fragment):
 
     @final
     def render_content(self) -> View:
+        # Use getattr here to avoid error in case super()__init__ hasn't been called
         if children := getattr(self, "_children", None):
             if len(children) == 1 and isinstance(children[0], View):
                 # Only 1 view child: return it
                 return children[0]
             else:
                 # One non-view child or multiple children: wrap in a fragment
-                return Fragment()[children]
+                # (do not use the [] syntax to avoid re-processing/re-escaping)
+                fragment = Fragment()
+                fragment._children = children
+                return fragment
+
         else:
             # No children or super().__init__() hasn't been called and we are
             # missing the _children attribute: return empty view
