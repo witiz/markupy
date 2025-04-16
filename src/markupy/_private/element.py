@@ -76,7 +76,7 @@ class Element(Shared):
                 selector = arg
             elif isinstance(arg, Mapping):
                 # element({"foo": "bar"})
-                attributes_dict = arg
+                attributes_dict = arg  # type:ignore[reportUnknownVariableType]
             else:
                 raise MarkupyError(
                     f"Invalid argument type {arg!r} for element {self!r}, expected `str` or `Mapping`"
