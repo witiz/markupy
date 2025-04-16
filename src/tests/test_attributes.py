@@ -143,22 +143,22 @@ def test_colon_replacement() -> None:
     )
 
 
-class Test_attribute_escape:
+class Test_value_escape:
     pytestmark = pytest.mark.parametrize(
-        "x",
+        "value",
         [
             '<"foo',
             Markup('<"foo'),
         ],
     )
 
-    def test_dict(self, x: str) -> None:
-        result = Div({x: x})
-        assert str(result) == """<div &lt;&#34;foo="&lt;&#34;foo"></div>"""
+    def test_dict(self, value: str) -> None:
+        result = Div({"bar": value})
+        assert str(result) == """<div bar="&lt;&#34;foo"></div>"""
 
-    def test_kwarg(self, x: str) -> None:
-        result = Div(**{x: x})
-        assert str(result) == """<div &lt;&#34;foo="&lt;&#34;foo"></div>"""
+    def test_kwarg(self, value: str) -> None:
+        result = Div(**{"bar": value})
+        assert str(result) == """<div bar="&lt;&#34;foo"></div>"""
 
 
 def test_boolean_attribute_true() -> None:
@@ -276,10 +276,20 @@ def test_selector_strip() -> None:
     assert str(result) == """<div id="myid" class="myclass other"></div>"""
 
 
-@pytest.mark.parametrize("key", ["  foo  ", "foo bar"])
+@pytest.mark.parametrize(
+    "key",
+    [
+        "  foo  ",
+        "foo bar",
+        '<"foo',
+        Markup('<"foo'),
+    ],
+)
 def test_invalid_key(key: str) -> None:
     with pytest.raises(MarkupyError):
-        Div({key: "a"})
+        Div({key: "bar"})
+    with pytest.raises(MarkupyError):
+        Div(**{key: "bar"})
 
 
 def test_attribute_case() -> None:
