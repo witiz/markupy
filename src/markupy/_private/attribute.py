@@ -11,8 +11,8 @@ from ..exception import MarkupyError
 ClassNamesDict: TypeAlias = Mapping[str, bool | None]
 ClassNamesSequence: TypeAlias = Sequence[None | str | ClassNamesDict]
 ClassAttributeValue: TypeAlias = ClassNamesSequence | ClassNamesDict
-OtherAttributeValue: TypeAlias = None | bool | str | int
-AttributeValue: TypeAlias = OtherAttributeValue | ClassAttributeValue
+PrimitiveAttributeValue: TypeAlias = None | bool | str | int
+AttributeValue: TypeAlias = PrimitiveAttributeValue | ClassAttributeValue
 
 # https://html.spec.whatwg.org/multipage/indices.html#attributes-3
 BOOLEAN_ATTRIBUTES: set[str] = {
@@ -84,32 +84,28 @@ def is_boolean_attribute(name: str) -> bool:
 
 
 def _format_key_value(key: str, value: AttributeValue) -> str:
-    key_str: str = escape(str(key))
     if value is True:
-        return key_str
-    value_str: str = escape(str(value))
-    return f'{key_str}="{value_str}"'
+        return key
+    return f'{key}="{escape(str(value))}"'
 
 
 class AttributeDict(dict[str, AttributeValue]):
     __slots__ = ()
 
     def __setitem__(self, key: str, value: AttributeValue) -> None:
-        if value is False or value is None:
+        if value is None or value is False:
             # Discard False and None valued attributes for all attributes
             return
 
         key = key.lower()
-        if not re_match(r"^\S+$", key):
-            raise MarkupyError(f"Attribute `{key}` has invalid name")
 
         if value is True:
             pass
         elif is_boolean_attribute(key):
-            if isinstance(value, int) and not bool(value):
+            if value == 0:
                 return
             value = True
-        elif value == "" and key in {"id", "class"}:
+        elif value == "" and key in ("id", "class"):
             # Discard empty id or class attributes
             return
 
@@ -154,13 +150,19 @@ class AttributeDict(dict[str, AttributeValue]):
             return
         for key, value in dct.items():
             if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]
-                raise MarkupyError("Attribute key must be a string")
+                raise MarkupyError(f"Attribute {key!r} must be a string")
+            if rewrite_keys:
+                if not key.isidentifier():
+                    raise MarkupyError(f"Attribute `{key}` has invalid name")
+                elif key != "_":
+                    # Preserve single _ for hyperscript
+                    key = _rewrite_attr_key(key)
+            else:
+                # Coming from dict arg, need to secure user input
+                if escape(str(key)) != key or not re_match(r"^\S+$", key):
+                    raise MarkupyError(f"Attribute `{key}` has invalid name")
 
-            if key != "_" and rewrite_keys:
-                # Preserve single _ for hyperscript
-                key = _rewrite_attr_key(key)
-
-            if isinstance(value, OtherAttributeValue):
+            if isinstance(value, PrimitiveAttributeValue):
                 self[key] = value
                 continue
 
