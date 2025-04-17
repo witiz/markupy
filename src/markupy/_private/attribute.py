@@ -149,16 +149,17 @@ class AttributeDict(dict[str, AttributeValue]):
             # Empty dict or None
             return
         for key, value in dct.items():
-            if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]
-                raise MarkupyError(f"Attribute {key!r} must be a string")
             if rewrite_keys:
                 if not key.isidentifier():
+                    # Might happen when using the **{} syntax
                     raise MarkupyError(f"Attribute `{key}` has invalid name")
                 elif key != "_":
                     # Preserve single _ for hyperscript
                     key = _rewrite_attr_key(key)
             else:
                 # Coming from dict arg, need to secure user input
+                if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]
+                    raise MarkupyError(f"Attribute {key!r} must be a string")
                 if escape(str(key)) != key or not re_match(r"^\S+$", key):
                     raise MarkupyError(f"Attribute `{key}` has invalid name")
 

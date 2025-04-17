@@ -1,4 +1,5 @@
 import typing as t
+from datetime import date
 
 import pytest
 from markupsafe import Markup
@@ -278,17 +279,12 @@ def test_selector_strip() -> None:
 
 @pytest.mark.parametrize(
     "key",
-    [
-        "  foo  ",
-        "foo bar",
-        '<"foo',
-        Markup('<"foo'),
-    ],
+    ["", "  foo  ", "foo bar", '<"foo', Markup('<"foo'), date.today()],
 )
 def test_invalid_key(key: str) -> None:
     with pytest.raises(MarkupyError):
         Div({key: "bar"})
-    with pytest.raises(MarkupyError):
+    with pytest.raises((MarkupyError, TypeError)):
         Div(**{key: "bar"})
 
 
