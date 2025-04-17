@@ -41,7 +41,14 @@ def render_markupy_attr() -> str:
     return str(
         Table[
             Thead[Tr[Th["Row #"]]],
-            Tbody[(Tr(".row")[Td(dataValue=row)[row]] for row in rows)],
+            Tbody[
+                (
+                    Tr(".row")[
+                        Td(f"#id-{row}.foo.bar", {"hello": "world"}, dataValue=row)[row]
+                    ]
+                    for row in rows
+                )
+            ],
         ]
     )
 
@@ -59,7 +66,16 @@ def render_htpy_attr() -> str:
     return str(
         table[
             thead[tr[th["Row #"]]],
-            tbody[(tr(".row")[td(data_value=row)[row]] for row in rows)],
+            tbody[
+                (
+                    tr(".row")[
+                        td(f"#id-{row}.foo.bar", {"hello": "world"}, data_value=row)[
+                            row
+                        ]
+                    ]
+                    for row in rows
+                )
+            ],
         ]
     )
 
