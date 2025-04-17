@@ -14,9 +14,22 @@ class ComponentElement(Component):
         return tag.Div(id=self.id)
 
 
+def test_component_element() -> None:
+    assert str(ComponentElement("component")) == """<div id="component"></div>"""
+
+
 class ComponentFragment(Component):
     def render(self) -> View:
         return Fragment[tag.Div, tag.Img]
+
+
+def test_uninitialized_component() -> None:
+    with pytest.raises(MarkupyError):
+        tag.P[ComponentFragment]
+
+
+def test_component_fragment() -> None:
+    assert str(ComponentFragment()) == """<div></div><img>"""
 
 
 class ComponentInComponent(Component):
@@ -24,9 +37,17 @@ class ComponentInComponent(Component):
         return Fragment[tag.Input, ComponentElement("inside")]
 
 
+def test_component_in_component() -> None:
+    assert str(ComponentInComponent()) == """<input><div id="inside"></div>"""
+
+
 class ComponentAsComponent(Component):
     def render(self) -> View:
         return ComponentElement("other")
+
+
+def test_component_as_component() -> None:
+    assert str(ComponentAsComponent()) == """<div id="other"></div>"""
 
 
 class ContentComponent(Component):
@@ -36,22 +57,6 @@ class ContentComponent(Component):
 
     def render(self) -> View:
         return tag.H1(".title.header", id=self.id)[self.render_content()]
-
-
-def test_component_element() -> None:
-    assert str(ComponentElement("component")) == """<div id="component"></div>"""
-
-
-def test_component_fragment() -> None:
-    assert str(ComponentFragment()) == """<div></div><img>"""
-
-
-def test_component_in_component() -> None:
-    assert str(ComponentInComponent()) == """<input><div id="inside"></div>"""
-
-
-def test_component_as_component() -> None:
-    assert str(ComponentAsComponent()) == """<div id="other"></div>"""
 
 
 def test_component_content() -> None:
@@ -67,11 +72,6 @@ def test_component_content_escape() -> None:
         str(ContentComponent(id="test")['He>"llo'])
         == """<h1 class="title header" id="test">He&gt;&#34;llo</h1>"""
     )
-
-
-def test_uninitialized_component() -> None:
-    with pytest.raises(MarkupyError):
-        tag.P[ComponentFragment]
 
 
 class TypeErrorComponent(Component):
