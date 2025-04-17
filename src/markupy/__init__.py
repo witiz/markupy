@@ -6,4 +6,4 @@ from ._private.view import View
 Fragment = Shared()
 
 __all__ = ["Component", "Fragment", "View", "html2markupy"]
-__version__ = "1.3.4"
+__version__ = "1.4.0"
