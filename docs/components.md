@@ -115,7 +115,7 @@ class PostCardListComponent(Component):
 And that's it, we are looping over a list of posts to generate card components that are added as children of another component. Displaying a list of posts as cards is now super easy:
 
 ```python
->>> str(PostCardListComponent(posts=my_posts))
+>>> print(PostCardListComponent(posts=my_posts))
 ```
 
 ### Passing children to components
@@ -124,7 +124,7 @@ Content can be assigned to component the same way we are doing for Fragments or 
 To tell your component where such content needs to be injected when rendering, you need to call the `self.render_content()` reserved method:
 
 ```python
-from markupy import Component, tag
+from markupy import Component, View, tag
 
 class Title(Component):
     def __init__(self, id: str) -> None:
@@ -138,7 +138,7 @@ class Title(Component):
 Then to use this component:
 
 ```python
->>> str(Title(id="headline")["hello ", tag.I(".star.icon")])
+>>> print(Title(id="headline")["hello ", tag.I(".star.icon")])
 ```
 
 This will render as:
@@ -147,6 +147,23 @@ This will render as:
 <h1 class="title header" id="headline">
     hello <i class="star icon"></i>
 </h1>
+```
+
+### Dataclasses components
+
+Components can also be defined as `dataclass`, which allows for a more compact syntax.
+Here's for example what the component above would look like with `@dataclass`:
+
+```python
+from dataclasses import dataclass
+from markupy import Component, View, tag
+
+@dataclass
+class Title(Component):
+    id: str
+
+    def render(self) -> View:
+        return tag.H1(".title.header", id=self.id)[self.render_content()]
 ```
 
 ## Using components to define layouts
