@@ -17,6 +17,10 @@ class Component(Fragment):
         # argument-less super().__init__() autocomplete in user's IDE
         super().__init__()
 
+    def __post_init__(self) -> None:
+        # Allows for simple dataclass Component definition
+        super().__init__()
+
     @final
     def __getitem__(self, content: Any) -> Self:
         if not hasattr(self, "_children"):

@@ -1,3 +1,5 @@
+from dataclasses import dataclass, field
+
 import pytest
 
 from markupy import Component, Fragment, View, tag
@@ -96,3 +98,16 @@ def test_super_error_component() -> None:
     assert str(SuperErrorComponent(id="foo")) == """<h1 id="foo"></h1>"""
     with pytest.raises(MarkupyError):
         SuperErrorComponent(id="foo")["bar"]
+
+
+@dataclass
+class DataComponent(Component):
+    href: str = field(default="https://google.com")
+
+    def render(self) -> View:
+        return tag.A(href=self.href)[self.render_content()]
+
+
+def test_dataclass_component() -> None:
+    result = """<a href="https://google.com">Google</a>"""
+    assert str(DataComponent()["Google"]) == result
