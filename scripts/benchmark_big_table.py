@@ -7,7 +7,7 @@ from django.template import Template as DjangoTemplate
 from htpy import table, tbody, td, th, thead, tr
 from jinja2 import Template as JinjaTemplate
 
-from markupy.tag import Table, Tbody, Td, Th, Thead, Tr
+from markupy.elements import Table, Tbody, Td, Th, Thead, Tr
 
 settings.configure(
     TEMPLATES=[{"BACKEND": "django.template.backends.django.DjangoTemplates"}]

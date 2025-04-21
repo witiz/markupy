@@ -4,27 +4,23 @@ from datetime import date
 import pytest
 from markupsafe import Markup
 
-from markupy.exception import MarkupyError
-from markupy.tag import Button, Div, Input, Th, _
+from markupy.elements import Button, Div, Input, Th, _
+from markupy.exceptions import MarkupyError
 
 
-def test_attribute() -> None:
-    assert str(Input(attr="disabled")) == '<input attr="disabled">'
-    assert str(Input(disabled="disabled")) == "<input disabled>"
+def test_boolean_attribute() -> None:
+    assert str(Input(disabled="whatever")) == """<input disabled="whatever">"""
+    assert str(Input(disabled=0)) == """<input disabled="0">"""
 
 
 def test_true_value() -> None:
     assert str(Input(disabled=True)) == "<input disabled>"
-    assert str(Input(disabled=1)) == "<input disabled>"
     assert str(Input(attr=True)) == "<input attr>"
-    assert str(Input(attr=1)) == '<input attr="1">'
 
 
 def test_false_value() -> None:
     assert str(Input(disabled=False)) == "<input>"
-    assert str(Input(disabled=0)) == "<input>"
     assert str(Input(attr=False)) == "<input>"
-    assert str(Input(attr=0)) == '<input attr="0">'
 
 
 def test_none_value() -> None:
@@ -34,9 +30,9 @@ def test_none_value() -> None:
 
 def test_empty_value() -> None:
     # Different behaviour for boolean attributes vs regular
-    assert str(Input(disabled="")) == """<input disabled>"""
+    assert str(Input(disabled="")) == """<input disabled="">"""
     assert str(Input(attr="")) == """<input attr="">"""
-    assert str(Input(id="", class_="")) == """<input>"""
+    assert str(Input(id="", class_="", name="")) == """<input>"""
 
 
 def test_comment() -> None:
@@ -53,33 +49,6 @@ class Test_class_names:
         result = Div(class_=Markup('">foo bar'))
         assert str(result) == '<div class="&#34;&gt;foo bar"></div>'
 
-    def test_list(self) -> None:
-        result = Div(class_=['">foo', Markup('">bar'), None, "", "baz"])
-        assert str(result) == '<div class="&#34;&gt;foo &#34;&gt;bar baz"></div>'
-
-    def test_tuple(self) -> None:
-        result = Div(class_=('">foo', Markup('">bar'), None, "", "baz"))
-        assert str(result) == '<div class="&#34;&gt;foo &#34;&gt;bar baz"></div>'
-
-    def test_dict(self) -> None:
-        result = Div(
-            class_={'">foo': True, Markup('">bar'): True, "x": False, "baz": True}
-        )
-        assert str(result) == '<div class="&#34;&gt;foo &#34;&gt;bar baz"></div>'
-
-    def test_nested_dict(self) -> None:
-        result = Div(
-            class_=[
-                '">list-foo',
-                Markup('">list-bar'),
-                {'">dict-foo': True, Markup('">list-bar'): True, "x": False},
-            ]
-        )
-        assert (
-            str(result)
-            == """<div class="&#34;&gt;list-foo &#34;&gt;list-bar &#34;&gt;dict-foo &#34;&gt;list-bar"></div>"""
-        )
-
     def test_false(self) -> None:
         result = str(Div(class_=False))
         assert result == "<div></div>"
@@ -87,14 +56,6 @@ class Test_class_names:
     def test_none(self) -> None:
         result = str(Div(class_=None))
         assert result == "<div></div>"
-
-    def test_no_classes(self) -> None:
-        result = str(Div(class_={"foo": False}))
-        assert result == "<div></div>"
-
-    def test_selector_attr_mixed(self) -> None:
-        result = str(Div(".foo", class_={"bar": True, "baz": False}))
-        assert result == """<div class="foo bar"></div>"""
 
 
 def test_dict_attributes() -> None:
@@ -124,23 +85,11 @@ def test_dict_attribute_true() -> None:
     assert str(result) == "<div bool-true></div>"
 
 
-def test_uppercase_replacement() -> None:
-    result = Button(hxPost="/foo")["click me!"]
-    assert str(result) == """<button hx-post="/foo">click me!</button>"""
-
-
-def test_at_replacement() -> None:
-    result = Input(_input_debounce_500ms="fetchResults")
-    assert str(result) == """<input @input.debounce.500ms="fetchResults">"""
-
-
-def test_colon_replacement() -> None:
-    result = Button(
-        hxOn__htmx__configRequest="event.detail.parameters.example = 'Hello Scripting!'"
-    )["Post Me!"]
+def test_underscore_replacement() -> None:
+    result = Button(hx_post="/foo", _="bar", whatever_="ok")["click me!"]
     assert (
         str(result)
-        == """<button hx-on:htmx:config-request="event.detail.parameters.example = &#39;Hello Scripting!&#39;">Post Me!</button>"""
+        == """<button hx-post="/foo" _="bar" whatever="ok">click me!</button>"""
     )
 
 
@@ -223,8 +172,8 @@ def test_invalid_number_of_attributes() -> None:
         Div("#id.cls", {"attr": "val"}, "other")  # type: ignore
 
 
-def test_id_class_and_kwargs() -> None:
-    result = Div("#theid", for_="hello", dataFoo="<bar")
+def test_selector_and_kwargs() -> None:
+    result = Div("#theid", for_="hello", data_foo="<bar")
     assert str(result) == """<div id="theid" for="hello" data-foo="&lt;bar"></div>"""
 
 

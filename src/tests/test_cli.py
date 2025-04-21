@@ -1,7 +1,7 @@
 import pytest
 
 from markupy._private.html import to_markupy
-from markupy.exception import MarkupyError
+from markupy.exceptions import MarkupyError
 
 
 def test_nested_void() -> None:

@@ -3,8 +3,8 @@ from typing import Iterator
 import pytest
 
 from markupy import Fragment
-from markupy.exception import MarkupyError
-from markupy.tag import Div, I, P, Tr
+from markupy.elements import Div, I, P, Tr
+from markupy.exceptions import MarkupyError
 
 
 def test_render_direct() -> None:

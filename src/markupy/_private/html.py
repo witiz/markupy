@@ -7,21 +7,53 @@ from typing import Iterator
 
 from markupsafe import escape
 
-from markupy import tag
+from markupy import elements
 
-from ..exception import MarkupyError
-from .attribute import is_boolean_attribute
+from ..exceptions import MarkupyError
 from .element import VoidElement
 
 _void_elements: set[str] = {
     element.name
-    for element in map(lambda x: getattr(tag, x), tag.__all__)
+    for element in map(lambda x: getattr(elements, x), elements.__all__)
     if isinstance(element, VoidElement)
 }
 
 
 def _is_void_element(name: str) -> bool:
     return name in _void_elements
+
+
+# https://html.spec.whatwg.org/multipage/indices.html#attributes-3
+BOOLEAN_ATTRIBUTES: set[str] = {
+    "allowfullscreen",
+    "async",
+    "autofocus",
+    "autoplay",
+    "checked",
+    "controls",
+    "default",
+    "defer",
+    "disabled",
+    "formnovalidate",
+    "inert",
+    "ismap",
+    "itemscope",
+    "loop",
+    "multiple",
+    "muted",
+    "nomodule",
+    "novalidate",
+    "open",
+    "playsinline",
+    "readonly",
+    "required",
+    "reversed",
+    "selected",
+}
+
+
+def _is_boolean_attribute(name: str) -> bool:
+    return name in BOOLEAN_ATTRIBUTES
 
 
 def _format_attribute_key(key: str) -> str:
@@ -61,7 +93,7 @@ def _format_attrs(
     attrs_dict: dict[str, str | None] = dict()
 
     for key, value in attrs:
-        if is_boolean_attribute(key):
+        if _is_boolean_attribute(key):
             value = None
         elif not value:
             continue
@@ -142,7 +174,7 @@ class MarkupyParser(HTMLParser):
 
         markupy_tag = "".join(map(lambda x: x.capitalize(), tag.split("-")))
         if self.use_import_tag:
-            markupy_tag = f"tag.{markupy_tag}"
+            markupy_tag = f"el.{markupy_tag}"
 
         self.imports.add(markupy_tag)
         self.code_stack.push(markupy_tag)
@@ -198,11 +230,11 @@ class MarkupyParser(HTMLParser):
             markupy_imports.add("Fragment")
         if self.imports:
             if self.use_import_tag:
-                markupy_imports.add("tag")
+                markupy_imports.add("elements as el")
                 # return "from markupy import tag\n"
             else:
                 str_markupy_tag_imports = (
-                    f"from markupy.tag import {','.join(sorted(self.imports))}\n"
+                    f"from markupy.elements import {','.join(sorted(self.imports))}\n"
                 )
         if markupy_imports:
             str_markupy_imports = (

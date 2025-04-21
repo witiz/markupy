@@ -5,7 +5,7 @@ from typing import Any, TypeAlias
 from markupsafe import escape
 from typing_extensions import Self
 
-from ..exception import MarkupyError
+from ..exceptions import MarkupyError
 from .view import View
 
 ChildType: TypeAlias = str | View

@@ -1,7 +1,7 @@
 import cProfile
 
 from markupy import View
-from markupy.tag import Table, Tbody, Td, Th, Thead, Tr
+from markupy.elements import Table, Tbody, Td, Th, Thead, Tr
 
 rows = list(range(50_000))
 

@@ -2,18 +2,18 @@
 from starlette.responses import HTMLResponse, StreamingResponse
 from starlette.testclient import TestClient
 
-from markupy import tag
+from markupy import elements
 
 
 async def render(scope, receive, send):
     assert scope["type"] == "http"
-    response = HTMLResponse(tag.H1(".title")["render"])
+    response = HTMLResponse(elements.H1(".title")["render"])
     await response(scope, receive, send)
 
 
 async def stream(scope, receive, send):
     assert scope["type"] == "http"
-    response = StreamingResponse(iter(tag.H1(".title")["stream"]))
+    response = StreamingResponse(iter(elements.H1(".title")["stream"]))
     await response(scope, receive, send)
 
 

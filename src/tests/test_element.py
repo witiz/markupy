@@ -7,26 +7,26 @@ from markupy._private.element import (
     HtmlElement,
     VoidElement,
 )
-from markupy.exception import MarkupyError
-from markupy.tag import Div, Hr, Html, Input, MyElement, Unknown, _
+from markupy.elements import Div, Hr, Html, Input, MyElement, Unknown, _
+from markupy.exceptions import MarkupyError
 
 
 def test_instance_cache() -> None:
     """
     markupy creates element object dynamically. make sure they are reused.
     """
-    from markupy import tag
+    from markupy import elements
 
-    assert tag.Div is tag.Div
-    assert tag.Div is tag.Div()
-    assert tag.Div is tag.Div(attr=False)
-    assert tag.Div is tag.Div[None]
-    assert tag.Div is tag.Div[True]
-    assert tag.Div is tag.Div[False]
-    assert tag.Div is tag.Div[[]]
-    assert tag.Div is tag.Div[[None]]
-    assert tag.Div is tag.Div[""]
-    assert tag.Div is not tag.Div[0]
+    assert elements.Div is elements.Div
+    assert elements.Div is elements.Div()
+    assert elements.Div is elements.Div(attr=False)
+    assert elements.Div is elements.Div[None]
+    assert elements.Div is elements.Div[True]
+    assert elements.Div is elements.Div[False]
+    assert elements.Div is elements.Div[[]]
+    assert elements.Div is elements.Div[[None]]
+    assert elements.Div is elements.Div[""]
+    assert elements.Div is not elements.Div[0]
 
 
 def test_element_repr() -> None:

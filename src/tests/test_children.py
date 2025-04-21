@@ -6,8 +6,7 @@ import pytest
 from markupsafe import Markup
 
 from markupy._private.element import Element, VoidElement
-from markupy.exception import MarkupyError
-from markupy.tag import (
+from markupy.elements import (
     Dd,
     Div,
     Dl,
@@ -21,6 +20,7 @@ from markupy.tag import (
     Style,
     Ul,
 )
+from markupy.exceptions import MarkupyError
 
 if t.TYPE_CHECKING:
     from collections.abc import Generator

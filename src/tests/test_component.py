@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from markupy import Component, Fragment, View, tag
-from markupy.exception import MarkupyError
+from markupy import Component, Fragment, View, elements
+from markupy.exceptions import MarkupyError
 
 
 class ComponentElement(Component):
@@ -11,7 +11,7 @@ class ComponentElement(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.Div(id=self.id)
+        return elements.Div(id=self.id)
 
 
 def test_component_element() -> None:
@@ -20,12 +20,12 @@ def test_component_element() -> None:
 
 class ComponentFragment(Component):
     def render(self) -> View:
-        return Fragment[tag.Div, tag.Img]
+        return Fragment[elements.Div, elements.Img]
 
 
 def test_uninitialized_component() -> None:
     with pytest.raises(MarkupyError):
-        tag.P[ComponentFragment]
+        elements.P[ComponentFragment]
 
 
 def test_component_fragment() -> None:
@@ -34,7 +34,7 @@ def test_component_fragment() -> None:
 
 class ComponentInComponent(Component):
     def render(self) -> View:
-        return Fragment[tag.Input, ComponentElement("inside")]
+        return Fragment[elements.Input, ComponentElement("inside")]
 
 
 def test_component_in_component() -> None:
@@ -56,12 +56,12 @@ class ContentComponent(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.H1(".title.header", id=self.id)[self.render_content()]
+        return elements.H1(".title.header", id=self.id)[self.render_content()]
 
 
 def test_component_content() -> None:
     assert (
-        str(ContentComponent(id="test")["Hello", tag.Div[tag.Input]])
+        str(ContentComponent(id="test")["Hello", elements.Div[elements.Input]])
         == """<h1 class="title header" id="test">Hello<div><input></div></h1>"""
     )
 
@@ -91,7 +91,7 @@ class SuperErrorComponent(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.H1(id=self.id)
+        return elements.H1(id=self.id)
 
 
 def test_super_error_component() -> None:
@@ -105,7 +105,7 @@ class DataComponent(Component):
     href: str = field(default="https://google.com")
 
     def render(self) -> View:
-        return tag.A(href=self.href)[self.render_content()]
+        return elements.A(href=self.href)[self.render_content()]
 
 
 def test_dataclass_component() -> None:
