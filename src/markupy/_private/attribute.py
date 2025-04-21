@@ -1,4 +1,4 @@
-from collections.abc import Iterable, Mapping
+from collections.abc import Mapping
 from functools import lru_cache
 from re import match as re_match
 from typing import TypeAlias
@@ -16,10 +16,6 @@ class Attribute:
     def __init__(self, name: str, value: AttributeValue):
         self.name = name
         self.value = value
-
-
-def _classes_to_str(classes: Iterable[str]) -> str:
-    return " ".join(map(lambda c: c.strip(), filter(None, classes)))
 
 
 @lru_cache(maxsize=1000)
@@ -49,14 +45,13 @@ class AttributeDict(dict[str, AttributeValue]):
         if (
             value is None
             or value is False
-            or (value == "" and key in ("id", "class", "name"))
+            or (value == "" and key in {"id", "class", "name"})
         ):
             # Discard False and None valued attributes for all attributes
             # Discard empty id, class, name attributes
             return
 
         key = key.lower()
-
         if key == "class":
             if current := self.get(key):
                 value = f"{current} {value}"
@@ -67,22 +62,17 @@ class AttributeDict(dict[str, AttributeValue]):
         return " ".join(_format_key_value(k, v) for k, v in self.items())
 
     def add_selector(self, selector: str) -> None:
-        selector = selector.replace(".", " ").strip()
-        parts = selector.split()
-        hash_indexes = [i for i, c in enumerate(selector) if c == "#"]
-
-        if len(hash_indexes) > 1:
-            raise MarkupyError("Id must be defined only once in selector")
-
-        elif len(hash_indexes) == 1:
-            if hash_indexes[0] != 0:
-                raise MarkupyError("Id must be defined at the start of selector")
-
-            self["id"] = parts[0][1:]
-            self["class"] = _classes_to_str(parts[1:])
-
-        else:
-            self["class"] = _classes_to_str(parts)
+        if selector := selector.replace(".", " ").strip():
+            if "#" in selector[1:]:
+                raise MarkupyError(
+                    "Id must be defined only once in first position of selector"
+                )
+            parts = selector.split()
+            if selector.startswith("#"):
+                self["id"] = parts[0][1:]
+                self["class"] = " ".join((parts[1:]))
+            else:
+                self["class"] = " ".join(parts)
 
     def add_dict(
         self,
