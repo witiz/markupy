@@ -6,7 +6,7 @@ markupy elements can be passed directly to `HttpResponse`:
 
 ```py title="views.py"
 from django.http import HttpResponse
-from markupy.tag import H1
+from markupy.elements import H1
 
 def my_view(request):
     return HttpResponse(H1["Hi Django!"])
@@ -32,7 +32,7 @@ existing template based Django project:
 ```py title="views.py"
 from django.shortcuts import render
 
-from markupy.tag import H1
+from markupy.elements import H1
 
 
 def index(request):
@@ -74,7 +74,7 @@ from django.http import HttpRequest
 from django.template.backends.utils import csrf_input
 
 from markupy import View
-from markupy.tag import Body, Button, Form, H1, Head, Html, Title
+from markupy.elements import Body, Button, Form, H1, Head, Html, Title
 
 from .forms import MyForm
 
@@ -112,7 +112,7 @@ You can implement a custom form widget directly with markupy like this:
 ```py title="widgets.py"
 from django.forms import widgets
 
-from markupy.tag import SlInput
+from markupy.elements import SlInput
 
 
 class ShoelaceInput(widgets.Widget):

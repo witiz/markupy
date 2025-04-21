@@ -2,10 +2,10 @@
 
 ## Elements
 
-HTML elements are imported directly from the `markupy.tag` module as their name using the CapitalizedCase syntax. Although HTML elements are usually spelled in lower case, using CapitalizedCase in markupy avoids naming conflicts with your own variables and makes it easier to distinguish markupy tags vs other parts of your code.
+HTML elements are imported directly from the `markupy.elements` module as their name using the CapitalizedCase syntax. Although HTML elements are usually spelled in lower case, using CapitalizedCase in markupy avoids naming conflicts with your own variables and makes it easier to distinguish markupy tags vs other parts of your code.
 
 ```python title="Importing elements"
->>> from markupy.tag import Div
+>>> from markupy.elements import Div
 >>> print(Div)
 <div></div>
 ```
@@ -15,7 +15,7 @@ HTML elements are imported directly from the `markupy.tag` module as their name 
 HTML attributes are specified by using parenthesis `()` syntax on an element.
 
 ```python title="Element attributes"
->>> from markupy.tag import Div
+>>> from markupy.elements import Div
 >>> print(Div(id="container", style="color:red"))
 <div id="container" style="color:red"></div>
 ```
@@ -28,7 +28,7 @@ Children can be strings, ints, markup, other elements or lists/iterators.
 Elements can be arbitrarily nested:
 
 ```python title="Nested elements"
->>> from markupy.tag import Article, Section, P
+>>> from markupy.elements import Article, Section, P
 >>> print(Section[Article[P["Lorem ipsum"]]])
 <section><article><p>Lorem ipsum</p></article></section>
 ```
@@ -42,7 +42,7 @@ Elements can be arbitrarily nested:
 It is possible to pass a string directly as an element's child:
 
 ```python title="Using a string as children"
->>> from markupy.tag import H1
+>>> from markupy.elements import H1
 >>> print(H1["Welcome to my site!"])
 <h1>Welcome to my site!</h1>
 ```
@@ -51,7 +51,7 @@ Strings are automatically escaped to avoid [XSS vulnerabilities](https://owasp.o
 It is convenient and safe to directly insert variable data via f-strings:
 
 ```python
->>> from markupy.tag import H1
+>>> from markupy.elements import H1
 >>> user_supplied_name = "bobby </h1>"
 >>> print(H1[f"hello {user_supplied_name}"])
 <h1>hello bobby &lt;/h1&gt;</h1>
@@ -69,7 +69,7 @@ it in `Markup` from the [markupsafe](https://markupsafe.palletsprojects.com/)
 library. markupsafe is a dependency of markupy and is automatically installed:
 
 ```python title="Injecting markup"
->>> from markupy.tag import Div
+>>> from markupy.elements import Div
 >>> from markupsafe import Markup
 >>> print(Div[Markup("<foo></foo>")])
 <div><foo></foo></div>
@@ -80,7 +80,7 @@ If you are generate [Markdown](https://pypi.org/project/Markdown/) and want to i
 ```python title="Injecting generated markdown"
 >>> from markdown import markdown
 >>> from markupsafe import Markup
->>> from markupy.tag import Div
+>>> from markupy.elements import Div
 >>> print(Div[Markup(markdown('# Hi'))])
 <div><h1>Hi</h1></div>
 ```
@@ -93,7 +93,7 @@ You can use this to conditionally render content with inline `and` and `or`.
 
 ```python title="Conditional rendering with a value that may be None"
 
->>> from markupy.tag import Div, Strong
+>>> from markupy.elements import Div, Strong
 
 # No <strong> tag will be rendered since error is None
 >>> error = None
@@ -110,7 +110,7 @@ You can use this to conditionally render content with inline `and` and `or`.
 ```
 
 ```python title="Conditional rendering based on a bool variable"
->>> from markupy.tag import Div
+>>> from markupy.elements import Div
 
 >>> is_allowed = True
 >>> print(Div[is_allowed and "Access granted!"])
@@ -130,7 +130,7 @@ You can use this to conditionally render content with inline `and` and `or`.
 Fragments allow you to wrap a group of nodes (not necessarily elements) so that they can be rendered without a wrapping element.
 
 ```python
->>> from markupy.tag import P, I, Fragment
+>>> from markupy.elements import P, I, Fragment
 >>> content = Fragment["Hello ", None, I["world!"]]
 >>> print(content)
 Hello <i>world!</i>
@@ -144,7 +144,7 @@ Hello <i>world!</i>
 You can pass a list, tuple or generator to generate multiple children:
 
 ```python title="Iterate over a generator"
->>> from markupy.tag import Ul, Li
+>>> from markupy.elements import Ul, Li
 >>> print(Ul[(Li[letter] for letter in "abc")])
 <ul><li>a</li><li>b</li><li>c</li></ul>
 ```
@@ -157,7 +157,7 @@ You can pass a list, tuple or generator to generate multiple children:
 A `list` can be used similar to a [JSX fragment](https://react.dev/reference/react/Fragment):
 
 ```python title="Render a list of child elements"
->>> from markupy.tag import Div, Img
+>>> from markupy.elements import Div, Img
 >>> my_images = [Img(src="a.jpg"), Img(src="b.jpg")]
 >>> print(Div[my_images])
 <div><img src="a.jpg"><img src="b.jpg"></div>
@@ -168,7 +168,7 @@ A `list` can be used similar to a [JSX fragment](https://react.dev/reference/rea
 [Custom elements / web components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) are HTML elements that contains at least one dash (`-`). Since `-` cannot be used in Python identifiers, here's how you'd write them in markupy:
 
 ```python title="Custom elements with CapitalizedCase syntax"
->>> from markupy.tag import MyCustomElement
+>>> from markupy.elements import MyCustomElement
 >>> print(MyCustomElement['hi!'])
 <my-custom-element>hi!</my-custom-element>
 ```
@@ -178,7 +178,7 @@ A `list` can be used similar to a [JSX fragment](https://react.dev/reference/rea
 The [HTML5 doctype](https://developer.mozilla.org/en-US/docs/Glossary/Doctype) is automatically prepended to the `<html>` tag:
 
 ```python
->>> from markupy.tag import Html
+>>> from markupy.elements import Html
 >>> print(Html)
 <!doctype html><html></html>
 ```
@@ -191,7 +191,7 @@ the code, most of the time regular Python comments (`#`) are used.
 If you want to emit HTML comments that will be visible in the browser, you need to initialize a special element whose name is `_`:
 
 ```python
->>> from markupy.tag import Div, _
+>>> from markupy.elements import Div, _
 >>> print(Div[_["This is a HTML comment"]])
 <div><!--This is a HTML comment--></div>
 ```
@@ -199,7 +199,7 @@ If you want to emit HTML comments that will be visible in the browser, you need 
 Given that a comment is a `Element`, you can wrap other elements as children:
 
 ```python
->>> from markupy.tag import Div, Strong, _
+>>> from markupy.elements import Div, Strong, _
 >>> print(Div[_["This is a HTML comment", Strong["Hidden text"]]])
 <div><!--This is a HTML comment<strong>Hidden text</strong>--></div>
 ```
@@ -217,7 +217,7 @@ HTML attributes are defined by calling the element. They can be specified in a c
 For elements that do not have attributes, they can be specified by just the element itself:
 
 ```python
->>> from markupy.tag import Hr
+>>> from markupy.elements import Hr
 >>> print(Hr)
 <hr>
 ```
@@ -227,7 +227,7 @@ For elements that do not have attributes, they can be specified by just the elem
 Attributes can be specified via keyword arguments:
 
 ```python
->>> from markupy.tag import Img
+>>> from markupy.elements import Img
 >>> print(Img(src="picture.jpg"))
 <img src="picture.jpg">
 ```
@@ -235,7 +235,7 @@ Attributes can be specified via keyword arguments:
 In Python, some names such as `class` and `for` are reserved and cannot be used as keyword arguments. Instead, they can be specified as `class_` or `for_` when using keyword arguments:
 
 ```python
->>> from markupy.tag import Label
+>>> from markupy.elements import Label
 >>> print(Label(for_="myfield"))
 <label for="myfield"></label>
 ```
@@ -243,7 +243,7 @@ In Python, some names such as `class` and `for` are reserved and cannot be used 
 Attributes that contains dashes `-` can be specified using mixedCase syntax:
 
 ```python
->>> from markupy.tag import Form
+>>> from markupy.elements import Form
 >>> print(Form(hxPost="/foo"))
 <form hx-post="/foo"></form>
 ```
@@ -270,19 +270,19 @@ Defining `id` and `class` attributes is common when writing HTML. A string short
 that looks like a CSS selector can be used to quickly define id and classes:
 
 ```python title="Define id"
->>> from markupy.tag import Div
+>>> from markupy.elements import Div
 >>> print(Div("#myid"))
 <div id="myid"></div>
 ```
 
 ```python title="Define multiple classes"
->>> from markupy.tag import Div
+>>> from markupy.elements import Div
 >>> print(Div(".foo.bar"))
 <div class="foo bar"></div>
 ```
 
 ```python title="Combining both id and classes"
->>> from markupy.tag import Div
+>>> from markupy.elements import Div
 >>> print(Div("#myid.foo.bar"))
 <div id="myid" class="foo bar"></div>
 ```
@@ -299,13 +299,13 @@ attribute name contains special characters or when you want to define attributes
 dynamically.
 
 ```python title="Using Alpine.js with @-syntax (shorthand for x-on)"
->>> from markupy.tag import Button
+>>> from markupy.elements import Button
 >>> print(Button({"@click.shift": "addToSelection()"}))
 <button @click.shift="addToSelection()"></button>
 ```
 
 ```python title="Using an attribute with a reserved keyword"
->>> from markupy.tag import Label
+>>> from markupy.elements import Label
 >>> print(Label({"for": "myfield"}))
 <label for="myfield"></label>
 ```
@@ -318,13 +318,13 @@ exist. Specifying an attribute as `True` will make it appear (without a value).
 HTML.
 
 ```python title="True bool attribute"
->>> from markupy.tag import Button
+>>> from markupy.elements import Button
 >>> print(Button(disabled=True))
 <button disabled></button>
 ```
 
 ```python title="False bool attribute"
->>> from markupy.tag import Button
+>>> from markupy.elements import Button
 >>> print(Button(disabled=False))
 <button></button>
 ```
@@ -335,7 +335,7 @@ To make it easier to mix CSS classes, the `class` attribute
 accepts a list of class names or a dict. Falsey values will be ignored.
 
 ```python
->>> from markupy.tag import Button
+>>> from markupy.elements import Button
 >>> is_primary = True
 >>> print(Button(class_=["btn", {"btn-primary": is_primary}]))
 <button class="btn btn-primary"></button>
@@ -350,7 +350,7 @@ accepts a list of class names or a dict. Falsey values will be ignored.
 Attributes via id/class shorthand, keyword arguments and dictionary can be combined:
 
 ```python title="Specifying attribute via multiple arguments"
->>> from markupy.tag import Label
+>>> from markupy.elements import Label
 >>> print(Label("#myid.foo.bar", {"for": "somefield"}, name="myname",))
 <label id="myid" class="foo bar" for="somefield" name="myname"></label>
 ```
@@ -367,7 +367,7 @@ fragments or scripts as attributes. The output may look a bit obfuscated since
 all unsafe characters are escaped but the browser will interpret it correctly:
 
 ```python
->>> from markupy.tag import Button
+>>> from markupy.elements import Button
 >>> print(Button(id="example", onclick="let name = 'bob'; alert('hi' + name);")["Say hi"])
 <button onclick="let name = &#39;bob&#39;; alert(&#39;hi&#39; + name);">Say hi</button>
 ```
@@ -381,7 +381,7 @@ or not. This may seem confusing at first but is useful when embedding HTML
 snippets as attributes:
 
 ```python title="Escaping of Markup"
->>> from markupy.tag import Ul
+>>> from markupy.elements import Ul
 >>> from markupsafe import Markup
 >>> # This markup may come from another library/template engine
 >>> some_markup = Markup("""<li class="bar"></li>""")
@@ -395,7 +395,7 @@ Iterating over a markupy element will yield the resulting contents in chunks as
 they are rendered:
 
 ```python
->>> from markupy.tag import Ul, Li
+>>> from markupy.elements import Ul, Li
 >>> for chunk in Ul[Li["a"], Li["b"]]:
 ...     print(f"got a chunk: {chunk!r}")
 ...

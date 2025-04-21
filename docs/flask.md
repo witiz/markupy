@@ -7,7 +7,7 @@ Rendering markupy elements or components in flask is as easy as return a stringi
 ```python
 from flask import Flask
 from markupy import Component, View
-from markupy.tag import H1
+from markupy.elements import H1
 
 app = Flask(__name__)
 
@@ -53,7 +53,7 @@ And then our previous example becomes like this (basically we instantiate Markup
 
 from my_flask import MarkupyFlask
 from markupy import Component, View
-from markupy.tag import H1
+from markupy.elements import H1
 
 app = MarkupyFlask(__name__)
 
@@ -85,7 +85,7 @@ Flask supports streaming out of the box ([see docs](https://flask.palletsproject
 ```python
 from flask import Flask
 from markupy import Component, View
-from markupy.tag import H1
+from markupy.elements import H1
 
 app = Flask(__name__)
 

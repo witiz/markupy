@@ -6,7 +6,7 @@ markupy is a plain Python alternative to traditional templates engines for gener
 
 ```python
 # Import "tags" like they were regular Python objects
-from markupy.tag import A, Body, Head, Html, Li, P, Title, Ul
+from markupy.elements import A, Body, Head, Html, Li, P, Title, Ul
 
 menu = [("Home", "/"), ("About us", "/about"), ("Contact", "/contact")]
 print(
