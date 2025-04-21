@@ -20,7 +20,7 @@ def main() -> None:
         default=False,
     )
     parser.add_argument(
-        "--tag-prefix",
+        "--el-prefix",
         action=argparse.BooleanOptionalAction,
         help="Output mode for imports of markupy elements",
         default=False,
@@ -42,13 +42,13 @@ def main() -> None:
 
     use_selector: bool = args.selector
     use_dict: bool = args.dicts_attrs
-    use_import_tag: bool = args.tag_prefix
+    use_import_el: bool = args.el_prefix
 
     print(
         to_markupy(
             html,
             use_selector=use_selector,
             use_dict=use_dict,
-            use_import_tag=use_import_tag,
+            use_import_el=use_import_el,
         )
     )

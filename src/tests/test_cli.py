@@ -106,7 +106,7 @@ def test_self_closing() -> None:
 def test_use_import_tag() -> None:
     html = """<div>hello</div>"""
     py = """from markupy import elements as el\nel.Div["hello"]"""
-    assert to_markupy(html, use_import_tag=True) == py
+    assert to_markupy(html, use_import_el=True) == py
 
 
 def test_use_selector() -> None:

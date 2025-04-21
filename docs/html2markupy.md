@@ -16,7 +16,7 @@ The utility command `html2markupy` ships with `markupy`, and can be used to tran
 
 ```bash
 $ html2markupy -h
-usage: html2markupy [-h] [--selector | --no-selector] [--dict-attrs | --no-dict-attrs] [--tag-prefix | --no-tag-prefix] [input]
+usage: html2markupy [-h] [--selector | --no-selector] [--dict-attrs | --no-dict-attrs] [--el-prefix | --no-el-prefix] [input]
 
 positional arguments:
   input                 input HTML from file or stdin
@@ -27,7 +27,7 @@ options:
                         Use the selector #id.class syntax instead of explicit `id` and `class_` attributes (default: True)
   --dict-attrs, --no-dict-attrs
                         Prefer dict attributes (default: False)
-  --tag-prefix, --no-tag-prefix
+  --el-prefix, --no-el-prefix
                         Output mode for imports of markupy elements (default: False)
 ```
 
@@ -98,11 +98,11 @@ You can adapt the markupy conversion with a couple of options.
 
 #### Imports management
 
-Some people prefer to `import markupy as tag` instead of importing individual elements `from markupy.elements`.
-If this is you, you can use the `--tag-prefix` option to get corresponding output when using `html2markupy`.
+Some people prefer to `from markupy import elements as el` instead of importing individual elements `from markupy.elements`.
+If this is you, you can use the `--el-prefix` option to get corresponding output when using `html2markupy`.
 
 
-=== "--no-tag-prefix (default)"
+=== "--no-el-prefix (default)"
 
     ```python
     from markupy.elements import A, Section
@@ -112,7 +112,7 @@ If this is you, you can use the `--tag-prefix` option to get corresponding outpu
     ]
     ```
 
-=== "--tag-prefix"
+=== "--el-prefix"
 
     ```python
     from markupy import elements as el

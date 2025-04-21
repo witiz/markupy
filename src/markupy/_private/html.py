@@ -154,13 +154,13 @@ class Stack:
 
 class MarkupyParser(HTMLParser):
     def __init__(
-        self, *, use_selector: bool, use_dict: bool, use_import_tag: bool
+        self, *, use_selector: bool, use_dict: bool, use_import_el: bool
     ) -> None:
         self.count_top_level: int = 0
         self.code_stack: Stack = Stack()
         self.unclosed_stack: Stack = Stack()
         self.imports: set[str] = set()
-        self.use_import_tag: bool = use_import_tag
+        self.use_import_el: bool = use_import_el
         self.use_dict: bool = use_dict
         self.use_selector: bool = use_selector
         super().__init__()
@@ -173,7 +173,7 @@ class MarkupyParser(HTMLParser):
             self.unclosed_stack.push(tag)
 
         markupy_tag = "".join(map(lambda x: x.capitalize(), tag.split("-")))
-        if self.use_import_tag:
+        if self.use_import_el:
             markupy_tag = f"el.{markupy_tag}"
 
         self.imports.add(markupy_tag)
@@ -229,7 +229,7 @@ class MarkupyParser(HTMLParser):
         if self.count_top_level > 1:
             markupy_imports.add("Fragment")
         if self.imports:
-            if self.use_import_tag:
+            if self.use_import_el:
                 markupy_imports.add("elements as el")
                 # return "from markupy import tag\n"
             else:
@@ -277,10 +277,10 @@ def to_markupy(
     *,
     use_selector: bool = True,
     use_dict: bool = False,
-    use_import_tag: bool = False,
+    use_import_el: bool = False,
 ) -> str:
     parser = MarkupyParser(
-        use_selector=use_selector, use_dict=use_dict, use_import_tag=use_import_tag
+        use_selector=use_selector, use_dict=use_dict, use_import_el=use_import_el
     )
     parser.feed(_template_process(html))
     parser.close()
