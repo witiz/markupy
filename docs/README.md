@@ -5,7 +5,7 @@ markupy is a plain Python alternative to traditional templates engines for gener
 **Writing this code in Python with markupy...**
 
 ```python
-# Import "tags" like they were regular Python objects
+# Import "elements" like they were regular Python objects
 from markupy.elements import A, Body, Head, Html, Li, P, Title, Ul
 
 menu = [("Home", "/"), ("About us", "/about"), ("Contact", "/contact")]
@@ -55,7 +55,7 @@ If this is you struggling with templates, then you should definitely give markup
 
 ## Inspiration
 
-markupy started as a fork of [htpy](https://htpy.dev). Even though the two projects are still conceptually very similar, we started markupy in order to support a slightly different syntax to optimize readability, reduce risk of conflicts with variables, and better support for non native html attributes syntax as python kwargs. On top of that, markupy provides a first class support for class based components.
+markupy started as a fork of [htpy](https://htpy.dev). Even though the two projects are still conceptually very similar, we started markupy in order to support a slightly different syntax to optimize readability, reduce risk of conflicts with variables, and better support for non native html attributes syntax. On top of that, markupy provides a first class support for class based components.
 
 ## Key Features
 

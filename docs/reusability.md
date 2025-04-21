@@ -1,8 +1,22 @@
-# Components
+# Reusability with Fragments and Components
+
+## Fragments
+
+Fragments allow you to wrap a group of nodes (not necessarily elements) so that they can be rendered without a wrapping element.
+
+```python
+>>> from markupy.elements import P, I, Fragment
+>>> content = Fragment["Hello ", None, I["world!"]]
+>>> print(content)
+Hello <i>world!</i>
+
+>>> print(P[content])
+<p>Hello <i>world!</i></p>
+```
+
+## Components
 
 Although markupy intend to remain a generic library to allow you generate HTML, it also provides a powerful support for components in order to build reusable chunks of HTML.
-
-## Create reusable fragments with components
 
 ### Building your first component
 
