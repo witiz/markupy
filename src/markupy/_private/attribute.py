@@ -65,7 +65,7 @@ class AttributeDict(dict[str, AttributeValue]):
         if selector := selector.replace(".", " ").strip():
             if "#" in selector[1:]:
                 raise MarkupyError(
-                    "Id must be defined only once in first position of selector"
+                    "Id must be defined only once and must be in first position of selector"
                 )
             parts = selector.split()
             if selector.startswith("#"):
