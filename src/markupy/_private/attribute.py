@@ -59,18 +59,14 @@ class AttributeDict(dict[str, AttributeValue]):
 
         if key == "class":
             if current := self.get(key):
-                value = f"{self['class']} {current}"
+                value = f"{current} {value}"
 
         return super().__setitem__(key, value)
 
     def __str__(self) -> str:
         return " ".join(_format_key_value(k, v) for k, v in self.items())
 
-    def add_selector(self, selector: str | None) -> None:
-        if not selector:
-            # Empty selector or None
-            return
-
+    def add_selector(self, selector: str) -> None:
         selector = selector.replace(".", " ").strip()
         parts = selector.split()
         hash_indexes = [i for i, c in enumerate(selector) if c == "#"]
@@ -90,13 +86,10 @@ class AttributeDict(dict[str, AttributeValue]):
 
     def add_dict(
         self,
-        dct: Mapping[str, AttributeValue] | None,
+        dct: Mapping[str, AttributeValue],
         *,
         rewrite_keys: bool = False,
     ) -> None:
-        if not dct:
-            # Empty dict or None
-            return
         for key, value in dct.items():
             if not isinstance(value, AttributeValue):  # type: ignore[unused-ignore]
                 raise MarkupyError(

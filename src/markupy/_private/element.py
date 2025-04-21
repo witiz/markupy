@@ -162,30 +162,34 @@ class Element(Shared):
             return self
 
         attrs = AttributeDict()
-        try:
-            attrs.add_selector(selector)
-        except Exception as e:
-            raise MarkupyError(
-                f"Invalid selector string `{selector}` for element {self!r}"
-            ) from e
-        try:
-            attrs.add_dict(attributes_dict)
-        except Exception as e:
-            raise MarkupyError(
-                f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
-            ) from e
-        try:
-            attrs.add_objs(attributes_obj)
-        except Exception as e:
-            raise MarkupyError(
-                f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
-            ) from e
-        try:
-            attrs.add_dict(attributes_kwargs, rewrite_keys=True)
-        except Exception as e:
-            raise MarkupyError(
-                f"Invalid keyword attributes `{attributes_kwargs}` for element {self!r}"
-            ) from e
+        if selector:
+            try:
+                attrs.add_selector(selector)
+            except Exception as e:
+                raise MarkupyError(
+                    f"Invalid selector string `{selector}` for element {self!r}"
+                ) from e
+        if attributes_dict:
+            try:
+                attrs.add_dict(attributes_dict)
+            except Exception as e:
+                raise MarkupyError(
+                    f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
+                ) from e
+        if attributes_obj:
+            try:
+                attrs.add_objs(attributes_obj)
+            except Exception as e:
+                raise MarkupyError(
+                    f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
+                ) from e
+        if attributes_kwargs:
+            try:
+                attrs.add_dict(attributes_kwargs, rewrite_keys=True)
+            except Exception as e:
+                raise MarkupyError(
+                    f"Invalid keyword attributes `{attributes_kwargs}` for element {self!r}"
+                ) from e
 
         if attributes := str(attrs):
             el = self._get_instance()

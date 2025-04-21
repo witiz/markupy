@@ -4,85 +4,23 @@ from datetime import date
 import pytest
 from markupsafe import Markup
 
-from markupy.elements import Button, Div, Input, Th, _
+from markupy import attributes as attr
+from markupy.elements import Button, Div, Input, _
 from markupy.exceptions import MarkupyError
 
 
-def test_boolean_attribute() -> None:
-    assert str(Input(disabled="whatever")) == """<input disabled="whatever">"""
-    assert str(Input(disabled=0)) == """<input disabled="0">"""
-
-
-def test_true_value() -> None:
-    assert str(Input(disabled=True)) == "<input disabled>"
-    assert str(Input(attr=True)) == "<input attr>"
-
-
-def test_false_value() -> None:
-    assert str(Input(disabled=False)) == "<input>"
-    assert str(Input(attr=False)) == "<input>"
-
-
-def test_none_value() -> None:
-    assert str(Input(disabled=None)) == "<input>"
-    assert str(Input(attr=None)) == "<input>"
-
-
-def test_empty_value() -> None:
-    # Different behaviour for boolean attributes vs regular
-    assert str(Input(disabled="")) == """<input disabled="">"""
-    assert str(Input(attr="")) == """<input attr="">"""
-    assert str(Input(id="", class_="", name="")) == """<input>"""
+def test_order() -> None:
+    with pytest.raises(MarkupyError):
+        Input({"foo": "bar"}, "selector")  # type: ignore
+    with pytest.raises(MarkupyError):
+        Input(attr.id("cool"), {"foo": "bar"})  # type: ignore
+    with pytest.raises(MarkupyError):
+        Input(attr.disabled(), "#foo.bar")  # type: ignore
 
 
 def test_comment() -> None:
     with pytest.raises(MarkupyError):
         _(attr="foo")
-
-
-class Test_class_names:
-    def test_str(self) -> None:
-        result = Div(class_='">foo bar')
-        assert str(result) == '<div class="&#34;&gt;foo bar"></div>'
-
-    def test_safestring(self) -> None:
-        result = Div(class_=Markup('">foo bar'))
-        assert str(result) == '<div class="&#34;&gt;foo bar"></div>'
-
-    def test_false(self) -> None:
-        result = str(Div(class_=False))
-        assert result == "<div></div>"
-
-    def test_none(self) -> None:
-        result = str(Div(class_=None))
-        assert result == "<div></div>"
-
-
-def test_dict_attributes() -> None:
-    result = Div({"@click": 'hi = "hello"'})
-
-    assert str(result) == """<div @click="hi = &#34;hello&#34;"></div>"""
-
-
-def test_underscore() -> None:
-    # Hyperscript (https://hyperscript.org/) uses _, make sure it works good.
-    result = Div(_="foo")
-    assert str(result) == """<div _="foo"></div>"""
-
-
-def test_dict_attributes_avoid_replace() -> None:
-    result = Div({"class_": "foo", "hello_hi": "abc"})
-    assert str(result) == """<div class_="foo" hello_hi="abc"></div>"""
-
-
-def test_dict_attribute_false() -> None:
-    result = Div({"bool-false": False})
-    assert str(result) == "<div></div>"
-
-
-def test_dict_attribute_true() -> None:
-    result = Div({"bool-true": True})
-    assert str(result) == "<div bool-true></div>"
 
 
 def test_underscore_replacement() -> None:
@@ -97,18 +35,27 @@ class Test_value_escape:
     pytestmark = pytest.mark.parametrize(
         "value",
         [
-            '<"foo',
-            Markup('<"foo'),
+            '.<"foo',
+            Markup('.<"foo'),
         ],
     )
 
+    def test_selector(self, value: str) -> None:
+        result = Div(value)
+        assert str(result) == """<div class="&lt;&#34;foo"></div>"""
+
     def test_dict(self, value: str) -> None:
         result = Div({"bar": value})
-        assert str(result) == """<div bar="&lt;&#34;foo"></div>"""
+        assert str(result) == """<div bar=".&lt;&#34;foo"></div>"""
 
     def test_kwarg(self, value: str) -> None:
         result = Div(**{"bar": value})
-        assert str(result) == """<div bar="&lt;&#34;foo"></div>"""
+        assert str(result) == """<div bar=".&lt;&#34;foo"></div>"""
+
+
+def test_boolean_attribute() -> None:
+    assert str(Input(disabled="whatever")) == """<input disabled="whatever">"""
+    assert str(Input(disabled=0)) == """<input disabled="0">"""
 
 
 def test_boolean_attribute_true() -> None:
@@ -116,60 +63,9 @@ def test_boolean_attribute_true() -> None:
     assert str(result) == "<button disabled></button>"
 
 
-def test_kwarg_attribute_none() -> None:
-    result = Div(foo=None)
-    assert str(result) == "<div></div>"
-
-
-def test_dict_attribute_none() -> None:
-    result = Div({"foo": None})
-    assert str(result) == "<div></div>"
-
-
 def test_boolean_attribute_false() -> None:
     result = Button(disabled=False)
     assert str(result) == "<button></button>"
-
-
-def test_integer_attribute() -> None:
-    result = Th(colspan=123, tabindex=0)
-    assert str(result) == '<th colspan="123" tabindex="0"></th>'
-
-
-def test_selector() -> None:
-    result = Div("#myid.cls1.cls2")
-
-    assert str(result) == """<div id="myid" class="cls1 cls2"></div>"""
-
-
-def test_selector_only_id() -> None:
-    result = Div("#myid")
-    assert str(result) == """<div id="myid"></div>"""
-
-
-def test_selector_only_classes() -> None:
-    result = Div(".foo.bar")
-    assert str(result) == """<div class="foo bar"></div>"""
-
-
-def test_selector_empty_classes() -> None:
-    result = Div(".foo..bar.")
-    assert str(result) == """<div class="foo bar"></div>"""
-
-
-def test_selector_classes_space_separator() -> None:
-    result = Div("foo bar")
-    assert str(result) == """<div class="foo bar"></div>"""
-
-
-def test_selector_bad_type() -> None:
-    with pytest.raises(MarkupyError):
-        Div({"oops": "yes"}, {})  # type: ignore
-
-
-def test_invalid_number_of_attributes() -> None:
-    with pytest.raises(MarkupyError):
-        Div("#id.cls", {"attr": "val"}, "other")  # type: ignore
 
 
 def test_selector_and_kwargs() -> None:
@@ -183,16 +79,17 @@ def test_attrs_and_kwargs() -> None:
 
 
 def test_class_priority() -> None:
-    result = Div(".a", {"class": "b"}, class_="c")
-    assert str(result) == """<div class="a b c"></div>"""
-
-    result = Div(".a", {"class": "b"})
-    assert str(result) == """<div class="a b"></div>"""
+    result = Div(".selector", {"class": "dict"}, attr.class_("obj"), class_="kwarg")
+    assert str(result) == """<div class="selector dict obj kwarg"></div>"""
 
 
-def test_attribute_priority() -> None:
-    result = Div({"foo": "a"}, foo="b")
-    assert str(result) == """<div foo="b"></div>"""
+def test_id_priority() -> None:
+    result = Div("#selector", {"id": "dict"}, attr.id("obj"), id="kwarg")
+    assert str(result) == """<div id="kwarg"></div>"""
+    result = Div("#selector", {"id": "dict"}, attr.id("obj"))
+    assert str(result) == """<div id="obj"></div>"""
+    result = Div("#selector", {"id": "dict"})
+    assert str(result) == """<div id="dict"></div>"""
 
 
 @pytest.mark.parametrize("not_an_attr", [1234, b"foo", object(), object, 1, 0, None])
@@ -203,7 +100,7 @@ def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
 
 @pytest.mark.parametrize(
     "not_an_attr",
-    [12.34, b"foo", object(), object],
+    [b"foo", object(), object],
 )
 def test_invalid_attribute_value(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):
@@ -213,17 +110,6 @@ def test_invalid_attribute_value(not_an_attr: t.Any) -> None:
 def test_attribute_redefinition() -> None:
     with pytest.raises(MarkupyError):
         Div(id="hello")(class_="world")
-
-
-@pytest.mark.parametrize("selector", ["", "   ", "  #  ", "  .  "])
-def test_empty_selector(selector: str) -> None:
-    result = Div(selector)
-    assert str(result) == """<div></div>"""
-
-
-def test_selector_strip() -> None:
-    result = Div(" #myid .myclass .other ")
-    assert str(result) == """<div id="myid" class="myclass other"></div>"""
 
 
 @pytest.mark.parametrize(
@@ -241,18 +127,3 @@ def test_attribute_case() -> None:
     result = Div({"BAR": "foo", "bAr": "hello"}, bar="baz")
     # If not properly managed, could become <div BAR="foo" bar="baz"></div>
     assert str(result) == """<div bar="baz"></div>"""
-
-
-def test_selector_invalid_id_position() -> None:
-    with pytest.raises(MarkupyError):
-        Div(".bar#foo")
-
-
-def test_selector_multiple_id() -> None:
-    with pytest.raises(MarkupyError):
-        Div("#foo#bar")
-
-
-def test_selector_empty_id() -> None:
-    assert str(Div("# foo bar")) == """<div class="foo bar"></div>"""
-    assert str(Div("#.foo.bar")) == """<div class="foo bar"></div>"""

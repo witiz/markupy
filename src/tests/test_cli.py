@@ -6,19 +6,19 @@ from markupy.exceptions import MarkupyError
 
 def test_nested_void() -> None:
     html = """<div><hr></div>"""
-    py = """from markupy.tag import Div,Hr\nDiv[Hr]"""
+    py = """from markupy.elements import Div,Hr\nDiv[Hr]"""
     assert to_markupy(html) == py
 
 
 def test_empty_element() -> None:
     html = """<div></div>"""
-    py = """from markupy.tag import Div\nDiv"""
+    py = """from markupy.elements import Div\nDiv"""
     assert to_markupy(html) == py
 
 
 def test_strip() -> None:
     html = """<div>\n</div><div>  \n  </div>"""
-    py = """from markupy import Fragment\nfrom markupy.tag import Div\nFragment[Div,Div]"""
+    py = """from markupy import Fragment\nfrom markupy.elements import Div\nFragment[Div,Div]"""
     assert to_markupy(html) == py
 
 
@@ -30,19 +30,19 @@ def test_doctype() -> None:
 
 def test_selector() -> None:
     html = """<img id=test class="portait image">"""
-    py = """from markupy.tag import Img\nImg("#test.portait.image")"""
+    py = """from markupy.elements import Img\nImg("#test.portait.image")"""
     assert to_markupy(html) == py
 
 
 def test_kwargs() -> None:
     html = """<label for="myfield" style="display:none" http-equiv="x">Hello</label>"""
-    py = """from markupy.tag import Label\nLabel(for_="myfield",style="display:none",httpEquiv="x")["Hello"]"""
+    py = """from markupy.elements import Label\nLabel(for_="myfield",style="display:none",httpEquiv="x")["Hello"]"""
     assert to_markupy(html) == py
 
 
 def test_empty_kwargs() -> None:
     html = """<input disabled="" style="">"""
-    py = """from markupy.tag import Input\nInput(disabled=True)"""
+    py = """from markupy.elements import Input\nInput(disabled=True)"""
     assert to_markupy(html) == py
 
 
@@ -66,13 +66,13 @@ def test_invalid_html_not_matching() -> None:
 
 def test_to_markupy() -> None:
     html = """<html><Head><TITLE>Test</title></head><body class=''><h1 id='myid' burger&fries='good' class='title header'>Parse me! <!--My comment--></h1><hr><input class='my-input' disabled value='0' @click.outside.500ms='test' data-test='other' data-url-valid='coucou'><sl-button hx-on:htmx:config-request='attri'>Click!</sl-button></body></html>"""
-    py = """from markupy.tag import Body,H1,Head,Hr,Html,Input,SlButton,Title\nHtml[Head[Title["Test"]],Body[H1("#myid.title.header",{"burger&fries":"good"})["Parse me!"],Hr,Input(".my-input",disabled=True,value="0",_click_outside_500ms="test",dataTest="other",dataUrlValid="coucou"),SlButton(hxOn__htmx__configRequest="attri")["Click!"]]]"""
+    py = """from markupy.elements import Body,H1,Head,Hr,Html,Input,SlButton,Title\nHtml[Head[Title["Test"]],Body[H1("#myid.title.header",{"burger&fries":"good"})["Parse me!"],Hr,Input(".my-input",disabled=True,value="0",_click_outside_500ms="test",dataTest="other",dataUrlValid="coucou"),SlButton(hxOn__htmx__configRequest="attri")["Click!"]]]"""
     assert to_markupy(html) == py
 
 
 def test_escape() -> None:
     html = """<a href="{{ url_for(".index") }}">Hello</a>"""
-    py = """from markupy.tag import A\nA(href="{{ url_for(\\".index\\") }}")["Hello"]"""
+    py = """from markupy.elements import A\nA(href="{{ url_for(\\".index\\") }}")["Hello"]"""
     assert to_markupy(html) == py
 
 
@@ -93,37 +93,37 @@ def test_jinja() -> None:
     </ol>
     </body>
     """
-    py = """from markupy.tag import Body,H1,H2,H3,Li,Ol,P\nBody[H1["{{ heading }}"],P["Welcome to our cooking site, {{ user.name }}!"],H2["Recipe of the Day: {{ recipe.name }}"],P["{{ recipe.description }}"],H3["Instructions:"],Ol["{% for step in recipe.steps %}",Li["{{ step }}"],"{% endfor %}"]]"""
+    py = """from markupy.elements import Body,H1,H2,H3,Li,Ol,P\nBody[H1["{{ heading }}"],P["Welcome to our cooking site, {{ user.name }}!"],H2["Recipe of the Day: {{ recipe.name }}"],P["{{ recipe.description }}"],H3["Instructions:"],Ol["{% for step in recipe.steps %}",Li["{{ step }}"],"{% endfor %}"]]"""
     assert to_markupy(html) == py
 
 
 def test_self_closing() -> None:
     html = """<input type="checkbox" />"""
-    py = """from markupy.tag import Input\nInput(type="checkbox")"""
+    py = """from markupy.elements import Input\nInput(type="checkbox")"""
     assert to_markupy(html) == py
 
 
 def test_use_import_tag() -> None:
     html = """<div>hello</div>"""
-    py = """from markupy import tag\ntag.Div["hello"]"""
+    py = """from markupy import elements as el\nel.Div["hello"]"""
     assert to_markupy(html, use_import_tag=True) == py
 
 
 def test_use_selector() -> None:
     html = """<div id="myid" class="cls1 cls2" del="ok">hello</div>"""
-    py = """from markupy.tag import Div\nDiv(id="myid",class_="cls1 cls2",del_="ok")["hello"]"""
+    py = """from markupy.elements import Div\nDiv(id="myid",class_="cls1 cls2",del_="ok")["hello"]"""
     assert to_markupy(html, use_selector=False) == py
 
 
 def test_use_dict_noselector() -> None:
     html = """<div id="myid" class="cls1 cls2" del="ok">hello</div>"""
-    py = """from markupy.tag import Div\nDiv({"id":"myid","class":"cls1 cls2","del":"ok"})["hello"]"""
+    py = """from markupy.elements import Div\nDiv({"id":"myid","class":"cls1 cls2","del":"ok"})["hello"]"""
     assert to_markupy(html, use_dict=True, use_selector=False) == py
 
 
 def test_use_dict_selector() -> None:
     html = """<div id="myid" class="cls1 cls2" del="ok">hello</div>"""
-    py = """from markupy.tag import Div\nDiv("#myid.cls1.cls2",{"del":"ok"})["hello"]"""
+    py = """from markupy.elements import Div\nDiv("#myid.cls1.cls2",{"del":"ok"})["hello"]"""
     assert to_markupy(html, use_dict=True, use_selector=True) == py
 
 
@@ -133,5 +133,5 @@ def test_jinja_block() -> None:
         <div></div>
     {% endblock %}
     """
-    py = """from markupy.tag import BlockMyName,Div\nBlockMyName[Div]"""
+    py = """from markupy.elements import BlockMyName,Div\nBlockMyName[Div]"""
     assert to_markupy(html) == py
