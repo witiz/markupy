@@ -22,6 +22,9 @@ class View:
     def __repr__(self) -> str:
         return "<markupy.View>"
 
+    def __eq__(self, other: object) -> bool:
+        return str(other) == str(self)
+
     # Allow starlette Response.render to directly render this element without
     # explicitly casting to str:
     # https://github.com/encode/starlette/blob/5ed55c441126687106109a3f5e051176f88cd3e6/starlette/responses.py#L44-L49
