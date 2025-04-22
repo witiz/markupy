@@ -1,3 +1,4 @@
+from . import elements as tag
 from ._private.attribute import Attribute
 from ._private.component import Component
 from ._private.html import to_markupy as html2markupy
@@ -7,6 +8,7 @@ from ._private.view import View
 Fragment = Shared()
 
 __all__ = [
+    "tag",
     "Attribute",
     "Component",
     "Fragment",
