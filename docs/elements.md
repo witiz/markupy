@@ -155,6 +155,7 @@ There are multiple benefits of defining attributes this way:
 - Suggestion: your IDE will suggest what attributes you can use
 - Type hinting: attributes all have their own type (`disabled` is `bool`, `maxlength` is `int`, etc...)
 - Autocompletion: for attributes that take pre-definied set of values, you will be able to autocomplete them, avoiding the risk of forgetting or mistyping the correct values
+- Helper functions for some attributes like `class_list` or `class_dict`
 
 ### Combining different types of attributes
 

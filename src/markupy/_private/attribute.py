@@ -19,7 +19,7 @@ class Attribute:
 
 
 @lru_cache(maxsize=1000)
-def _rewrite_attr_key(key: str) -> str:
+def python_to_html_key(key: str) -> str:
     if not key.isidentifier():
         # Might happen when using the **{} syntax
         raise MarkupyError(f"Attribute `{key}` has invalid name")
@@ -88,7 +88,7 @@ class AttributeDict(dict[str, AttributeValue]):
                 )
 
             if rewrite_keys:
-                key = _rewrite_attr_key(key)
+                key = python_to_html_key(key)
             else:
                 # Coming from dict arg, need to secure user input
                 if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]

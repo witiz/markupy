@@ -196,25 +196,10 @@ HTML.
 <button></button>
 ```
 
-### Specific attribute objects per elements
+### 3rd party object attributes libraries
 
-Object attributes can give you visibility on which attribute can specifically be used with a given element.
-To get this suggestion narrowing feature, use the following syntax:
-
-```python title="Attribute objects per element"
->>> from markupy import attributes as attr
->>> from markupy.elements import Input
->>> print(Input(attr.Input.required()))
-<input required>
-```
-
-Here, the trick is to use `attr.<Element>.fn()` instead of just `attr.fn()`
-
-### 3rd party attributes libraries
-
-The `markupy.attributes` package aims to provide a complete list of HTML5 attributes and the core markupy library will not cover a wider scope.
-
-Good thing is that markupy is exposing all the required APIs for 3rd party libraries to implement similar features for attributes specific to any framework or library.
+The `markupy.attributes` provides a complete list of HTML5 attributes.
+In addition, markupy is exposing all the required APIs for 3rd party libraries to implement object attributes specific to any framework or library.
 
 We will list here any package we might be aware of.
 

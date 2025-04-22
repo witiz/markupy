@@ -1,3 +1,6 @@
+import typing
+
+from ._private.attribute import Attribute, AttributeValue
 from ._private.html5_attributes import (
     accept,
     accept_charset,
@@ -384,3 +387,12 @@ __all__ = [
     "wrap",
     "writingsuggestions",
 ]
+
+
+def __getattr__(name: str) -> typing.Callable[[AttributeValue], Attribute]:
+    def fn(value: AttributeValue) -> Attribute:
+        from ._private.attribute import python_to_html_key
+
+        return Attribute(python_to_html_key(name), value)
+
+    return fn
