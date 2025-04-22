@@ -4,8 +4,8 @@ from typing import Literal
 from markupy import Attribute
 
 
-def accept(value: str) -> Attribute:
-    return Attribute("accept", value)
+def accept(*value: str) -> Attribute:
+    return Attribute("accept", ",".join(value))
 
 
 def accept_charset(value: str) -> Attribute:
@@ -342,262 +342,6 @@ def novalidate(value: bool = True) -> Attribute:
     return Attribute("novalidate", value)
 
 
-def open(value: bool = True) -> Attribute:
-    return Attribute("open", value)
-
-
-def optimum(value: str) -> Attribute:
-    return Attribute("optimum", value)
-
-
-def pattern(value: str) -> Attribute:
-    return Attribute("pattern", value)
-
-
-def ping(value: str) -> Attribute:
-    return Attribute("ping", value)
-
-
-def placeholder(value: str) -> Attribute:
-    return Attribute("placeholder", value)
-
-
-def playsinline(value: bool = True) -> Attribute:
-    return Attribute("playsinline", value)
-
-
-def popover(value: Literal["auto", "manual"]) -> Attribute:
-    return Attribute("popover", value)
-
-
-def poster(value: str) -> Attribute:
-    return Attribute("poster", value)
-
-
-def preload(value: Literal["auto", "metadata", "none"]) -> Attribute:
-    return Attribute("preload", value)
-
-
-def readonly(value: bool = True) -> Attribute:
-    return Attribute("readonly", value)
-
-
-def referrerpolicy(
-    value: Literal[
-        "no-referrer",
-        "no-referrer-when-downgrade",
-        "origin",
-        "origin-when-cross-origin",
-        "same-origin",
-        "strict-origin",
-        "strict-origin-when-cross-origin",
-        "unsafe-url",
-    ],
-) -> Attribute:
-    return Attribute("referrerpolicy", value)
-
-
-def rel(
-    value: Literal[
-        "alternate",
-        "author",
-        "bookmark",
-        "canonical",
-        "dns-prefetch",
-        "external",
-        "help",
-        "icon",
-        "license",
-        "manifest",
-        "modulepreload",
-        "next",
-        "nofollow",
-        "noopener",
-        "noreferrer",
-        "opener",
-        "pingback",
-        "preconnect",
-        "prefetch",
-        "preload",
-        "prev",
-        "search",
-        "stylesheet",
-        "tag",
-    ],
-) -> Attribute:
-    return Attribute("rel", value)
-
-
-def required(value: bool = True) -> Attribute:
-    return Attribute("required", value)
-
-
-def reversed(value: bool = True) -> Attribute:
-    return Attribute("reversed", value)
-
-
-def role(value: str) -> Attribute:
-    return Attribute("role", value)
-
-
-def rows(value: int) -> Attribute:
-    return Attribute("rows", value)
-
-
-def rowspan(value: int) -> Attribute:
-    return Attribute("rowspan", value)
-
-
-def sandbox(
-    *value: Literal[
-        "allow-forms",
-        "allow-modals",
-        "allow-orientation-lock",
-        "allow-pointer-lock",
-        "allow-popups",
-        "allow-presentation",
-        "allow-same-origin",
-        "allow-scripts",
-        "allow-top-navigation",
-        "allow-downloads",
-        "allow-top-navigation-by-user-activation",
-    ],
-) -> Attribute:
-    return Attribute("sandbox", " ".join(value))
-
-
-def scope(value: Literal["col", "row", "colgroup", "rowgroup"]) -> Attribute:
-    return Attribute("scope", value)
-
-
-def selected(value: bool = True) -> Attribute:
-    return Attribute("selected", value)
-
-
-def shape(value: Literal["default", "rect", "circle", "poly"]) -> Attribute:
-    return Attribute("shape", value)
-
-
-def size(value: int) -> Attribute:
-    return Attribute("size", value)
-
-
-def sizes(value: str) -> Attribute:
-    return Attribute("sizes", value)
-
-
-def slot(value: str) -> Attribute:
-    return Attribute("slot", value)
-
-
-def span(value: int) -> Attribute:
-    return Attribute("span", value)
-
-
-def spellcheck(value: Literal["true", "false"] | bool = True) -> Attribute:
-    return Attribute("spellcheck", value)
-
-
-def src(value: str) -> Attribute:
-    return Attribute("src", value)
-
-
-def srcdoc(value: str) -> Attribute:
-    return Attribute("srcdoc", value)
-
-
-def srclang(value: str) -> Attribute:
-    return Attribute("srclang", value)
-
-
-def srcset(value: str) -> Attribute:
-    return Attribute("srcset", value)
-
-
-def start(value: str) -> Attribute:
-    return Attribute("start", value)
-
-
-def step(value: int | float | Literal["any"]) -> Attribute:
-    return Attribute("step", value)
-
-
-def style(value: str) -> Attribute:
-    return Attribute("style", value)
-
-
-def tabindex(value: int) -> Attribute:
-    return Attribute("tabindex", value)
-
-
-def target(value: Literal["_self", "_blank", "_parent", "_top"] | str) -> Attribute:
-    return Attribute("target", value)
-
-
-def title(value: str) -> Attribute:
-    return Attribute("title", value)
-
-
-def translate(value: Literal["yes", "no"]) -> Attribute:
-    return Attribute("translate", value)
-
-
-def type(
-    value: Literal[
-        "text",
-        "password",
-        "submit",
-        "reset",
-        "radio",
-        "checkbox",
-        "button",
-        "color",
-        "date",
-        "datetime-local",
-        "email",
-        "file",
-        "hidden",
-        "image",
-        "month",
-        "number",
-        "range",
-        "search",
-        "tel",
-        "time",
-        "url",
-        "week",
-    ],
-) -> Attribute:
-    return Attribute("type", value)
-
-
-def usemap(value: str) -> Attribute:
-    return Attribute("usemap", value)
-
-
-def value(value: str | int | float) -> Attribute:
-    return Attribute("value", value)
-
-
-def virtualkeyboardpolicy(value: Literal["auto", "manual"] = "auto") -> Attribute:
-    return Attribute("virtualkeyboardpolicy", value)
-
-
-def writingsuggestions(value: bool = True) -> Attribute:
-    return Attribute("writingsuggestions", value)
-
-
-def width(value: int) -> Attribute:
-    return Attribute("width", value)
-
-
-def wrap(value: Literal["hard", "soft", "off"]) -> Attribute:
-    return Attribute("wrap", value)
-
-
-# EVENT HANDLERS
-
-
 def onabort(value: str) -> Attribute:
     return Attribute("onabort", value)
 
@@ -854,7 +598,262 @@ def onwheel(value: str) -> Attribute:
     return Attribute("onwheel", value)
 
 
-# SPECIAL FUNCTIONS FOR CLASSES
+def open(value: bool = True) -> Attribute:
+    return Attribute("open", value)
+
+
+def optimum(value: str) -> Attribute:
+    return Attribute("optimum", value)
+
+
+def pattern(value: str) -> Attribute:
+    return Attribute("pattern", value)
+
+
+def ping(value: str) -> Attribute:
+    return Attribute("ping", value)
+
+
+def placeholder(value: str) -> Attribute:
+    return Attribute("placeholder", value)
+
+
+def playsinline(value: bool = True) -> Attribute:
+    return Attribute("playsinline", value)
+
+
+def popover(value: Literal["auto", "manual"]) -> Attribute:
+    return Attribute("popover", value)
+
+
+def poster(value: str) -> Attribute:
+    return Attribute("poster", value)
+
+
+def preload(value: Literal["auto", "metadata", "none"]) -> Attribute:
+    return Attribute("preload", value)
+
+
+def readonly(value: bool = True) -> Attribute:
+    return Attribute("readonly", value)
+
+
+def referrerpolicy(
+    value: Literal[
+        "no-referrer",
+        "no-referrer-when-downgrade",
+        "origin",
+        "origin-when-cross-origin",
+        "same-origin",
+        "strict-origin",
+        "strict-origin-when-cross-origin",
+        "unsafe-url",
+    ],
+) -> Attribute:
+    return Attribute("referrerpolicy", value)
+
+
+def rel(
+    value: Literal[
+        "alternate",
+        "author",
+        "bookmark",
+        "canonical",
+        "dns-prefetch",
+        "external",
+        "help",
+        "icon",
+        "license",
+        "manifest",
+        "modulepreload",
+        "next",
+        "nofollow",
+        "noopener",
+        "noreferrer",
+        "opener",
+        "pingback",
+        "preconnect",
+        "prefetch",
+        "preload",
+        "prev",
+        "search",
+        "stylesheet",
+        "tag",
+    ],
+) -> Attribute:
+    return Attribute("rel", value)
+
+
+def required(value: bool = True) -> Attribute:
+    return Attribute("required", value)
+
+
+def reversed(value: bool = True) -> Attribute:
+    return Attribute("reversed", value)
+
+
+def role(value: str) -> Attribute:
+    return Attribute("role", value)
+
+
+def rows(value: int) -> Attribute:
+    return Attribute("rows", value)
+
+
+def rowspan(value: int) -> Attribute:
+    return Attribute("rowspan", value)
+
+
+def sandbox(
+    *value: Literal[
+        "allow-forms",
+        "allow-modals",
+        "allow-orientation-lock",
+        "allow-pointer-lock",
+        "allow-popups",
+        "allow-presentation",
+        "allow-same-origin",
+        "allow-scripts",
+        "allow-top-navigation",
+        "allow-downloads",
+        "allow-top-navigation-by-user-activation",
+    ],
+) -> Attribute:
+    return Attribute("sandbox", " ".join(value))
+
+
+def scope(value: Literal["col", "row", "colgroup", "rowgroup"]) -> Attribute:
+    return Attribute("scope", value)
+
+
+def selected(value: bool = True) -> Attribute:
+    return Attribute("selected", value)
+
+
+def shape(value: Literal["default", "rect", "circle", "poly"]) -> Attribute:
+    return Attribute("shape", value)
+
+
+def size(value: int) -> Attribute:
+    return Attribute("size", value)
+
+
+def sizes(*value: str) -> Attribute:
+    return Attribute("sizes", ",".join(value))
+
+
+def slot(value: str) -> Attribute:
+    return Attribute("slot", value)
+
+
+def span(value: int) -> Attribute:
+    return Attribute("span", value)
+
+
+def spellcheck(value: Literal["true", "false"] | bool = True) -> Attribute:
+    return Attribute("spellcheck", value)
+
+
+def src(value: str) -> Attribute:
+    return Attribute("src", value)
+
+
+def srcdoc(value: str) -> Attribute:
+    return Attribute("srcdoc", value)
+
+
+def srclang(value: str) -> Attribute:
+    return Attribute("srclang", value)
+
+
+def srcset(*value: str) -> Attribute:
+    return Attribute("srcset", ",".join(value))
+
+
+def start(value: str) -> Attribute:
+    return Attribute("start", value)
+
+
+def step(value: int | float | Literal["any"]) -> Attribute:
+    return Attribute("step", value)
+
+
+def style(value: str) -> Attribute:
+    return Attribute("style", value)
+
+
+def tabindex(value: int) -> Attribute:
+    return Attribute("tabindex", value)
+
+
+def target(value: Literal["_self", "_blank", "_parent", "_top"] | str) -> Attribute:
+    return Attribute("target", value)
+
+
+def title(value: str) -> Attribute:
+    return Attribute("title", value)
+
+
+def translate(value: Literal["yes", "no"]) -> Attribute:
+    return Attribute("translate", value)
+
+
+def type(
+    value: Literal[
+        "button",
+        "checkbox",
+        "color",
+        "date",
+        "datetime-local",
+        "email",
+        "file",
+        "hidden",
+        "image",
+        "month",
+        "number",
+        "password",
+        "radio",
+        "range",
+        "reset",
+        "search",
+        "submit",
+        "tel",
+        "text",
+        "time",
+        "url",
+        "week",
+    ],
+) -> Attribute:
+    return Attribute("type", value)
+
+
+def usemap(value: str) -> Attribute:
+    return Attribute("usemap", value)
+
+
+def value(value: str | int | float) -> Attribute:
+    return Attribute("value", value)
+
+
+def virtualkeyboardpolicy(value: Literal["auto", "manual"] = "auto") -> Attribute:
+    return Attribute("virtualkeyboardpolicy", value)
+
+
+def writingsuggestions(value: bool = True) -> Attribute:
+    return Attribute("writingsuggestions", value)
+
+
+def width(value: int) -> Attribute:
+    return Attribute("width", value)
+
+
+def wrap(value: Literal["hard", "soft", "off"]) -> Attribute:
+    return Attribute("wrap", value)
+
+
+# ADDITIONAL HELPER FUNCTIONS
+# Below are functions that do not exactly match with an attribute or alias it
+
 cls = class_
 
 
