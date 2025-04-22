@@ -1,7 +1,7 @@
 from collections.abc import Iterable, Mapping
 from typing import Literal
 
-from markupy import Attribute
+from .attribute import Attribute
 
 
 def accept(*value: str) -> Attribute:

@@ -1,4 +1,4 @@
-from ._attrs import (
+from ._private.html5_attributes import (
     accept,
     accept_charset,
     accesskey,
@@ -22,7 +22,6 @@ from ._attrs import (
     class_,
     class_dict,
     class_list,
-    # Special functions for classes
     cls,
     color,
     cols,
@@ -192,122 +191,8 @@ from ._attrs import (
     wrap,
     writingsuggestions,
 )
-from ._elements import _a as A
-from ._elements import _all as _
-from ._elements import _area as Area
-from ._elements import _audio as Audio
-from ._elements import _base as Base
-from ._elements import _blockquote as Blockquote
-from ._elements import _body as Body
-from ._elements import _button as Button
-from ._elements import _canvas as Canvas
-from ._elements import _caption as Caption
-from ._elements import _col as Col
-from ._elements import _colgroup as Colgroup
-from ._elements import _data as Data
-from ._elements import _del as Del
-from ._elements import _details as Details
-from ._elements import _dialog as Dialog
-from ._elements import _embed as Embed
-from ._elements import _fieldset as Fieldset
-from ._elements import _font as Font
-from ._elements import _form as Form
-from ._elements import _hr as Hr
-from ._elements import _iframe as Iframe
-from ._elements import _image as Image
-from ._elements import _img as Img
-from ._elements import _input as Input
-from ._elements import _ins as Ins
-from ._elements import _label as Label
-from ._elements import _li as Li
-from ._elements import _link as Link
-from ._elements import _map as Map
-from ._elements import _menu as Menu
-from ._elements import _meta as Meta
-from ._elements import _meter as Meter
-from ._elements import _object as Object
-from ._elements import _ol as Ol
-from ._elements import _optgroup as Optgroup
-from ._elements import _option as Option
-from ._elements import _output as Output
-from ._elements import _param as Param
-from ._elements import _progress as Progress
-from ._elements import _q as Q
-from ._elements import _script as Script
-from ._elements import _select as Select
-from ._elements import _source as Source
-from ._elements import _style as Style
-from ._elements import _table as Table
-from ._elements import _tbody as Tbody
-from ._elements import _td as Td
-from ._elements import _textarea as Textarea
-from ._elements import _tfoot as Tfoot
-from ._elements import _th as Th
-from ._elements import _thead as Thead
-from ._elements import _time as Time
-from ._elements import _tr as Tr
-from ._elements import _track as Track
-from ._elements import _video as Video
 
 __all__ = [
-    # Elements
-    "_",
-    "A",
-    "Area",
-    "Audio",
-    "Base",
-    "Blockquote",
-    "Body",
-    "Button",
-    "Canvas",
-    "Caption",
-    "Col",
-    "Colgroup",
-    "Data",
-    "Del",
-    "Details",
-    "Dialog",
-    "Embed",
-    "Fieldset",
-    "Font",
-    "Form",
-    "Hr",
-    "Iframe",
-    "Image",
-    "Img",
-    "Input",
-    "Ins",
-    "Label",
-    "Li",
-    "Link",
-    "Map",
-    "Menu",
-    "Meta",
-    "Meter",
-    "Object",
-    "Ol",
-    "Optgroup",
-    "Option",
-    "Output",
-    "Param",
-    "Progress",
-    "Q",
-    "Script",
-    "Select",
-    "Source",
-    "Style",
-    "Table",
-    "Tbody",
-    "Td",
-    "Textarea",
-    "Tfoot",
-    "Th",
-    "Thead",
-    "Time",
-    "Tr",
-    "Track",
-    "Video",
-    # Attributes
     "accept_charset",
     "accept",
     "accesskey",
