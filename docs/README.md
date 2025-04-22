@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="https://markupy.witiz.com/assets/markupy.svg" width="300">
+</p>
+
 # Overview
 
 markupy is a plain Python alternative to traditional templates engines for generating HTML code.
