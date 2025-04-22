@@ -11,14 +11,12 @@
         <link rel="canonical" href="https://markupy.witiz.com/html2markupy/">
       
       
-        <link rel="prev" href="../components/">
+        <link rel="prev" href="../starlette/">
       
-      
-        <link rel="next" href="../flask/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -26,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -245,7 +243,7 @@
   
   
   <span class="md-ellipsis">
-    Overview
+    Home
     
   </span>
   
@@ -262,12 +260,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../usage/" class="md-nav__link">
+      <a href="../elements/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Usage
+    Elements
     
   </span>
   
@@ -284,12 +282,100 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/" class="md-nav__link">
+      <a href="../advanced/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Components
+    Advanced usage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reusability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reusability with Fragments and Components
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../django/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Integrating with Django
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flask/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Integrating with Flask
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../starlette/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Integrating with Starlette
     
   </span>
   
@@ -447,72 +533,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../flask/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Integrating with Flask
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../starlette/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Integrating with Starlette
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../django/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Integrating with Django
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -541,7 +561,7 @@ We got you covered in multiple ways.</p>
 <h2 id="converting-locally-with-the-built-in-html2markupy-command">Converting locally with the built-in html2markupy command<a class="headerlink" href="#converting-locally-with-the-built-in-html2markupy-command" title="Permanent link">&para;</a></h2>
 <p>The utility command <code>html2markupy</code> ships with <code>markupy</code>, and can be used to transform existing html into Python code (markupy!).</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>html2markupy<span class="w"> </span>-h
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>usage:<span class="w"> </span>html2markupy<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--selector<span class="w"> </span><span class="p">|</span><span class="w"> </span>--no-selector<span class="o">]</span><span class="w"> </span><span class="o">[</span>--dict-attrs<span class="w"> </span><span class="p">|</span><span class="w"> </span>--no-dict-attrs<span class="o">]</span><span class="w"> </span><span class="o">[</span>--tag-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>--no-tag-prefix<span class="o">]</span><span class="w"> </span><span class="o">[</span>input<span class="o">]</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>usage:<span class="w"> </span>html2markupy<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--selector<span class="w"> </span><span class="p">|</span><span class="w"> </span>--no-selector<span class="o">]</span><span class="w"> </span><span class="o">[</span>--dict-attrs<span class="w"> </span><span class="p">|</span><span class="w"> </span>--no-dict-attrs<span class="o">]</span><span class="w"> </span><span class="o">[</span>--el-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>--no-el-prefix<span class="o">]</span><span class="w"> </span><span class="o">[</span>input<span class="o">]</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>positional<span class="w"> </span>arguments:
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>input<span class="w">                 </span>input<span class="w"> </span>HTML<span class="w"> </span>from<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>stdin
@@ -552,7 +572,7 @@ We got you covered in multiple ways.</p>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">                        </span>Use<span class="w"> </span>the<span class="w"> </span>selector<span class="w"> </span><span class="c1">#id.class syntax instead of explicit `id` and `class_` attributes (default: True)</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span>--dict-attrs,<span class="w"> </span>--no-dict-attrs
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">                        </span>Prefer<span class="w"> </span>dict<span class="w"> </span>attributes<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>False<span class="o">)</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span>--tag-prefix,<span class="w"> </span>--no-tag-prefix
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span>--el-prefix,<span class="w"> </span>--no-el-prefix
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">                        </span>Output<span class="w"> </span>mode<span class="w"> </span><span class="k">for</span><span class="w"> </span>imports<span class="w"> </span>of<span class="w"> </span>markupy<span class="w"> </span>elements<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>False<span class="o">)</span>
 </span></code></pre></div>
 <p>Lets say you have an existing HTML file:</p>
@@ -577,7 +597,7 @@ We got you covered in multiple ways.</p>
 <p>Now, if you run the command, it outputs the corresponding Python code (markupy).</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>html2markupy<span class="w"> </span>index.html
 </span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span><span class="n">Body</span><span class="p">,</span><span class="n">Footer</span><span class="p">,</span><span class="n">H1</span><span class="p">,</span><span class="n">Head</span><span class="p">,</span><span class="n">Header</span><span class="p">,</span><span class="n">Html</span><span class="p">,</span><span class="n">Main</span><span class="p">,</span><span class="n">Title</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span><span class="n">Body</span><span class="p">,</span><span class="n">Footer</span><span class="p">,</span><span class="n">H1</span><span class="p">,</span><span class="n">Head</span><span class="p">,</span><span class="n">Header</span><span class="p">,</span><span class="n">Html</span><span class="p">,</span><span class="n">Main</span><span class="p">,</span><span class="n">Title</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">Html</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">)[</span><span class="n">Head</span><span class="p">[</span><span class="n">Title</span><span class="p">[</span><span class="s2">&quot;html2markupy&quot;</span><span class="p">]],</span><span class="n">Body</span><span class="p">[</span><span class="n">Header</span><span class="p">[</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;.heading&quot;</span><span class="p">)[</span><span class="s2">&quot;Welcome to html2markupy!&quot;</span><span class="p">]],</span><span class="n">Main</span><span class="p">(</span><span class="s2">&quot;#container&quot;</span><span class="p">)[</span><span class="s2">&quot;Discover a powerful way to build your HTML pages and components in Python!&quot;</span><span class="p">],</span><span class="n">Footer</span><span class="p">[</span><span class="s2">&quot;Powered by&quot;</span><span class="p">,</span><span class="n">A</span><span class="p">(</span><span class="n">href</span><span class="o">=</span><span class="s2">&quot;https://markupy.witiz.com&quot;</span><span class="p">)[</span><span class="s2">&quot;markupy&quot;</span><span class="p">]]]]</span>
 </span></code></pre></div>
 <h3 id="piping-inputstdin-stream">Piping Input/Stdin Stream<a class="headerlink" href="#piping-inputstdin-stream" title="Permanent link">&para;</a></h3>
@@ -598,12 +618,12 @@ For example, you might pipe from your clipboard to markupy, and optionally direc
 </span></code></pre></div>
 <p>You can adapt the markupy conversion with a couple of options.</p>
 <h4 id="imports-management">Imports management<a class="headerlink" href="#imports-management" title="Permanent link">&para;</a></h4>
-<p>Some people prefer to <code>import markupy as tag</code> instead of importing individual elements <code>from markupy.tag</code>.
-If this is you, you can use the <code>--tag-prefix</code> option to get corresponding output when using <code>html2markupy</code>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">--no-tag-prefix (default)</label><label for="__tabbed_1_2">--tag-prefix</label></div>
+<p>Some people prefer to <code>from markupy import elements as el</code> instead of importing individual elements <code>from markupy.elements</code>.
+If this is you, you can use the <code>--el-prefix</code> option to get corresponding output when using <code>html2markupy</code>.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">--no-el-prefix (default)</label><label for="__tabbed_1_2">--el-prefix</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">Section</span><span class="p">(</span><span class="s2">&quot;#main-section.container&quot;</span><span class="p">)[</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">A</span><span class="p">(</span><span class="s2">&quot;.btn.btn-primary&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/index&quot;</span><span class="p">)[</span><span class="s2">&quot;Home&quot;</span><span class="p">]</span>
@@ -611,10 +631,10 @@ If this is you, you can use the <code>--tag-prefix</code> option to get correspo
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy</span><span class="w"> </span><span class="kn">import</span> <span class="n">tag</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy</span><span class="w"> </span><span class="kn">import</span> <span class="n">elements</span> <span class="k">as</span> <span class="n">el</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">tag</span><span class="o">.</span><span class="n">Section</span><span class="p">(</span><span class="s2">&quot;#main-section.container&quot;</span><span class="p">)[</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">tag</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;.btn.btn-primary&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/index&quot;</span><span class="p">)[</span><span class="s2">&quot;Home&quot;</span><span class="p">]</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">el</span><span class="o">.</span><span class="n">Section</span><span class="p">(</span><span class="s2">&quot;#main-section.container&quot;</span><span class="p">)[</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">el</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;.btn.btn-primary&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/index&quot;</span><span class="p">)[</span><span class="s2">&quot;Home&quot;</span><span class="p">]</span>
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">]</span>
 </span></code></pre></div>
 </div>
@@ -625,7 +645,7 @@ If this is you, you can use the <code>--tag-prefix</code> option to get correspo
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">--selector (default)</label><label for="__tabbed_2_2">--no-selector</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">Section</span><span class="p">(</span><span class="s2">&quot;#main-section.container&quot;</span><span class="p">)[</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">A</span><span class="p">(</span><span class="s2">&quot;.btn.btn-primary&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/index&quot;</span><span class="p">)[</span><span class="s2">&quot;Home&quot;</span><span class="p">]</span>
@@ -633,7 +653,7 @@ If this is you, you can use the <code>--tag-prefix</code> option to get correspo
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">Section</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;main-section&quot;</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;container&quot;</span><span class="p">)[</span>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">A</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="s2">&quot;btn btn-primary&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/index&quot;</span><span class="p">)[</span><span class="s2">&quot;Home&quot;</span><span class="p">]</span>
@@ -647,7 +667,7 @@ If this is you, you can use the <code>--tag-prefix</code> option to get correspo
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">--no-dict-args (default)</label><label for="__tabbed_3_2">--dict-args</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">Section</span><span class="p">(</span><span class="s2">&quot;#main-section.container&quot;</span><span class="p">)[</span>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">A</span><span class="p">(</span><span class="s2">&quot;.btn.btn-primary&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/index&quot;</span><span class="p">)[</span><span class="s2">&quot;Home&quot;</span><span class="p">]</span>
@@ -655,7 +675,7 @@ If this is you, you can use the <code>--tag-prefix</code> option to get correspo
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">Section</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">Section</span><span class="p">(</span><span class="s2">&quot;#main-section.container&quot;</span><span class="p">)[</span>
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">A</span><span class="p">(</span><span class="s2">&quot;.btn.btn-primary&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;/index&quot;</span><span class="p">})[</span><span class="s2">&quot;Home&quot;</span><span class="p">]</span>

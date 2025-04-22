@@ -11,12 +11,14 @@
         <link rel="canonical" href="https://markupy.witiz.com/django/">
       
       
-        <link rel="prev" href="../starlette/">
+        <link rel="prev" href="../reusability/">
       
+      
+        <link rel="next" href="../flask/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -24,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -243,7 +245,7 @@
   
   
   <span class="md-ellipsis">
-    Overview
+    Home
     
   </span>
   
@@ -260,12 +262,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../usage/" class="md-nav__link">
+      <a href="../elements/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Usage
+    Elements
     
   </span>
   
@@ -282,12 +284,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/" class="md-nav__link">
+      <a href="../advanced/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Components
+    Advanced usage
     
   </span>
   
@@ -304,56 +306,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../html2markupy/" class="md-nav__link">
+      <a href="../reusability/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Converting HTML to markupy
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../flask/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Integrating with Flask
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../starlette/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Integrating with Starlette
+    Reusability with Fragments and Components
     
   </span>
   
@@ -463,6 +421,72 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flask/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Integrating with Flask
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../starlette/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Integrating with Starlette
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html2markupy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Converting HTML to markupy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -486,7 +510,7 @@
 <h2 id="returning-a-markupy-response">Returning a markupy Response<a class="headerlink" href="#returning-a-markupy-response" title="Permanent link">&para;</a></h2>
 <p>markupy elements can be passed directly to <code>HttpResponse</code>:</p>
 <div class="language-py highlight"><span class="filename">views.py</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpResponse</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">H1</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">H1</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">my_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">H1</span><span class="p">[</span><span class="s2">&quot;Hi Django!&quot;</span><span class="p">])</span>
@@ -506,7 +530,7 @@ existing template based Django project:</p>
 </span></code></pre></div>
 <div class="language-py highlight"><span class="filename">views.py</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">render</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">H1</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">H1</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -539,7 +563,7 @@ existing template based Django project:</p>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.template.backends.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">csrf_input</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy</span><span class="w"> </span><span class="kn">import</span> <span class="n">View</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">Body</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Form</span><span class="p">,</span> <span class="n">H1</span><span class="p">,</span> <span class="n">Head</span><span class="p">,</span> <span class="n">Html</span><span class="p">,</span> <span class="n">Title</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">Body</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Form</span><span class="p">,</span> <span class="n">H1</span><span class="p">,</span> <span class="n">Head</span><span class="p">,</span> <span class="n">Html</span><span class="p">,</span> <span class="n">Title</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyForm</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
@@ -573,7 +597,7 @@ existing template based Django project:</p>
 <p>You can implement a custom form widget directly with markupy like this:</p>
 <div class="language-py highlight"><span class="filename">widgets.py</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">widgets</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.tag</span><span class="w"> </span><span class="kn">import</span> <span class="n">SlInput</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">SlInput</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">ShoelaceInput</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">Widget</span><span class="p">):</span>
