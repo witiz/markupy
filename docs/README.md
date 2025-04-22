@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://markupy.witiz.com/assets/markupy.svg" width="300">
+    <img src="https://markupy.witiz.com/assets/markupy.svg" width="66%">
 </p>
 
 # Overview
@@ -104,9 +104,10 @@ pip install markupy
 
 The full documentation is available at [markupy.witiz.com](https://markupy.witiz.com):
 
-- [Usage](https://markupy.witiz.com/usage/)
-- [Components](https://markupy.witiz.com/components/)
-- [html2markupy](https://markupy.witiz.com/html2markupy/)
+- [Mastering elements](https://markupy.witiz.com/elements/)
+- [Advanced usage](https://markupy.witiz.com/advanced/)
+- [Reusability with Fragments and Components](https://markupy.witiz.com/reusability/)
+- [Integrating with Django](https://markupy.witiz.com/django/)
 - [Integrating with Flask](https://markupy.witiz.com/flask/)
 - [Integrating with Starlette](https://markupy.witiz.com/starlette/)
-- [Integrating with Django](https://markupy.witiz.com/django/)
+- [html2markupy](https://markupy.witiz.com/html2markupy/)

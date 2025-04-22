@@ -10,6 +10,7 @@ theme:
     - toc.integrate
   icon:
     logo: material/code-tags
+  logo: assets/markupy.svg
 nav:
   - README.md
   - elements.md
@@ -23,6 +24,8 @@ extra:
   analytics:
     provider: google
     property: G-NWHXG5WE1Q
+extra_css:
+  - assets/extra.css
 markdown_extensions:
   - admonition
   - pymdownx.highlight:

@@ -1,4 +1,4 @@
-# Elements
+# Mastering elements
 
 ## Importing elements
 
@@ -58,7 +58,7 @@ HTML attributes are specified by using parenthesis `()` syntax on an element.
 
 They can be specified in different ways.
 
-### Elements Without Attributes
+### Elements without attributes
 
 For elements that you do not want attributes, they can be specified by just the element itself:
 
@@ -68,7 +68,7 @@ For elements that you do not want attributes, they can be specified by just the 
 <hr>
 ```
 
-### Keyword Arguments
+### Keyword arguments or kwargs
 
 Attributes can be specified via keyword arguments:
 
@@ -121,7 +121,7 @@ that looks like a CSS selector can be used to quickly define id and classes:
 
     The selector string should begin with the `#id` if present, then followed by `.classes` definition.
 
-### Attributes as Dict
+### Attributes dict
 
 Attributes can also be specified as a `dict`. This is useful when using
 attributes that are reserved Python keywords (like `for` or `class`), when the
@@ -152,6 +152,7 @@ Finally there is one last way to define attributes and it is very powerful, it i
 ```
 
 There are multiple benefits of defining attributes this way:
+
 - Suggestion: your IDE will suggest what attributes you can use
 - Type hinting: attributes all have their own type (`disabled` is `bool`, `maxlength` is `int`, etc...)
 - Autocompletion: for attributes that take pre-definied set of values, you will be able to autocomplete them, avoiding the risk of forgetting or mistyping the correct values
@@ -171,6 +172,7 @@ Attributes via id/class selector shorthand, dictionary, attribute objects and ke
 !!! warning "Order is important"
 
     When combining multiple attribute definition methods, it's important to respect the order between them:
+    
     1. **selector id/class string** (optional, at most one)
     2. **dictionary of attributes** (optional, at most one)
     3. **attribute objects** (optional, unlimited)

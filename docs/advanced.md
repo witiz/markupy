@@ -1,8 +1,8 @@
 # Advanced usage
 
-## Loops and Conditions
+## Loops and conditions
 
-### Looping / Iterating over content
+### Looping / iterating over content
 
 You can pass any iterable such as `list`, `tuple` or `generator` to generate multiple children:
 
@@ -21,7 +21,7 @@ A `list` can be used similar to a [JSX fragment](https://react.dev/reference/rea
 >>> print(Div[my_images])
 <div><img src="a.jpg"><img src="b.jpg"></div>
 ```
-### Conditional Rendering
+### Conditional rendering
 
 Children that evaluate to `True`, `False` and `None` will not be rendered.
 Python's `and` and `or` operators will [short-circuit](https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not).
@@ -63,46 +63,15 @@ You can use this to conditionally render content with inline `and` and `or`.
 
 ## String escaping
 
-### Escaping of Attributes
-
-Attributes are always escaped. This makes it possible to pass arbitrary HTML
-fragments or scripts as attributes. The output may look a bit obfuscated since
-all unsafe characters are escaped but the browser will interpret it correctly:
-
-```python
->>> from markupy.elements import Button
->>> print(Button(id="example", onclick="let name = 'bob'; alert('hi' + name);")["Say hi"])
-<button onclick="let name = &#39;bob&#39;; alert(&#39;hi&#39; + name);">Say hi</button>
-```
-
-In the browser, the parsed attribute as returned by
-`document.getElementById("example").getAttribute("onclick")` will be the
-original string `let name = 'bob'; alert('hi' + name);`.
-
-Escaping will happen whether or not the value is wrapped in `markupsafe.Markup`
-or not. This may seem confusing at first but is useful when embedding HTML
-snippets as attributes:
-
-```python title="Escaping of Markup"
->>> from markupy.elements import Ul
->>> from markupsafe import Markup
->>> # This markup may come from another library/template engine
->>> some_markup = Markup("""<li class="bar"></li>""")
->>> print(Ul(dataTemplate=some_markup))
-<ul data-template="&lt;li class=&#34;bar&#34;&gt;&lt;/li&gt;"></ul>
-```
-
-
-
-### Inject Markup and avoid auto-escaping
+### Element content escaping
 
 Element contents are automatically escaped to avoid [XSS vulnerabilities](https://owasp.org/www-community/attacks/xss/).
 
-```python String escaping in action
+```python title="String escaping in action"
 >>> from markupy.elements import H1
->>> user_supplied_name = "bobby </h1>"
+>>> user_supplied_name = "l33t </h1>"
 >>> print(H1[f"hello {user_supplied_name}"])
-<h1>hello bobby &lt;/h1&gt;</h1>
+<h1>hello l33t &lt;/h1&gt;</h1>
 ```
 
 !!! warning "An exception for `script` and `style` tags"
@@ -131,9 +100,38 @@ If you are generating [Markdown](https://pypi.org/project/Markdown/) and want to
 <div><h1>Hi</h1></div>
 ```
 
+### Element attributes escaping
+
+Attributes are always escaped. This makes it possible to pass arbitrary HTML
+fragments or scripts as attributes. The output may look a bit obfuscated since
+all unsafe characters are escaped but the browser will interpret it correctly:
+
+```python
+>>> from markupy.elements import Button
+>>> print(Button(id="example", onclick="let name = 'bob'; alert('hi' + name);")["Say hi"])
+<button onclick="let name = &#39;bob&#39;; alert(&#39;hi&#39; + name);">Say hi</button>
+```
+
+In the browser, the parsed attribute as returned by
+`document.getElementById("example").getAttribute("onclick")` will be the
+original string `let name = 'bob'; alert('hi' + name);`.
+
+Escaping will happen whether or not the value is wrapped in `markupsafe.Markup`
+or not. This may seem confusing at first but is useful when embedding HTML
+snippets as attributes:
+
+```python title="Escaping of Markup"
+>>> from markupy.elements import Ul
+>>> from markupsafe import Markup
+>>> # This markup may come from another library/template engine
+>>> some_markup = Markup("""<li class="bar"></li>""")
+>>> print(Ul(dataTemplate=some_markup))
+<ul data-template="&lt;li class=&#34;bar&#34;&gt;&lt;/li&gt;"></ul>
+```
+
 ## Special elements
 
-### Custom Elements / Web Components
+### Custom elements / Web components
 
 [Custom elements / web components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) are HTML elements that contains at least one dash (`-`). Since `-` cannot be used in Python identifiers, here's how you'd write them in markupy:
 
@@ -143,7 +141,7 @@ If you are generating [Markdown](https://pypi.org/project/Markdown/) and want to
 <my-custom-element>hi!</my-custom-element>
 ```
 
-### HTML Doctype
+### HTML doctype
 
 The [HTML5 doctype](https://developer.mozilla.org/en-US/docs/Glossary/Doctype) is automatically prepended to the `<html>` tag:
 
@@ -153,7 +151,7 @@ The [HTML5 doctype](https://developer.mozilla.org/en-US/docs/Glossary/Doctype) i
 <!doctype html><html></html>
 ```
 
-### HTML Comments
+### HTML comments
 
 Since the Python code is the source of the HTML generation, to add a comment to
 the code, most of the time regular Python comments (`#`) are used.
@@ -177,7 +175,7 @@ Given that a comment is a `Element`, you can wrap other elements as children:
 
 ## Advanced attributes
 
-### Boolean/Empty Attributes
+### Boolean attributes
 
 In HTML, boolean attributes such as `disabled` are considered "true" when they
 exist. Specifying an attribute as `True` will make it appear (without a value).
