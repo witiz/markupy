@@ -42,6 +42,7 @@ class AttributeDict(dict[str, AttributeValue]):
     __slots__ = ()
 
     def __setitem__(self, key: str, value: AttributeValue) -> None:
+        key = key.lower()
         if (
             value is None
             or value is False
@@ -51,9 +52,9 @@ class AttributeDict(dict[str, AttributeValue]):
             # Discard empty id, class, name attributes
             return
 
-        key = key.lower()
         if key == "class":
             if current := self.get(key):
+                # For class, append new values instead of replacing them
                 value = f"{current} {value}"
 
         return super().__setitem__(key, value)
