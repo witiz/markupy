@@ -54,8 +54,8 @@ def test_element_type() -> None:
 
 
 def test_comment() -> None:
-    assert str(_["Hello"]) == "<!--Hello-->"
-    assert str(_[Div["Hello"]]) == "<!--<div>Hello</div>-->"
+    assert _["Hello"] == "<!--Hello-->"
+    assert _[Div["Hello"]] == "<!--<div>Hello</div>-->"
 
 
 def test_attributes_after_children() -> None:

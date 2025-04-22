@@ -15,7 +15,7 @@ class ComponentElement(Component):
 
 
 def test_component_element() -> None:
-    assert str(ComponentElement("component")) == """<div id="component"></div>"""
+    assert ComponentElement("component") == """<div id="component"></div>"""
 
 
 class ComponentFragment(Component):
@@ -29,7 +29,7 @@ def test_uninitialized_component() -> None:
 
 
 def test_component_fragment() -> None:
-    assert str(ComponentFragment()) == """<div></div><img>"""
+    assert ComponentFragment() == """<div></div><img>"""
 
 
 class ComponentInComponent(Component):
@@ -38,7 +38,7 @@ class ComponentInComponent(Component):
 
 
 def test_component_in_component() -> None:
-    assert str(ComponentInComponent()) == """<input><div id="inside"></div>"""
+    assert ComponentInComponent() == """<input><div id="inside"></div>"""
 
 
 class ComponentAsComponent(Component):
@@ -47,7 +47,7 @@ class ComponentAsComponent(Component):
 
 
 def test_component_as_component() -> None:
-    assert str(ComponentAsComponent()) == """<div id="other"></div>"""
+    assert ComponentAsComponent() == """<div id="other"></div>"""
 
 
 class ContentComponent(Component):
@@ -61,7 +61,7 @@ class ContentComponent(Component):
 
 def test_component_content() -> None:
     assert (
-        str(ContentComponent(id="test")["Hello", elements.Div[elements.Input]])
+        ContentComponent(id="test")["Hello", elements.Div[elements.Input]]
         == """<h1 class="title header" id="test">Hello<div><input></div></h1>"""
     )
 
@@ -69,7 +69,7 @@ def test_component_content() -> None:
 def test_component_content_escape() -> None:
     # Make sure component contents are not re-escaped when assigned to element children
     assert (
-        str(ContentComponent(id="test")['He>"llo'])
+        ContentComponent(id="test")['He>"llo']
         == """<h1 class="title header" id="test">He&gt;&#34;llo</h1>"""
     )
 
@@ -95,12 +95,12 @@ class SuperErrorComponent(Component):
 
 
 def test_super_error_component() -> None:
-    assert str(SuperErrorComponent(id="foo")) == """<h1 id="foo"></h1>"""
+    assert SuperErrorComponent(id="foo") == """<h1 id="foo"></h1>"""
     with pytest.raises(MarkupyError):
         SuperErrorComponent(id="foo")["bar"]
 
 
-@dataclass
+@dataclass(eq=False)
 class DataComponent(Component):
     href: str = field(default="https://google.com")
 
@@ -110,4 +110,4 @@ class DataComponent(Component):
 
 def test_dataclass_component() -> None:
     result = """<a href="https://google.com">Google</a>"""
-    assert str(DataComponent()["Google"]) == result
+    assert DataComponent()["Google"] == result

@@ -26,8 +26,7 @@ def test_comment() -> None:
 def test_underscore_replacement() -> None:
     result = Button(hx_post="/foo", _="bar", whatever_="ok")["click me!"]
     assert (
-        str(result)
-        == """<button hx-post="/foo" _="bar" whatever="ok">click me!</button>"""
+        result == """<button hx-post="/foo" _="bar" whatever="ok">click me!</button>"""
     )
 
 
@@ -42,60 +41,60 @@ class Test_value_escape:
 
     def test_selector(self, value: str) -> None:
         result = Div(value)
-        assert str(result) == """<div class="&lt;&#34;foo"></div>"""
+        assert result == """<div class="&lt;&#34;foo"></div>"""
 
     def test_dict(self, value: str) -> None:
         result = Div({"bar": value})
-        assert str(result) == """<div bar=".&lt;&#34;foo"></div>"""
+        assert result == """<div bar=".&lt;&#34;foo"></div>"""
 
     def test_kwarg(self, value: str) -> None:
         result = Div(**{"bar": value})
-        assert str(result) == """<div bar=".&lt;&#34;foo"></div>"""
+        assert result == """<div bar=".&lt;&#34;foo"></div>"""
 
 
 def test_boolean_attribute() -> None:
-    assert str(Input(disabled="whatever")) == """<input disabled="whatever">"""
-    assert str(Input(disabled=0)) == """<input disabled="0">"""
+    assert Input(disabled="whatever") == """<input disabled="whatever">"""
+    assert Input(disabled=0) == """<input disabled="0">"""
 
 
 def test_boolean_attribute_true() -> None:
     result = Button(disabled=True)
-    assert str(result) == "<button disabled></button>"
+    assert result == "<button disabled></button>"
 
 
 def test_boolean_attribute_false() -> None:
     result = Button(disabled=False)
-    assert str(result) == "<button></button>"
+    assert result == "<button></button>"
 
 
 def test_selector_and_kwargs() -> None:
     result = Div("#theid", for_="hello", data_foo="<bar")
-    assert str(result) == """<div id="theid" for="hello" data-foo="&lt;bar"></div>"""
+    assert result == """<div id="theid" for="hello" data-foo="&lt;bar"></div>"""
 
 
 def test_attrs_and_kwargs() -> None:
     result = Div({"a": "1", "for": "a"}, for_="b", b="2")
-    assert str(result) == """<div a="1" for="b" b="2"></div>"""
+    assert result == """<div a="1" for="b" b="2"></div>"""
 
 
 def test_class_priority() -> None:
     result = Div(".selector", {"class": "dict"}, attr.class_("obj"), class_="kwarg")
-    assert str(result) == """<div class="selector dict obj kwarg"></div>"""
+    assert result == """<div class="selector dict obj kwarg"></div>"""
 
 
 def test_id_priority() -> None:
     result = Div("#selector", {"id": "dict"}, attr.id("obj"), id="kwarg")
-    assert str(result) == """<div id="kwarg"></div>"""
+    assert result == """<div id="kwarg"></div>"""
     result = Div("#selector", {"id": "dict"}, attr.id("obj"))
-    assert str(result) == """<div id="obj"></div>"""
+    assert result == """<div id="obj"></div>"""
     result = Div("#selector", {"id": "dict"})
-    assert str(result) == """<div id="dict"></div>"""
+    assert result == """<div id="dict"></div>"""
 
 
 @pytest.mark.parametrize("not_an_attr", [1234, b"foo", object(), object, 1, 0, None])
 def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):
-        str(Div({not_an_attr: "foo"}))
+        Div({not_an_attr: "foo"})
 
 
 @pytest.mark.parametrize(
@@ -126,4 +125,4 @@ def test_invalid_key(key: str) -> None:
 def test_attribute_case() -> None:
     result = Div({"BAR": "foo", "bAr": "hello"}, bar="baz")
     # If not properly managed, could become <div BAR="foo" bar="baz"></div>
-    assert str(result) == """<div bar="baz"></div>"""
+    assert result == """<div bar="baz"></div>"""

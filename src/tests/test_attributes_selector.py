@@ -12,27 +12,27 @@ def test_redefinition() -> None:
 def test_selector() -> None:
     result = Div("#myid.cls1.cls2")
 
-    assert str(result) == """<div id="myid" class="cls1 cls2"></div>"""
+    assert result == """<div id="myid" class="cls1 cls2"></div>"""
 
 
 def test_selector_only_id() -> None:
     result = Div("#myid")
-    assert str(result) == """<div id="myid"></div>"""
+    assert result == """<div id="myid"></div>"""
 
 
 def test_selector_only_classes() -> None:
     result = Div(".foo.bar")
-    assert str(result) == """<div class="foo bar"></div>"""
+    assert result == """<div class="foo bar"></div>"""
 
 
 def test_selector_empty_classes() -> None:
     result = Div(".foo..bar.")
-    assert str(result) == """<div class="foo bar"></div>"""
+    assert result == """<div class="foo bar"></div>"""
 
 
 def test_selector_classes_space_separator() -> None:
     result = Div("foo bar")
-    assert str(result) == """<div class="foo bar"></div>"""
+    assert result == """<div class="foo bar"></div>"""
 
 
 def test_selector_bad_type() -> None:
@@ -43,12 +43,12 @@ def test_selector_bad_type() -> None:
 @pytest.mark.parametrize("selector", ["", "   ", "  #  ", "  .  "])
 def test_empty_selector(selector: str) -> None:
     result = Div(selector)
-    assert str(result) == """<div></div>"""
+    assert result == """<div></div>"""
 
 
 def test_selector_strip() -> None:
     result = Div(" #myid .myclass .other ")
-    assert str(result) == """<div id="myid" class="myclass other"></div>"""
+    assert result == """<div id="myid" class="myclass other"></div>"""
 
 
 def test_selector_invalid_id_position() -> None:
@@ -62,5 +62,5 @@ def test_selector_multiple_id() -> None:
 
 
 def test_selector_empty_id() -> None:
-    assert str(Div("# foo bar")) == """<div class="foo bar"></div>"""
-    assert str(Div("#.foo.bar")) == """<div class="foo bar"></div>"""
+    assert Div("# foo bar") == """<div class="foo bar"></div>"""
+    assert Div("#.foo.bar") == """<div class="foo bar"></div>"""

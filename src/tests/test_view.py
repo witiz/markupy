@@ -3,7 +3,7 @@ from markupy import elements as el
 
 
 def test_empty_view() -> None:
-    assert str(View()) == ""
+    assert View() == ""
 
 
 def test_equalty() -> None:
