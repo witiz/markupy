@@ -32,7 +32,7 @@ def python_to_html_key(key: str) -> str:
     return key.removesuffix("_").replace("_", "-")
 
 
-def _format_key_value(key: str, value: AttributeValue) -> str:
+def format_key_value(key: str, value: AttributeValue) -> str:
     if value is True:
         return key
     return f'{key}="{escape(str(value))}"'
@@ -60,7 +60,7 @@ class AttributeDict(dict[str, AttributeValue]):
         return super().__setitem__(key, value)
 
     def __str__(self) -> str:
-        return " ".join(_format_key_value(k, v) for k, v in self.items())
+        return " ".join(format_key_value(k, v) for k, v in self.items())
 
     def add_selector(self, selector: str) -> None:
         if selector := selector.replace(".", " ").strip():

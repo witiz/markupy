@@ -36,7 +36,7 @@ def test_selector() -> None:
 
 def test_kwargs() -> None:
     html = """<label for="myfield" style="display:none" http-equiv="x">Hello</label>"""
-    py = """from markupy.elements import Label\nLabel(for_="myfield",style="display:none",httpEquiv="x")["Hello"]"""
+    py = """from markupy.elements import Label\nLabel(for_="myfield",style="display:none",http_equiv="x")["Hello"]"""
     assert to_markupy(html) == py
 
 
@@ -65,8 +65,8 @@ def test_invalid_html_not_matching() -> None:
 
 
 def test_to_markupy() -> None:
-    html = """<html><Head><TITLE>Test</title></head><body class=''><h1 id='myid' burger&fries='good' class='title header'>Parse me! <!--My comment--></h1><hr><input class='my-input' disabled value='0' @click.outside.500ms='test' data-test='other' data-url-valid='coucou'><sl-button hx-on:htmx:config-request='attri'>Click!</sl-button></body></html>"""
-    py = """from markupy.elements import Body,H1,Head,Hr,Html,Input,SlButton,Title\nHtml[Head[Title["Test"]],Body[H1("#myid.title.header",{"burger&fries":"good"})["Parse me!"],Hr,Input(".my-input",disabled=True,value="0",_click_outside_500ms="test",dataTest="other",dataUrlValid="coucou"),SlButton(hxOn__htmx__configRequest="attri")["Click!"]]]"""
+    html = """<html><Head><TITLE>Test</title></head><body class=''><h1 id='myid' burger&fries='good' class='title header'>Parse me! <!--My comment--></h1><hr><input class='my-input' disabled value='0' @click.outside.500ms='test' data-test='other' data-url-valid='hop'><sl-button hx-on:htmx:config-request='attr'>Click!</sl-button></body></html>"""
+    py = """from markupy.elements import Body,H1,Head,Hr,Html,Input,SlButton,Title\nHtml[Head[Title["Test"]],Body[H1("#myid.title.header",{"burger&fries":"good"})["Parse me!"],Hr,Input(".my-input",{"@click.outside.500ms":"test"},disabled=True,value="0",data_test="other",data_url_valid="hop"),SlButton({"hx-on:htmx:config-request":"attr"})["Click!"]]]"""
     assert to_markupy(html) == py
 
 
@@ -125,6 +125,12 @@ def test_use_dict_selector() -> None:
     html = """<div id="myid" class="cls1 cls2" del="ok">hello</div>"""
     py = """from markupy.elements import Div\nDiv("#myid.cls1.cls2",{"del":"ok"})["hello"]"""
     assert to_markupy(html, use_dict=True, use_selector=True) == py
+
+
+def test_no_dict_invalid_identifier() -> None:
+    html = """<input hello="world" @foo="bar">"""
+    py = """from markupy.elements import Input\nInput({"@foo":"bar"},hello="world")"""
+    assert to_markupy(html, use_dict=False) == py
 
 
 def test_jinja_block() -> None:

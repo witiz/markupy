@@ -12,7 +12,7 @@ from markupy import elements
 from ..exceptions import MarkupyError
 from .element import VoidElement
 
-_void_elements: set[str] = {
+VOID_ELEMENTS: set[str] = {
     element.name
     for element in map(lambda x: getattr(elements, x), elements.__all__)
     if isinstance(element, VoidElement)
@@ -20,7 +20,7 @@ _void_elements: set[str] = {
 
 
 def _is_void_element(name: str) -> bool:
-    return name in _void_elements
+    return name in VOID_ELEMENTS
 
 
 # https://html.spec.whatwg.org/multipage/indices.html#attributes-3
@@ -56,17 +56,14 @@ def _is_boolean_attribute(name: str) -> bool:
     return name in BOOLEAN_ATTRIBUTES
 
 
-def _format_attribute_key(key: str) -> str:
-    if iskeyword(key):
-        # Escape python reserved keywords
-        return f"{key}_"
-    if key.startswith("@"):
-        key = f"_{key[1:]}"
-    parts = key.split("-")
-    key = f"{parts[0]}{''.join(map(lambda x: x.capitalize(), parts[1:]))}"
-    key = key.replace(":", "__")
-    key = key.replace(".", "_")
-    return key
+def _format_attribute_key(key: str) -> str | None:
+    pykey = key.replace("-", "_")
+    if pykey.isidentifier():
+        if iskeyword(pykey):
+            # Escape python reserved keywords
+            return f"{pykey}_"
+        return pykey
+    return None
 
 
 def _format_attribute_value(value: str | None) -> str:
@@ -107,18 +104,17 @@ def _format_attrs(
         if use_dict:
             attrs_dict[key] = _format_attribute_value(value)
         else:
-            py_key = _format_attribute_key(key)
-            if py_key.isidentifier():
+            if py_key := _format_attribute_key(key):
                 attrs_kwargs.append(f"{py_key}={_format_attribute_value(value)}")
             else:
                 attrs_dict[key] = _format_attribute_value(value)
 
     if selector:
         arguments.append(_format_attribute_value(selector))
-    if attrs_kwargs:
-        arguments += attrs_kwargs
     if attrs_dict:
         arguments.append(_format_attrs_dict(attrs_dict))
+    if attrs_kwargs:
+        arguments += attrs_kwargs
 
     if len(arguments) > 0:
         return f"({','.join(arguments)})"
