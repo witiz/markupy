@@ -40,64 +40,12 @@ class Element(Fragment):
         return f"<markupy.{type(self).__name__}.{self._name}>"
 
     # Use call syntax () to define attributes
-
-    @overload
-    def __call__(self) -> Self: ...
-
-    @overload
-    def __call__(self, selector: str) -> Self: ...
-
-    @overload
-    def __call__(self, attributes: Mapping[str, AttributeValue]) -> Self: ...
-
-    @overload
-    def __call__(self, *args: Attribute) -> Self: ...
-
-    @overload
-    def __call__(self, **kwargs: AttributeValue) -> Self: ...
-
-    @overload
-    def __call__(
-        self, selector: str, attributes: Mapping[str, AttributeValue]
-    ) -> Self: ...
-
-    @overload
-    def __call__(self, selector: str, *args: Attribute) -> Self: ...
-
-    @overload
-    def __call__(self, selector: str, **kwargs: AttributeValue) -> Self: ...
-
-    @overload
-    def __call__(
-        self, attributes: Mapping[str, AttributeValue], *args: Attribute
-    ) -> Self: ...
-
-    @overload
-    def __call__(
-        self, attributes: Mapping[str, AttributeValue], **kwargs: AttributeValue
-    ) -> Self: ...
-
     @overload
     def __call__(self, *args: Attribute, **kwargs: AttributeValue) -> Self: ...
-
-    @overload
-    def __call__(
-        self, selector: str, attributes: Mapping[str, AttributeValue], *args: Attribute
-    ) -> Self: ...
-
-    @overload
-    def __call__(
-        self,
-        selector: str,
-        attributes: Mapping[str, AttributeValue],
-        **kwargs: AttributeValue,
-    ) -> Self: ...
-
     @overload
     def __call__(
         self, selector: str, *args: Attribute, **kwargs: AttributeValue
     ) -> Self: ...
-
     @overload
     def __call__(
         self,
@@ -105,7 +53,6 @@ class Element(Fragment):
         *args: Attribute,
         **kwargs: AttributeValue,
     ) -> Self: ...
-
     @overload
     def __call__(
         self,
