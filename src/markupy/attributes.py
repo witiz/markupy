@@ -13,6 +13,10 @@ def __getattr__(name: str) -> typing.Callable[[AttributeValue], Attribute]:
     return fn
 
 
+def _(name: str, value: AttributeValue) -> Attribute:
+    return Attribute(name, value)
+
+
 def accept(*value: str) -> Attribute:
     return Attribute("accept", ",".join(value))
 
@@ -95,8 +99,15 @@ def cite(value: str) -> Attribute:
     return Attribute("cite", value)
 
 
-def class_(*value: str) -> Attribute:
-    return Attribute("class", " ".join(value))
+def class_(value: str | Iterable[str] | Mapping[str, bool]) -> Attribute:
+    classes: list[str]
+    if isinstance(value, str):
+        classes = [value]
+    elif isinstance(value, Mapping):
+        classes = [k for k, v in value.items() if v]  # type: ignore
+    else:
+        classes = list(value)
+    return Attribute("class", " ".join(classes))
 
 
 def color(value: str) -> Attribute:
@@ -301,7 +312,7 @@ def loading(value: typing.Literal["eager", "lazy"]) -> Attribute:
     return Attribute("loading", value)
 
 
-def list(value: str) -> Attribute:
+def list_(value: str) -> Attribute:
     return Attribute("list", value)
 
 
@@ -864,17 +875,3 @@ def width(value: int | str) -> Attribute:
 
 def wrap(value: typing.Literal["hard", "soft", "off"]) -> Attribute:
     return Attribute("wrap", value)
-
-
-# ADDITIONAL HELPER FUNCTIONS
-# Below are functions that do not exactly match with an attribute or alias it
-
-cls = class_
-
-
-def class_list(value: Iterable[str]) -> Attribute:
-    return class_(*value)
-
-
-def class_dict(value: Mapping[str, bool]) -> Attribute:
-    return class_list([k for k, v in value.items() if v])
