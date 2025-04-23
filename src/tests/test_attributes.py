@@ -18,7 +18,14 @@ def test_order() -> None:
         Input(attr.disabled(), "#foo.bar")  # type: ignore
 
 
-def test_comment() -> None:
+def test_attribute_equivalence() -> None:
+    obj = Input(attr.onclick("console.log('yo')"), attr.disabled())
+    dct = Input({"onclick": "console.log('yo')", "disabled": True})
+    kwd = Input(onclick="console.log('yo')", disabled=True)
+    assert obj == dct == kwd
+
+
+def test_comment_attributes() -> None:
     with pytest.raises(MarkupyError):
         _(attr="foo")
 
