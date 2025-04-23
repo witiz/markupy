@@ -138,7 +138,8 @@ Content can be assigned to component the same way we are doing for Fragments or 
 To tell your component where such content needs to be injected when rendering, you need to call the `self.render_content()` reserved method:
 
 ```python
-from markupy import Component, View, tag
+from markupy import elements as el
+from markupy import Component, View
 
 class Title(Component):
     def __init__(self, id: str) -> None:
@@ -170,7 +171,8 @@ Here's for example what the component above would look like with `@dataclass`:
 
 ```python
 from dataclasses import dataclass
-from markupy import Component, View, tag
+from markupy import elements as el
+from markupy import Component, View
 
 @dataclass
 class Title(Component):
