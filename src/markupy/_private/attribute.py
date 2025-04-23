@@ -17,6 +17,9 @@ class Attribute:
         self.name = name
         self.value = value
 
+    def __repr__(self) -> str:
+        return f"<markupy.Attribute.{self.name}>"
+
 
 @lru_cache(maxsize=1000)
 def python_to_html_key(key: str) -> str:
