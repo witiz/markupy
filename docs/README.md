@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://markupy.witiz.com/assets/markupy.svg" width="66%">
+    <img src="https://markupy.witiz.com/assets/markupy.svg" width="60%">
 </p>
 
 # Overview
