@@ -1,6 +1,6 @@
 from collections.abc import Mapping
 from functools import lru_cache
-from typing import TypeAlias
+from typing import Any, TypeAlias
 
 from markupsafe import escape
 
@@ -34,6 +34,16 @@ def python_to_html_key(key: str) -> str:
     return key.removesuffix("_").replace("_", "-")
 
 
+@lru_cache(maxsize=1000)
+def is_valid_key(key: Any) -> bool:
+    # Check for invalid chars (like <> or newline/spaces)
+    return bool(key != "" and key == escape(str(key)) and key == "".join(key.split()))
+
+
+def is_valid_value(value: Any) -> bool:
+    return isinstance(value, AttributeValue)
+
+
 def format_key_value(key: str, value: AttributeValue) -> str:
     if value is True:
         return key
@@ -53,6 +63,12 @@ class AttributeDict(dict[str, AttributeValue]):
             # Discard False and None valued attributes for all attributes
             # Discard empty id, class, name attributes
             return
+
+        if not is_valid_key(key):
+            raise MarkupyError(f"Attribute `{key!r}` has invalid name")
+
+        if not is_valid_value(value):
+            raise MarkupyError(f"Attribute `{key}` has invalid value {value!r}")
 
         if key == "class":
             if current := self.get(key):
@@ -85,21 +101,7 @@ class AttributeDict(dict[str, AttributeValue]):
         rewrite_keys: bool = False,
     ) -> None:
         for key, value in dct.items():
-            if not isinstance(value, AttributeValue):  # type: ignore[unused-ignore]
-                raise MarkupyError(
-                    f"Invalid value type {value!r} for attribute `{key}`"
-                )
-
-            if rewrite_keys:
-                key = python_to_html_key(key)
-            else:
-                # Coming from dict arg, need to secure user input
-                if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]
-                    raise MarkupyError(f"Attribute {key!r} must be a string")
-                if escape(str(key)) != key or len(key.split()) > 1:
-                    raise MarkupyError(f"Attribute `{key}` has invalid name")
-
-            self[key] = value
+            self[python_to_html_key(key) if rewrite_keys else key] = value
 
     def add_objs(self, lst: list[Attribute]) -> None:
         for attr in lst:
