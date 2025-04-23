@@ -22,7 +22,7 @@
     
     
       
-        <title>Elements - markupy</title>
+        <title>Mastering elements - markupy</title>
       
     
     
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#elements" class="md-skip">
+        <a href="#mastering-elements" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Elements
+              Mastering elements
             
           </span>
         </div>
@@ -276,7 +276,7 @@
   
   
   <span class="md-ellipsis">
-    Elements
+    Mastering elements
     
   </span>
   
@@ -289,7 +289,7 @@
   
   
   <span class="md-ellipsis">
-    Elements
+    Mastering elements
     
   </span>
   
@@ -342,16 +342,16 @@
           <li class="md-nav__item">
   <a href="#elements-without-attributes" class="md-nav__link">
     <span class="md-ellipsis">
-      Elements Without Attributes
+      Elements without attributes
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#keyword-arguments" class="md-nav__link">
+  <a href="#keyword-arguments-or-kwargs" class="md-nav__link">
     <span class="md-ellipsis">
-      Keyword Arguments
+      Keyword arguments or kwargs
     </span>
   </a>
   
@@ -367,9 +367,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#attributes-as-dict" class="md-nav__link">
+  <a href="#attributes-dict" class="md-nav__link">
     <span class="md-ellipsis">
-      Attributes as Dict
+      Attributes dict
     </span>
   </a>
   
@@ -557,7 +557,7 @@
   
 
 
-<h1 id="elements">Elements<a class="headerlink" href="#elements" title="Permanent link">&para;</a></h1>
+<h1 id="mastering-elements">Mastering elements<a class="headerlink" href="#mastering-elements" title="Permanent link">&para;</a></h1>
 <h2 id="importing-elements">Importing elements<a class="headerlink" href="#importing-elements" title="Permanent link">&para;</a></h2>
 <p>HTML elements are imported directly from the <code>markupy.elements</code> module as their name using the CapitalizedCase syntax. Although HTML elements are usually spelled in lower case, using CapitalizedCase in markupy avoids naming conflicts with your own variables and makes it easier to distinguish markupy tags vs other parts of your code.</p>
 <div class="language-python highlight"><span class="filename">Importing elements</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">Div</span>
@@ -596,13 +596,13 @@ And you are not limited to just one child, can be as meny as you want:</p>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;container&quot;</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;color:red&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p>They can be specified in different ways.</p>
-<h3 id="elements-without-attributes">Elements Without Attributes<a class="headerlink" href="#elements-without-attributes" title="Permanent link">&para;</a></h3>
+<h3 id="elements-without-attributes">Elements without attributes<a class="headerlink" href="#elements-without-attributes" title="Permanent link">&para;</a></h3>
 <p>For elements that you do not want attributes, they can be specified by just the element itself:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hr</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Hr</span><span class="p">)</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="o">&lt;</span><span class="n">hr</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<h3 id="keyword-arguments">Keyword Arguments<a class="headerlink" href="#keyword-arguments" title="Permanent link">&para;</a></h3>
+<h3 id="keyword-arguments-or-kwargs">Keyword arguments or kwargs<a class="headerlink" href="#keyword-arguments-or-kwargs" title="Permanent link">&para;</a></h3>
 <p>Attributes can be specified via keyword arguments:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">Img</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Img</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;picture.jpg&quot;</span><span class="p">))</span>
@@ -637,7 +637,7 @@ that looks like a CSS selector can be used to quickly define id and classes:</p>
 <p class="admonition-title">Selector string format</p>
 <p>The selector string should begin with the <code>#id</code> if present, then followed by <code>.classes</code> definition.</p>
 </div>
-<h3 id="attributes-as-dict">Attributes as Dict<a class="headerlink" href="#attributes-as-dict" title="Permanent link">&para;</a></h3>
+<h3 id="attributes-dict">Attributes dict<a class="headerlink" href="#attributes-dict" title="Permanent link">&para;</a></h3>
 <p>Attributes can also be specified as a <code>dict</code>. This is useful when using
 attributes that are reserved Python keywords (like <code>for</code> or <code>class</code>), when the
 attribute name contains special characters or when you want to define attributes
@@ -657,11 +657,18 @@ dynamically.</p>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Input</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="s2">&quot;myid&quot;</span><span class="p">),</span> <span class="n">attr</span><span class="o">.</span><span class="n">tabindex</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">attr</span><span class="o">.</span><span class="n">disabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)))</span>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="o">&lt;</span><span class="nb">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;myid&quot;</span> <span class="n">tabindex</span><span class="o">=</span><span class="s2">&quot;3&quot;</span> <span class="n">disabled</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<p>There are multiple benefits of defining attributes this way:
-- Suggestion: your IDE will suggest what attributes you can use
-- Type hinting: attributes all have their own type (<code>disabled</code> is <code>bool</code>, <code>maxlength</code> is <code>int</code>, etc...)
-- Autocompletion: for attributes that take pre-definied set of values, you will be able to autocomplete them, avoiding the risk of forgetting or mistyping the correct values
-- Helper functions for some attributes like <code>class_list</code> or <code>class_dict</code></p>
+<p>There are multiple benefits of defining attributes this way:</p>
+<ul>
+<li>Suggestion: your IDE will suggest what attributes you can use</li>
+<li>Type hinting: attributes all have their own type (<code>disabled</code> is <code>bool</code>, <code>maxlength</code> is <code>int</code>, etc...)</li>
+<li>Autocompletion: for attributes that take pre-definied set of values, you will be able to autocomplete them, avoiding the risk of forgetting or mistyping the correct values</li>
+<li>Helper functions for some attributes like <code>class_()</code> that can take multiple input types (<code>str</code>, <code>list</code>, <code>dict</code>) for commodity</li>
+</ul>
+<p>Finally, custom attribute objects can be defined in several ways:</p>
+<ul>
+<li>If attribute is a valid python identifier, just do <code>attr.foo_bar("baz")</code></li>
+<li>Otherwise, you can pass any arbitrary string as an attribute name by doing <code>attr._("@foo.bar", "baz")</code></li>
+</ul>
 <h3 id="combining-different-types-of-attributes">Combining different types of attributes<a class="headerlink" href="#combining-different-types-of-attributes" title="Permanent link">&para;</a></h3>
 <p>Attributes via id/class selector shorthand, dictionary, attribute objects and keyword arguments can be combined and used simultaneously:</p>
 <div class="language-python highlight"><span class="filename">Specifying attribute via multiple arguments</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">markupy</span><span class="w"> </span><span class="kn">import</span> <span class="n">attributes</span> <span class="k">as</span> <span class="n">attr</span>
@@ -671,11 +678,13 @@ dynamically.</p>
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Order is important</p>
-<p>When combining multiple attribute definition methods, it's important to respect the order between them:
-1. <strong>selector id/class string</strong> (optional, at most one)
-2. <strong>dictionary of attributes</strong> (optional, at most one)
-3. <strong>attribute objects</strong> (optional, unlimited)
-4. <strong>keyword attributes</strong> (optional, unlimited)</p>
+<p>When combining multiple attribute definition methods, it's important to respect the order between them:</p>
+<ol>
+<li><strong>selector id/class string</strong> (optional, at most one)</li>
+<li><strong>dictionary of attributes</strong> (optional, at most one)</li>
+<li><strong>attribute objects</strong> (optional, unlimited)</li>
+<li><strong>keyword attributes</strong> (optional, unlimited)</li>
+</ol>
 </div>
 
 
