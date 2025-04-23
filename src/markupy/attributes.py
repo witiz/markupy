@@ -104,7 +104,7 @@ def class_(value: str | Iterable[str] | Mapping[str, bool]) -> Attribute:
     if isinstance(value, str):
         classes = [value]
     elif isinstance(value, Mapping):
-        classes = [k for k, v in value.items() if v]  # type: ignore
+        classes = [k for k, v in value.items() if v]  # type: ignore[unused-ignore]
     else:
         classes = list(value)
     return Attribute("class", " ".join(classes))

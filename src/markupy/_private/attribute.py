@@ -68,12 +68,13 @@ class AttributeDict(dict[str, AttributeValue]):
                 raise MarkupyError(
                     "Id must be defined only once and must be in first position of selector"
                 )
-            parts = selector.split()
             if selector.startswith("#"):
-                self["id"] = parts[0][1:]
-                self["class"] = " ".join((parts[1:]))
+                id, *classes = selector.split()
+                self["id"] = id[1:]
+                self["class"] = " ".join(classes)
             else:
-                self["class"] = " ".join(parts)
+                classes = selector.split()
+                self["class"] = " ".join(classes)
 
     def add_dict(
         self,
