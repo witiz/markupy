@@ -1,6 +1,5 @@
 from collections.abc import Mapping
 from functools import lru_cache
-from re import match as re_match
 from typing import TypeAlias
 
 from markupsafe import escape
@@ -97,7 +96,7 @@ class AttributeDict(dict[str, AttributeValue]):
                 # Coming from dict arg, need to secure user input
                 if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]
                     raise MarkupyError(f"Attribute {key!r} must be a string")
-                if escape(str(key)) != key or not re_match(r"^\S+$", key):
+                if escape(str(key)) != key or len(key.split()) > 1:
                     raise MarkupyError(f"Attribute `{key}` has invalid name")
 
             self[key] = value
