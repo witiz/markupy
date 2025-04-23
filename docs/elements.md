@@ -156,7 +156,13 @@ There are multiple benefits of defining attributes this way:
 - Suggestion: your IDE will suggest what attributes you can use
 - Type hinting: attributes all have their own type (`disabled` is `bool`, `maxlength` is `int`, etc...)
 - Autocompletion: for attributes that take pre-definied set of values, you will be able to autocomplete them, avoiding the risk of forgetting or mistyping the correct values
-- Helper functions for some attributes like `class_list` or `class_dict`
+- Helper functions for some attributes like `class_()` that can take multiple input types (`str`, `list`, `dict`) for commodity
+
+Finally, custom attribute objects can be defined in several ways:
+
+- If attribute is a valid python identifier, just do `attr.foo_bar("baz")`
+- Otherwise, you can pass any arbitrary string as an attribute name by doing `attr._("@foo.bar", "baz")`
+
 
 ### Combining different types of attributes
 
