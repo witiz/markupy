@@ -5,36 +5,34 @@ import pytest
 from markupsafe import Markup
 
 from markupy import attributes as attr
-from markupy.elements import Button, Div, Input, _
+from markupy import elements as el
 from markupy.exceptions import MarkupyError
 
 
 def test_order() -> None:
     with pytest.raises(MarkupyError):
-        Input({"foo": "bar"}, "selector")  # type: ignore
+        el.Input({"foo": "bar"}, "selector")  # type: ignore
     with pytest.raises(MarkupyError):
-        Input(attr.id("cool"), {"foo": "bar"})  # type: ignore
+        el.Input(attr.id("cool"), {"foo": "bar"})  # type: ignore
     with pytest.raises(MarkupyError):
-        Input(attr.disabled(), "#foo.bar")  # type: ignore
+        el.Input(attr.disabled(), "#foo.bar")  # type: ignore
 
 
 def test_attribute_equivalence() -> None:
-    obj = Input(attr.onclick("console.log('yo')"), attr.disabled())
-    dct = Input({"onclick": "console.log('yo')", "disabled": True})
-    kwd = Input(onclick="console.log('yo')", disabled=True)
+    obj = el.Input(attr.onclick("console.log('yo')"), attr.disabled())
+    dct = el.Input({"onclick": "console.log('yo')", "disabled": True})
+    kwd = el.Input(onclick="console.log('yo')", disabled=True)
     assert obj == dct == kwd
 
 
 def test_comment_attributes() -> None:
     with pytest.raises(MarkupyError):
-        _(attr="foo")
+        el._(attr="foo")
 
 
 def test_underscore_replacement() -> None:
-    result = Button(hx_post="/foo", _="bar", whatever_="ok")["click me!"]
-    assert (
-        result == """<button hx-post="/foo" _="bar" whatever="ok">click me!</button>"""
-    )
+    result = """<button hx-post="/foo" _="bar" whatever="ok">click me!</button>"""
+    assert el.Button(hx_post="/foo", _="bar", whatever_="ok")["click me!"] == result
 
 
 class Test_value_escape:
@@ -47,61 +45,64 @@ class Test_value_escape:
     )
 
     def test_selector(self, value: str) -> None:
-        result = Div(value)
-        assert result == """<div class="&lt;&#34;foo"></div>"""
+        assert el.Div(value) == """<div class="&lt;&#34;foo"></div>"""
 
     def test_dict(self, value: str) -> None:
-        result = Div({"bar": value})
-        assert result == """<div bar=".&lt;&#34;foo"></div>"""
+        assert el.Div({"bar": value}) == """<div bar=".&lt;&#34;foo"></div>"""
 
     def test_kwarg(self, value: str) -> None:
-        result = Div(**{"bar": value})
-        assert result == """<div bar=".&lt;&#34;foo"></div>"""
+        assert el.Div(**{"bar": value}) == """<div bar=".&lt;&#34;foo"></div>"""
 
 
 def test_boolean_attribute() -> None:
-    assert Input(disabled="whatever") == """<input disabled="whatever">"""
-    assert Input(disabled=0) == """<input disabled="0">"""
+    assert el.Input(disabled="whatever") == """<input disabled="whatever">"""
+    assert el.Input(disabled=0) == """<input disabled="0">"""
 
 
 def test_boolean_attribute_true() -> None:
-    result = Button(disabled=True)
-    assert result == "<button disabled></button>"
+    assert el.Button(disabled=True) == "<button disabled></button>"
 
 
 def test_boolean_attribute_false() -> None:
-    result = Button(disabled=False)
-    assert result == "<button></button>"
+    assert el.Button(disabled=False) == "<button></button>"
 
 
 def test_selector_and_kwargs() -> None:
-    result = Div("#theid", for_="hello", data_foo="<bar")
-    assert result == """<div id="theid" for="hello" data-foo="&lt;bar"></div>"""
+    result = """<div id="theid" for="hello" data-foo="&lt;bar"></div>"""
+    assert el.Div("#theid", for_="hello", data_foo="<bar") == result
 
 
 def test_attrs_and_kwargs() -> None:
-    result = Div({"a": "1", "for": "a"}, for_="b", b="2")
-    assert result == """<div a="1" for="b" b="2"></div>"""
+    result = """<div a="1" for="b" b="2"></div>"""
+    assert el.Div({"a": "1", "for": "a"}, for_="b", b="2") == result
 
 
 def test_class_priority() -> None:
-    result = Div(".selector", {"class": "dict"}, attr.class_("obj"), class_="kwarg")
-    assert result == """<div class="selector dict obj kwarg"></div>"""
+    result = """<div class="selector dict obj kwarg"></div>"""
+    assert (
+        el.Div(".selector", {"class": "dict"}, attr.class_("obj"), class_="kwarg")
+        == result
+    )
 
 
 def test_id_priority() -> None:
-    result = Div("#selector", {"id": "dict"}, attr.id("obj"), id="kwarg")
-    assert result == """<div id="kwarg"></div>"""
-    result = Div("#selector", {"id": "dict"}, attr.id("obj"))
-    assert result == """<div id="obj"></div>"""
-    result = Div("#selector", {"id": "dict"})
-    assert result == """<div id="dict"></div>"""
+    assert (
+        el.Div("#selector", {"id": "dict"}, attr.id("obj"), id="kwarg")
+        == """<div id="kwarg"></div>"""
+    )
+    assert (
+        el.Div("#selector", {"id": "dict"}, attr.id("obj"))
+        == """<div id="obj"></div>"""
+    )
+    assert el.Div("#selector", {"id": "dict"}) == """<div id="dict"></div>"""
 
 
 @pytest.mark.parametrize("not_an_attr", [1234, b"foo", object(), object, 1, 0, None])
 def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):
-        Div({not_an_attr: "foo"})
+        el.Div({not_an_attr: "foo"})
+    with pytest.raises(MarkupyError):
+        el.Div(attr._(not_an_attr, "foo"))
 
 
 @pytest.mark.parametrize(
@@ -110,12 +111,16 @@ def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
 )
 def test_invalid_attribute_value(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):
-        Div(foo=not_an_attr)
+        el.Div(foo=not_an_attr)
+    with pytest.raises(MarkupyError):
+        el.Div(attr.foo(not_an_attr))
+    with pytest.raises(MarkupyError):
+        el.Div({"foo": not_an_attr})
 
 
 def test_attribute_redefinition() -> None:
     with pytest.raises(MarkupyError):
-        Div(id="hello")(class_="world")
+        el.Div(id="hello")(class_="world")
 
 
 @pytest.mark.parametrize(
@@ -124,12 +129,15 @@ def test_attribute_redefinition() -> None:
 )
 def test_invalid_key(key: str) -> None:
     with pytest.raises(MarkupyError):
-        Div({key: "bar"})
+        el.Div(attr._(key, "bar"))
+    with pytest.raises(MarkupyError):
+        el.Div({key: "bar"})
     with pytest.raises((MarkupyError, TypeError)):
-        Div(**{key: "bar"})
+        el.Div(**{key: "bar"})
 
 
 def test_attribute_case() -> None:
-    result = Div({"BAR": "foo", "bAr": "hello"}, bar="baz")
     # If not properly managed, could become <div BAR="foo" bar="baz"></div>
-    assert result == """<div bar="baz"></div>"""
+    assert (
+        el.Div({"BAR": "foo", "bAr": "hello"}, bar="baz") == """<div bar="baz"></div>"""
+    )
