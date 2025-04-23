@@ -4,12 +4,11 @@ from typing import Any, final
 
 from typing_extensions import Self
 
-from ..exception import MarkupyError
-from .fragment import Fragment
+from ..exceptions import MarkupyError
 from .view import View
 
 
-class Component(Fragment):
+class Component(View):
     __slots__ = ()
 
     def __init__(self) -> None:
@@ -43,9 +42,9 @@ class Component(Fragment):
             else:
                 # One non-view child or multiple children: wrap in a fragment
                 # (do not use the [] syntax to avoid re-processing/re-escaping)
-                fragment = Fragment()
-                fragment._children = children
-                return fragment
+                view = View()
+                view._children = children
+                return view
 
         else:
             # No children or super().__init__() hasn't been called and we are

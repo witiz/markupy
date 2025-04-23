@@ -9,7 +9,7 @@ from ._private.element import (
     SafeElement,
     VoidElement,
 )
-from .exception import MarkupyError
+from .exceptions import MarkupyError
 
 __all__ = [
     "_",

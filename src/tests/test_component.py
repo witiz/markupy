@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from markupy import Component, Fragment, View, tag
-from markupy.exception import MarkupyError
+from markupy import Component, Fragment, View, elements
+from markupy.exceptions import MarkupyError
 
 
 class ComponentElement(Component):
@@ -11,34 +11,34 @@ class ComponentElement(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.Div(id=self.id)
+        return elements.Div(id=self.id)
 
 
 def test_component_element() -> None:
-    assert str(ComponentElement("component")) == """<div id="component"></div>"""
+    assert ComponentElement("component") == """<div id="component"></div>"""
 
 
 class ComponentFragment(Component):
     def render(self) -> View:
-        return Fragment[tag.Div, tag.Img]
+        return Fragment[elements.Div, elements.Img]
 
 
 def test_uninitialized_component() -> None:
     with pytest.raises(MarkupyError):
-        tag.P[ComponentFragment]
+        elements.P[ComponentFragment]
 
 
 def test_component_fragment() -> None:
-    assert str(ComponentFragment()) == """<div></div><img>"""
+    assert ComponentFragment() == """<div></div><img>"""
 
 
 class ComponentInComponent(Component):
     def render(self) -> View:
-        return Fragment[tag.Input, ComponentElement("inside")]
+        return Fragment[elements.Input, ComponentElement("inside")]
 
 
 def test_component_in_component() -> None:
-    assert str(ComponentInComponent()) == """<input><div id="inside"></div>"""
+    assert ComponentInComponent() == """<input><div id="inside"></div>"""
 
 
 class ComponentAsComponent(Component):
@@ -47,7 +47,7 @@ class ComponentAsComponent(Component):
 
 
 def test_component_as_component() -> None:
-    assert str(ComponentAsComponent()) == """<div id="other"></div>"""
+    assert ComponentAsComponent() == """<div id="other"></div>"""
 
 
 class ContentComponent(Component):
@@ -56,12 +56,12 @@ class ContentComponent(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.H1(".title.header", id=self.id)[self.render_content()]
+        return elements.H1(".title.header", id=self.id)[self.render_content()]
 
 
 def test_component_content() -> None:
     assert (
-        str(ContentComponent(id="test")["Hello", tag.Div[tag.Input]])
+        ContentComponent(id="test")["Hello", elements.Div[elements.Input]]
         == """<h1 class="title header" id="test">Hello<div><input></div></h1>"""
     )
 
@@ -69,7 +69,7 @@ def test_component_content() -> None:
 def test_component_content_escape() -> None:
     # Make sure component contents are not re-escaped when assigned to element children
     assert (
-        str(ContentComponent(id="test")['He>"llo'])
+        ContentComponent(id="test")['He>"llo']
         == """<h1 class="title header" id="test">He&gt;&#34;llo</h1>"""
     )
 
@@ -91,23 +91,23 @@ class SuperErrorComponent(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.H1(id=self.id)
+        return elements.H1(id=self.id)
 
 
 def test_super_error_component() -> None:
-    assert str(SuperErrorComponent(id="foo")) == """<h1 id="foo"></h1>"""
+    assert SuperErrorComponent(id="foo") == """<h1 id="foo"></h1>"""
     with pytest.raises(MarkupyError):
         SuperErrorComponent(id="foo")["bar"]
 
 
-@dataclass
+@dataclass(eq=False)
 class DataComponent(Component):
     href: str = field(default="https://google.com")
 
     def render(self) -> View:
-        return tag.A(href=self.href)[self.render_content()]
+        return elements.A(href=self.href)[self.render_content()]
 
 
 def test_dataclass_component() -> None:
     result = """<a href="https://google.com">Google</a>"""
-    assert str(DataComponent()["Google"]) == result
+    assert DataComponent()["Google"] == result

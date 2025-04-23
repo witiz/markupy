@@ -3,7 +3,7 @@ from django.conf import settings
 from django.http import HttpResponse, StreamingHttpResponse
 from django.urls import path
 
-from markupy import tag
+from markupy import elements
 
 # --- Django minimal config ---
 settings.configure(
@@ -13,11 +13,11 @@ settings.configure(
 
 # --- The view ---
 def render(request):
-    return HttpResponse(tag.H1(".title")["render"])
+    return HttpResponse(elements.H1(".title")["render"])
 
 
 def stream(request):
-    return StreamingHttpResponse(iter(tag.H1(".title")["stream"]))
+    return StreamingHttpResponse(iter(elements.H1(".title")["stream"]))
 
 
 # --- URL config ---

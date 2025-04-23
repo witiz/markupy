@@ -2,26 +2,26 @@
 import pytest
 from flask import Flask, request, stream_with_context
 
-from markupy import tag
+from markupy import elements
 
 app = Flask(__name__)
 
 
 @app.route("/render")
 def render():
-    return str(tag.H1(".title")["render"])
+    return str(elements.H1(".title")["render"])
 
 
 @app.route("/stream")
 def stream():
-    return iter(tag.H1(".title")[request.args["name"]])
+    return iter(elements.H1(".title")[request.args["name"]])
 
 
 @app.route("/stream_context")
 def stream_context():
     # Here stream_with_context is useless since the View is build before
     # the streaming starts and context is no longer needed
-    return stream_with_context(tag.H1(".title")[request.args["name"]])
+    return stream_with_context(elements.H1(".title")[request.args["name"]])
 
 
 @pytest.fixture

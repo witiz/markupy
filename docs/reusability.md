@@ -1,8 +1,22 @@
-# Components
+# Reusability with Fragments and Components
+
+## Fragments
+
+Fragments allow you to wrap a group of nodes (not necessarily elements) so that they can be rendered without a wrapping element.
+
+```python
+>>> from markupy.elements import P, I, Fragment
+>>> content = Fragment["Hello ", None, I["world!"]]
+>>> print(content)
+Hello <i>world!</i>
+
+>>> print(P[content])
+<p>Hello <i>world!</i></p>
+```
+
+## Components
 
 Although markupy intend to remain a generic library to allow you generate HTML, it also provides a powerful support for components in order to build reusable chunks of HTML.
-
-## Create reusable fragments with components
 
 ### Building your first component
 
@@ -37,7 +51,7 @@ Building a class component is done by subclassing the built-in `Component` abstr
 
 ```python
 from markupy import Component, View
-from markupy.tag import Div, H5, P
+from markupy.elements import Div, H5, P
 
 class CardComponent(Component):
     def render(self) -> View:
@@ -71,7 +85,7 @@ Let's make our card data dynamic by adding a constructor to our component. Let's
 
 ```python
 from markupy import Component, View
-from markupy.tag import Div, H5, P
+from markupy.elements import Div, H5, P
 from my_models import Post
 
 class PostCardComponent(Component):
@@ -98,7 +112,7 @@ Usually, cards are displayed as part of a collection. Let's say we have a blog t
 
 ```python
 from markupy import Component, View
-from markupy.tag import Div, H5, P
+from markupy.elements import Div, H5, P
 from my_models import Post
 
 class PostCardListComponent(Component):
@@ -124,7 +138,8 @@ Content can be assigned to component the same way we are doing for Fragments or 
 To tell your component where such content needs to be injected when rendering, you need to call the `self.render_content()` reserved method:
 
 ```python
-from markupy import Component, View, tag
+from markupy import elements as el
+from markupy import Component, View
 
 class Title(Component):
     def __init__(self, id: str) -> None:
@@ -132,13 +147,13 @@ class Title(Component):
         self.id = id
 
     def render(self) -> View:
-        return tag.H1(".title.header", id=self.id)[self.render_content()]
+        return el.H1(".title.header", id=self.id)[self.render_content()]
 ```
 
 Then to use this component:
 
 ```python
->>> print(Title(id="headline")["hello ", tag.I(".star.icon")])
+>>> print(Title(id="headline")["hello ", el.I(".star.icon")])
 ```
 
 This will render as:
@@ -156,14 +171,15 @@ Here's for example what the component above would look like with `@dataclass`:
 
 ```python
 from dataclasses import dataclass
-from markupy import Component, View, tag
+from markupy import elements as el
+from markupy import Component, View
 
 @dataclass
 class Title(Component):
     id: str
 
     def render(self) -> View:
-        return tag.H1(".title.header", id=self.id)[self.render_content()]
+        return el.H1(".title.header", id=self.id)[self.render_content()]
 ```
 
 ## Using components to define layouts
@@ -176,7 +192,7 @@ Below is a very basic layout that specifies a default head and body, with some p
 
 ```python
 from markupy import Component, View
-from markupy.tag import H1, Body, Footer, Head, Header, Html, Main, Title
+from markupy.elements import H1, Body, Footer, Head, Header, Html, Main, Title
 
 class BaseLayout(Component):
     def render_title(self) -> str:
@@ -209,7 +225,7 @@ Then when we need to define a specific page, we need to subclass the layout an o
 
 ```python
 from markupy import Fragment, View
-from markupy.tag import H2
+from markupy.elements import H2
 from my_components import PostCardListComponent
 from my_models import Post
 

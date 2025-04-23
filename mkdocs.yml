@@ -10,18 +10,22 @@ theme:
     - toc.integrate
   icon:
     logo: material/code-tags
+  logo: assets/markupy.svg
 nav:
   - README.md
-  - usage.md
-  - components.md
-  - html2markupy.md
+  - elements.md
+  - advanced.md
+  - reusability.md
+  - django.md
   - flask.md
   - starlette.md
-  - django.md
+  - html2markupy.md
 extra:
   analytics:
     provider: google
     property: G-NWHXG5WE1Q
+extra_css:
+  - assets/extra.css
 markdown_extensions:
   - admonition
   - pymdownx.highlight:

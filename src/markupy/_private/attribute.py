@@ -1,89 +1,50 @@
-from collections.abc import Iterable, Iterator, Mapping, Sequence
+from collections.abc import Mapping
 from functools import lru_cache
-from re import match as re_match
-from re import sub as re_sub
-from typing import TypeAlias
+from typing import Any, TypeAlias
 
 from markupsafe import escape
 
-from ..exception import MarkupyError
+from ..exceptions import MarkupyError
 
-ClassNamesDict: TypeAlias = Mapping[str, bool | None]
-ClassNamesSequence: TypeAlias = Sequence[None | str | ClassNamesDict]
-ClassAttributeValue: TypeAlias = ClassNamesSequence | ClassNamesDict
-PrimitiveAttributeValue: TypeAlias = None | bool | str | int
-AttributeValue: TypeAlias = PrimitiveAttributeValue | ClassAttributeValue
-
-# https://html.spec.whatwg.org/multipage/indices.html#attributes-3
-BOOLEAN_ATTRIBUTES: set[str] = {
-    "allowfullscreen",
-    "async",
-    "autofocus",
-    "autoplay",
-    "checked",
-    "controls",
-    "default",
-    "defer",
-    "disabled",
-    "formnovalidate",
-    "inert",
-    "ismap",
-    "itemscope",
-    "loop",
-    "multiple",
-    "muted",
-    "nomodule",
-    "novalidate",
-    "open",
-    "playsinline",
-    "readonly",
-    "required",
-    "reversed",
-    "selected",
-}
+AttributeValue: TypeAlias = None | bool | str | int | float
 
 
-def _classes_to_str(classes: Iterable[str]) -> str:
-    return " ".join(map(lambda c: c.strip(), filter(None, classes)))
+class Attribute:
+    __slots__ = ("name", "value")
 
+    def __init__(self, name: str, value: AttributeValue):
+        self.name = name
+        self.value = value
 
-def _iter_classes_dict(dct: ClassNamesDict) -> Iterator[str]:
-    for k, v in dct.items():
-        if v:
-            yield k
-
-
-def _iter_classes_seq(seq: ClassNamesSequence) -> Iterator[str]:
-    for v in seq:
-        if not v:
-            continue
-        elif isinstance(v, Mapping):
-            yield from _iter_classes_dict(v)
-        else:
-            yield v
+    def __repr__(self) -> str:
+        return f"<markupy.Attribute.{self.name}>"
 
 
 @lru_cache(maxsize=1000)
-def _rewrite_attr_key(key: str) -> str:
-    # Leading underscore "_" not followed by another "_" -> "@"
-    key = re_sub(r"^(?:_)([^_]+)", r"@\1", key)
+def python_to_html_key(key: str) -> str:
+    if not key.isidentifier():
+        # Might happen when using the **{} syntax
+        raise MarkupyError(f"Attribute `{key}` has invalid name")
+    if key == "_":
+        # Preserve single underscore for hyperscript compatibility
+        return key
     # Trailing underscore "_" is meaningless and is used to escape protected
     # keywords that might be used as attr keys such as class_ and for_
-    key = key.removesuffix("_")
-    # Upper case -> "-"
-    key = "-".join(filter(None, re_sub(r"([A-Z])", r" \1", key).split())).lower()
-    # Double underscore -> ":"
-    key = key.replace("__", ":")
-    # Single underscore -> "."
-    key = key.replace("_", ".")
-    return key
+    # Underscores become dashes
+    return key.removesuffix("_").replace("_", "-")
 
 
-def is_boolean_attribute(name: str) -> bool:
-    return name in BOOLEAN_ATTRIBUTES
+@lru_cache(maxsize=1000)
+def is_valid_key(key: Any) -> bool:
+    # Check for invalid chars (like <> or newline/spaces)
+    return bool(key != "" and key == escape(str(key)) and key == "".join(key.split()))
 
 
-def _format_key_value(key: str, value: AttributeValue) -> str:
+def is_valid_value(value: Any) -> bool:
+    return isinstance(value, AttributeValue)
+
+
+def format_key_value(key: str, value: AttributeValue) -> str:
     if value is True:
         return key
     return f'{key}="{escape(str(value))}"'
@@ -93,86 +54,55 @@ class AttributeDict(dict[str, AttributeValue]):
     __slots__ = ()
 
     def __setitem__(self, key: str, value: AttributeValue) -> None:
-        if value is None or value is False:
-            # Discard False and None valued attributes for all attributes
-            return
-
         key = key.lower()
-
-        if value is True:
-            pass
-        elif is_boolean_attribute(key):
-            if value == 0:
-                return
-            value = True
-        elif value == "" and key in ("id", "class"):
-            # Discard empty id or class attributes
+        if (
+            value is None
+            or value is False
+            or (value == "" and key in {"id", "class", "name"})
+        ):
+            # Discard False and None valued attributes for all attributes
+            # Discard empty id, class, name attributes
             return
 
-        if key == "class" and self.get(key):
-            return super().__setitem__(key, f"{self['class']} {value}")
-        else:
-            return super().__setitem__(key, value)
+        if not is_valid_key(key):
+            raise MarkupyError(f"Attribute `{key!r}` has invalid name")
+
+        if not is_valid_value(value):
+            raise MarkupyError(f"Attribute `{key}` has invalid value {value!r}")
+
+        if key == "class":
+            if current := self.get(key):
+                # For class, append new values instead of replacing them
+                value = f"{current} {value}"
+
+        return super().__setitem__(key, value)
 
     def __str__(self) -> str:
-        return " ".join(_format_key_value(k, v) for k, v in self.items())
+        return " ".join(format_key_value(k, v) for k, v in self.items())
 
-    def add_selector(self, selector: str | None) -> None:
-        if not selector:
-            # Empty selector or None
-            return
-
-        selector = selector.replace(".", " ").strip()
-        parts = selector.split()
-        hash_indexes = [i for i, c in enumerate(selector) if c == "#"]
-
-        if len(hash_indexes) > 1:
-            raise MarkupyError("Id must be defined only once in selector")
-
-        elif len(hash_indexes) == 1:
-            if hash_indexes[0] != 0:
-                raise MarkupyError("Id must be defined at the start of selector")
-
-            self["id"] = parts[0][1:]
-            self["class"] = _classes_to_str(parts[1:])
-
-        else:
-            self["class"] = _classes_to_str(parts)
+    def add_selector(self, selector: str) -> None:
+        if selector := selector.replace(".", " ").strip():
+            if "#" in selector[1:]:
+                raise MarkupyError(
+                    "Id must be defined only once and must be in first position of selector"
+                )
+            if selector.startswith("#"):
+                id, *classes = selector.split()
+                self["id"] = id[1:]
+                self["class"] = " ".join(classes)
+            else:
+                classes = selector.split()
+                self["class"] = " ".join(classes)
 
     def add_dict(
         self,
-        dct: Mapping[str, AttributeValue] | None,
+        dct: Mapping[str, AttributeValue],
         *,
         rewrite_keys: bool = False,
     ) -> None:
-        if not dct:
-            # Empty dict or None
-            return
         for key, value in dct.items():
-            if rewrite_keys:
-                if not key.isidentifier():
-                    # Might happen when using the **{} syntax
-                    raise MarkupyError(f"Attribute `{key}` has invalid name")
-                elif key != "_":
-                    # Preserve single _ for hyperscript
-                    key = _rewrite_attr_key(key)
-            else:
-                # Coming from dict arg, need to secure user input
-                if not isinstance(key, str):  # pyright: ignore [reportUnnecessaryIsInstance]
-                    raise MarkupyError(f"Attribute {key!r} must be a string")
-                if escape(str(key)) != key or not re_match(r"^\S+$", key):
-                    raise MarkupyError(f"Attribute `{key}` has invalid name")
+            self[python_to_html_key(key) if rewrite_keys else key] = value
 
-            if isinstance(value, PrimitiveAttributeValue):
-                self[key] = value
-                continue
-
-            elif key == "class":
-                if isinstance(value, Mapping):
-                    classes = _iter_classes_dict(value)
-                else:
-                    classes = _iter_classes_seq(value)
-                self[key] = _classes_to_str(classes)
-                continue
-
-            raise MarkupyError(f"Invalid value type {value!r} for attribute `{key}`")
+    def add_objs(self, lst: list[Attribute]) -> None:
+        for attr in lst:
+            self[attr.name] = attr.value

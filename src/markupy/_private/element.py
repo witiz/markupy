@@ -3,12 +3,12 @@ from typing import Any, overload
 
 from typing_extensions import Self, override
 
-from ..exception import MarkupyError
-from .attribute import AttributeDict, AttributeValue
-from .shared import Shared
+from ..exceptions import MarkupyError
+from .attribute import Attribute, AttributeDict, AttributeValue
+from .fragment import Fragment
 
 
-class Element(Shared):
+class Element(Fragment):
     __slots__ = ("_attributes", "_name")
 
     def __init__(self, name: str, *, safe: bool = False, shared: bool = True) -> None:
@@ -41,20 +41,26 @@ class Element(Shared):
 
     # Use call syntax () to define attributes
     @overload
+    def __call__(self, *args: Attribute, **kwargs: AttributeValue) -> Self: ...
+    @overload
+    def __call__(
+        self, selector: str, *args: Attribute, **kwargs: AttributeValue
+    ) -> Self: ...
+    @overload
+    def __call__(
+        self,
+        attributes: Mapping[str, AttributeValue],
+        *args: Attribute,
+        **kwargs: AttributeValue,
+    ) -> Self: ...
+    @overload
     def __call__(
         self,
         selector: str,
         attributes: Mapping[str, AttributeValue],
+        *args: Attribute,
         **kwargs: AttributeValue,
     ) -> Self: ...
-    @overload
-    def __call__(self, selector: str, **kwargs: AttributeValue) -> Self: ...
-    @overload
-    def __call__(
-        self, attributes: Mapping[str, AttributeValue], **kwargs: AttributeValue
-    ) -> Self: ...
-    @overload
-    def __call__(self, **kwargs: AttributeValue) -> Self: ...
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
         if self._attributes is not None:
             raise MarkupyError(
@@ -68,57 +74,69 @@ class Element(Shared):
 
         selector: str | None = None
         attributes_dict: Mapping[str, AttributeValue] | None = None
+        attributes_obj: list[Attribute] = list()
         attributes_kwargs: Mapping[str, AttributeValue] = kwargs
-        if len(args) == 1:
-            arg = args[0]
+        for arg in args:
             if isinstance(arg, str):
-                # element(".foo")
+                if selector:
+                    raise MarkupyError("Selector has already been defined")
+                if attributes_dict:
+                    raise MarkupyError("Selector must be defined after dict attributes")
+                if attributes_obj:
+                    raise MarkupyError("Selector must be defined after obj attributes")
                 selector = arg
             elif isinstance(arg, Mapping):
-                # element({"foo": "bar"})
+                if attributes_dict:
+                    raise MarkupyError("Dict attributes have already been defined")
+                if attributes_obj:
+                    raise MarkupyError(
+                        "Dict attributes must be defined after obj attributes"
+                    )
                 attributes_dict = arg  # type:ignore[unused-ignore]
+            elif isinstance(arg, Attribute):
+                attributes_obj.append(arg)
             else:
                 raise MarkupyError(
-                    f"Invalid argument type {arg!r} for element {self!r}, expected `str` or `Mapping`"
+                    f"Invalid argument type {arg!r} for element {self!r}"
                 )
-        elif len(args) == 2:
-            # element(".foo", {"bar": "baz"})
-            if not isinstance(args[0], str):
-                raise MarkupyError(
-                    f"Invalid first argument type {args[0]!r} for element {self!r}, expected `str`"
-                )
-            if not isinstance(args[1], Mapping):
-                raise MarkupyError(
-                    f"Invalid second argument type {args[1]!r} for element {self!r}, expected `Mapping`"
-                )
-            selector, attributes_dict = args
-        elif len(args) > 2:
-            raise MarkupyError(
-                f"Invalid number of arguments provided for element {self!r}"
-            )
 
-        if not selector and not attributes_dict and not attributes_kwargs:
+        if (
+            not selector
+            and not attributes_dict
+            and not attributes_obj
+            and not attributes_kwargs
+        ):
             return self
 
         attrs = AttributeDict()
-        try:
-            attrs.add_selector(selector)
-        except Exception as e:
-            raise MarkupyError(
-                f"Invalid selector string `{selector}` for element {self!r}"
-            ) from e
-        try:
-            attrs.add_dict(attributes_dict)
-        except Exception as e:
-            raise MarkupyError(
-                f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
-            ) from e
-        try:
-            attrs.add_dict(attributes_kwargs, rewrite_keys=True)
-        except Exception as e:
-            raise MarkupyError(
-                f"Invalid keyword attributes `{attributes_kwargs}` for element {self!r}"
-            ) from e
+        if selector:
+            try:
+                attrs.add_selector(selector)
+            except Exception as e:
+                raise MarkupyError(
+                    f"Invalid selector string `{selector}` for element {self!r}"
+                ) from e
+        if attributes_dict:
+            try:
+                attrs.add_dict(attributes_dict)
+            except Exception as e:
+                raise MarkupyError(
+                    f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
+                ) from e
+        if attributes_obj:
+            try:
+                attrs.add_objs(attributes_obj)
+            except Exception as e:
+                raise MarkupyError(
+                    f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
+                ) from e
+        if attributes_kwargs:
+            try:
+                attrs.add_dict(attributes_kwargs, rewrite_keys=True)
+            except Exception as e:
+                raise MarkupyError(
+                    f"Invalid keyword attributes `{attributes_kwargs}` for element {self!r}"
+                ) from e
 
         if attributes := str(attrs):
             el = self._get_instance()

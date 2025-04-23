@@ -3,7 +3,7 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse
 from starlette.routing import Route
 
-from markupy.tag import H1, Body, Html
+from markupy.elements import H1, Body, Html
 
 
 async def index(request: Request) -> HTMLResponse:

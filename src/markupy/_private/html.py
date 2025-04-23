@@ -7,34 +7,63 @@ from typing import Iterator
 
 from markupsafe import escape
 
-from markupy import tag
+from markupy import elements
 
-from ..exception import MarkupyError
-from .attribute import is_boolean_attribute
+from ..exceptions import MarkupyError
 from .element import VoidElement
 
-_void_elements: set[str] = {
+VOID_ELEMENTS: set[str] = {
     element.name
-    for element in map(lambda x: getattr(tag, x), tag.__all__)
+    for element in map(lambda x: getattr(elements, x), elements.__all__)
     if isinstance(element, VoidElement)
 }
 
 
 def _is_void_element(name: str) -> bool:
-    return name in _void_elements
+    return name in VOID_ELEMENTS
 
 
-def _format_attribute_key(key: str) -> str:
-    if iskeyword(key):
-        # Escape python reserved keywords
-        return f"{key}_"
-    if key.startswith("@"):
-        key = f"_{key[1:]}"
-    parts = key.split("-")
-    key = f"{parts[0]}{''.join(map(lambda x: x.capitalize(), parts[1:]))}"
-    key = key.replace(":", "__")
-    key = key.replace(".", "_")
-    return key
+# https://html.spec.whatwg.org/multipage/indices.html#attributes-3
+BOOLEAN_ATTRIBUTES: set[str] = {
+    "allowfullscreen",
+    "async",
+    "autofocus",
+    "autoplay",
+    "checked",
+    "controls",
+    "default",
+    "defer",
+    "disabled",
+    "formnovalidate",
+    "inert",
+    "ismap",
+    "itemscope",
+    "loop",
+    "multiple",
+    "muted",
+    "nomodule",
+    "novalidate",
+    "open",
+    "playsinline",
+    "readonly",
+    "required",
+    "reversed",
+    "selected",
+}
+
+
+def _is_boolean_attribute(name: str) -> bool:
+    return name in BOOLEAN_ATTRIBUTES
+
+
+def _format_attribute_key(key: str) -> str | None:
+    pykey = key.replace("-", "_")
+    if pykey.isidentifier():
+        if iskeyword(pykey):
+            # Escape python reserved keywords
+            return f"{pykey}_"
+        return pykey
+    return None
 
 
 def _format_attribute_value(value: str | None) -> str:
@@ -61,7 +90,7 @@ def _format_attrs(
     attrs_dict: dict[str, str | None] = dict()
 
     for key, value in attrs:
-        if is_boolean_attribute(key):
+        if _is_boolean_attribute(key):
             value = None
         elif not value:
             continue
@@ -75,18 +104,17 @@ def _format_attrs(
         if use_dict:
             attrs_dict[key] = _format_attribute_value(value)
         else:
-            py_key = _format_attribute_key(key)
-            if py_key.isidentifier():
+            if py_key := _format_attribute_key(key):
                 attrs_kwargs.append(f"{py_key}={_format_attribute_value(value)}")
             else:
                 attrs_dict[key] = _format_attribute_value(value)
 
     if selector:
         arguments.append(_format_attribute_value(selector))
-    if attrs_kwargs:
-        arguments += attrs_kwargs
     if attrs_dict:
         arguments.append(_format_attrs_dict(attrs_dict))
+    if attrs_kwargs:
+        arguments += attrs_kwargs
 
     if len(arguments) > 0:
         return f"({','.join(arguments)})"
@@ -122,13 +150,13 @@ class Stack:
 
 class MarkupyParser(HTMLParser):
     def __init__(
-        self, *, use_selector: bool, use_dict: bool, use_import_tag: bool
+        self, *, use_selector: bool, use_dict: bool, use_import_el: bool
     ) -> None:
         self.count_top_level: int = 0
         self.code_stack: Stack = Stack()
         self.unclosed_stack: Stack = Stack()
         self.imports: set[str] = set()
-        self.use_import_tag: bool = use_import_tag
+        self.use_import_el: bool = use_import_el
         self.use_dict: bool = use_dict
         self.use_selector: bool = use_selector
         super().__init__()
@@ -141,8 +169,8 @@ class MarkupyParser(HTMLParser):
             self.unclosed_stack.push(tag)
 
         markupy_tag = "".join(map(lambda x: x.capitalize(), tag.split("-")))
-        if self.use_import_tag:
-            markupy_tag = f"tag.{markupy_tag}"
+        if self.use_import_el:
+            markupy_tag = f"el.{markupy_tag}"
 
         self.imports.add(markupy_tag)
         self.code_stack.push(markupy_tag)
@@ -197,12 +225,12 @@ class MarkupyParser(HTMLParser):
         if self.count_top_level > 1:
             markupy_imports.add("Fragment")
         if self.imports:
-            if self.use_import_tag:
-                markupy_imports.add("tag")
+            if self.use_import_el:
+                markupy_imports.add("elements as el")
                 # return "from markupy import tag\n"
             else:
                 str_markupy_tag_imports = (
-                    f"from markupy.tag import {','.join(sorted(self.imports))}\n"
+                    f"from markupy.elements import {','.join(sorted(self.imports))}\n"
                 )
         if markupy_imports:
             str_markupy_imports = (
@@ -245,10 +273,10 @@ def to_markupy(
     *,
     use_selector: bool = True,
     use_dict: bool = False,
-    use_import_tag: bool = False,
+    use_import_el: bool = False,
 ) -> str:
     parser = MarkupyParser(
-        use_selector=use_selector, use_dict=use_dict, use_import_tag=use_import_tag
+        use_selector=use_selector, use_dict=use_dict, use_import_el=use_import_el
     )
     parser.feed(_template_process(html))
     parser.close()

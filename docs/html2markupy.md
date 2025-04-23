@@ -16,7 +16,7 @@ The utility command `html2markupy` ships with `markupy`, and can be used to tran
 
 ```bash
 $ html2markupy -h
-usage: html2markupy [-h] [--selector | --no-selector] [--dict-attrs | --no-dict-attrs] [--tag-prefix | --no-tag-prefix] [input]
+usage: html2markupy [-h] [--selector | --no-selector] [--dict-attrs | --no-dict-attrs] [--el-prefix | --no-el-prefix] [input]
 
 positional arguments:
   input                 input HTML from file or stdin
@@ -27,7 +27,7 @@ options:
                         Use the selector #id.class syntax instead of explicit `id` and `class_` attributes (default: True)
   --dict-attrs, --no-dict-attrs
                         Prefer dict attributes (default: False)
-  --tag-prefix, --no-tag-prefix
+  --el-prefix, --no-el-prefix
                         Output mode for imports of markupy elements (default: False)
 ```
 
@@ -60,7 +60,7 @@ $ html2markupy index.html
 ```
 
 ```python
-from markupy.tag import A,Body,Footer,H1,Head,Header,Html,Main,Title
+from markupy.elements import A,Body,Footer,H1,Head,Header,Html,Main,Title
 Html(lang="en")[Head[Title["html2markupy"]],Body[Header[H1(".heading")["Welcome to html2markupy!"]],Main("#container")["Discover a powerful way to build your HTML pages and components in Python!"],Footer["Powered by",A(href="https://markupy.witiz.com")["markupy"]]]]
 ```
 
@@ -98,27 +98,27 @@ You can adapt the markupy conversion with a couple of options.
 
 #### Imports management
 
-Some people prefer to `import markupy as tag` instead of importing individual elements `from markupy.tag`.
-If this is you, you can use the `--tag-prefix` option to get corresponding output when using `html2markupy`.
+Some people prefer to `from markupy import elements as el` instead of importing individual elements `from markupy.elements`.
+If this is you, you can use the `--el-prefix` option to get corresponding output when using `html2markupy`.
 
 
-=== "--no-tag-prefix (default)"
+=== "--no-el-prefix (default)"
 
     ```python
-    from markupy.tag import A, Section
+    from markupy.elements import A, Section
 
     Section("#main-section.container")[
         A(".btn.btn-primary", href="/index")["Home"]
     ]
     ```
 
-=== "--tag-prefix"
+=== "--el-prefix"
 
     ```python
-    from markupy import tag
+    from markupy import elements as el
 
-    tag.Section("#main-section.container")[
-        tag.A(".btn.btn-primary", href="/index")["Home"]
+    el.Section("#main-section.container")[
+        el.A(".btn.btn-primary", href="/index")["Home"]
     ]
     ```
 
@@ -130,7 +130,7 @@ If you prefer the explicit `id="id", class_="class"` kwargs syntax over the defa
 === "--selector (default)"
 
     ```python
-    from markupy.tag import A, Section
+    from markupy.elements import A, Section
 
     Section("#main-section.container")[
         A(".btn.btn-primary", href="/index")["Home"]
@@ -140,7 +140,7 @@ If you prefer the explicit `id="id", class_="class"` kwargs syntax over the defa
 === "--no-selector"
 
     ```python
-    from markupy.tag import A, Section
+    from markupy.elements import A, Section
 
     Section(id="main-section" class_="container")[
         A(class_="btn btn-primary", href="/index")["Home"]
@@ -154,7 +154,7 @@ The `--dict-args` flag lets you declare attributes as a dictionary instead of th
 === "--no-dict-args (default)"
 
     ```python
-    from markupy.tag import A, Section
+    from markupy.elements import A, Section
 
     Section("#main-section.container")[
         A(".btn.btn-primary", href="/index")["Home"]
@@ -164,7 +164,7 @@ The `--dict-args` flag lets you declare attributes as a dictionary instead of th
 === "--dict-args"
 
     ```python
-    from markupy.tag import A, Section
+    from markupy.elements import A, Section
 
     Section("#main-section.container")[
         A(".btn.btn-primary", {"href": "/index"})["Home"]

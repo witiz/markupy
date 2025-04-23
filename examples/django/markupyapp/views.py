@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from markupy.tag import H1, Body, Html
+from markupy.elements import H1, Body, Html
 
 
 def index(request):
