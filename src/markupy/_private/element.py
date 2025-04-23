@@ -5,10 +5,10 @@ from typing_extensions import Self, override
 
 from ..exceptions import MarkupyError
 from .attribute import Attribute, AttributeDict, AttributeValue
-from .shared import Shared
+from .fragment import Fragment
 
 
-class Element(Shared):
+class Element(Fragment):
     __slots__ = ("_attributes", "_name")
 
     def __init__(self, name: str, *, safe: bool = False, shared: bool = True) -> None:

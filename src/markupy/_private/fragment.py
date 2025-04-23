@@ -1,69 +1,34 @@
-from collections.abc import Iterable, Iterator
-from inspect import isclass, isfunction, ismethod
-from typing import Any, TypeAlias
+from copy import copy
+from typing import final
 
-from markupsafe import escape
 from typing_extensions import Self
 
-from ..exceptions import MarkupyError
 from .view import View
-
-ChildType: TypeAlias = str | View
-ChildrenType: TypeAlias = tuple[ChildType, ...]
 
 
 class Fragment(View):
-    __slots__ = ("_children", "_safe")
+    __slots__ = ("_shared",)
 
-    def __init__(self, *, safe: bool = False) -> None:
-        super().__init__()
-        self._children: ChildrenType = tuple()
-        self._safe: bool = safe
+    def __init__(self, *, safe: bool = False, shared: bool = True) -> None:
+        super().__init__(safe=safe)
+        self._shared: bool = shared
 
-    def _iter_node(self, node: Any) -> Iterator[ChildType]:
-        if node is None or isinstance(node, bool):
-            return
-        elif isinstance(node, View):
-            # View is Iterable, must check in priority
-            yield node
-        elif isinstance(node, Iterable) and not isinstance(node, str):
-            for child in node:  # type: ignore[unused-ignore]
-                yield from self._iter_node(child)
-        elif isfunction(node) or ismethod(node) or isclass(node):
-            # Allows to catch uncalled functions/methods or uninstanciated classes
-            raise MarkupyError(
-                f"Invalid child node {node!r} provided for {self!r}; Did you mean `{node.__name__}()` ?"
-            )
-        else:
-            try:
-                if s := str(node if self._safe else escape(node)):
-                    yield s
-            except Exception as e:
-                raise MarkupyError(
-                    f"Invalid child node {node!r} provided for {self!r}"
-                ) from e
+    def __copy__(self) -> Self:
+        return type(self)(shared=False)
 
-    # Use subscriptable [] syntax to assign children
-    def __getitem__(self, content: Any) -> Self:
-        if self._children:
-            raise MarkupyError(f"Illegal attempt to redefine children of {self!r}")
-
-        if children := tuple(c for c in self._iter_node(content)):
-            instance = self._get_instance()
-            instance._children = children
-            return instance
-
+    def __call__(self) -> Self:
         return self
 
-    def __iter__(self) -> Iterator[str]:
-        for node in self._children:
-            if isinstance(node, View):
-                yield from node
-            else:
-                yield node
-
+    @final
     def _get_instance(self: Self) -> Self:
+        # When imported, elements are loaded from a shared instance
+        # Make sure we re-instantiate them on setting attributes/children
+        # to avoid sharing attributes/children between multiple instances
+        if self._shared:
+            return copy(self)
         return self
 
-    def __repr__(self) -> str:
-        return "<markupy.Fragment>"
+    # Avoid having Django "call" a markupy fragment (or element) that is injected into a template.
+    # Setting do_not_call_in_templates will prevent Django from doing an extra call:
+    # https://docs.djangoproject.com/en/5.0/ref/templates/api/#variables-and-lookups
+    do_not_call_in_templates = True
