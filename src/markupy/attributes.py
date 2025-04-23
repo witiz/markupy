@@ -229,7 +229,7 @@ def headers(value: str) -> Attribute:
     return Attribute("headers", value)
 
 
-def height(value: int) -> Attribute:
+def height(value: int | str) -> Attribute:
     return Attribute("height", value)
 
 
@@ -858,7 +858,7 @@ def writingsuggestions(value: bool = True) -> Attribute:
     return Attribute("writingsuggestions", value)
 
 
-def width(value: int) -> Attribute:
+def width(value: int | str) -> Attribute:
     return Attribute("width", value)
 
 

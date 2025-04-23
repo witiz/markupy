@@ -23,6 +23,10 @@ class View:
     def __eq__(self, other: object) -> bool:
         return str(other) == str(self)
 
+    @final
+    def __ne__(self, other: object) -> bool:
+        return not self.__eq__(other)
+
     def __repr__(self) -> str:
         return "<markupy.View>"
 
