@@ -68,9 +68,9 @@ For elements that you do not want attributes, they can be specified by just the 
 <hr>
 ```
 
-### Keyword arguments or kwargs
+### Keyword attributes
 
-Attributes can be specified via keyword arguments:
+Attributes can be specified via keyword arguments, also known as kwargs:
 
 ```python
 >>> from markupy.elements import Img
@@ -94,7 +94,7 @@ Attributes that contains dashes `-` can be specified by using underscores:
 <form hx-post="/foo"></form>
 ```
 
-### Selector shorthand for id and class
+### Selector string shorthand for id and class
 
 Defining `id` and `class` attributes is common when writing HTML. A string shorthand
 that looks like a CSS selector can be used to quickly define id and classes:
@@ -121,7 +121,7 @@ that looks like a CSS selector can be used to quickly define id and classes:
 
     The selector string should begin with the `#id` if present, then followed by `.classes` definition.
 
-### Attributes dict
+### Dict attributes
 
 Attributes can also be specified as a `dict`. This is useful when using
 attributes that are reserved Python keywords (like `for` or `class`), when the
@@ -140,11 +140,11 @@ dynamically.
 <label for="myfield"></label>
 ```
 
-### Attribute objects
+### Object attributes
 
-Finally there is one last way to define attributes and it is very powerful, it is called "attribute objects", athough it's very transparent as a user since you're only ever calling functions that build those objects for you.
+Finally there is one last way to define attributes and it is very powerful, it is called "object attributes", athough it's very transparent as a user since you're only ever calling functions that build those objects for you.
 
-```python title="Using attribute objects"
+```python title="Using object attributes"
 >>> from markupy import attributes as attr
 >>> from markupy.elements import Input
 >>> print(Input(attr.id("myid"), attr.tabindex(3), attr.disabled(True)))
@@ -158,7 +158,7 @@ There are multiple benefits of defining attributes this way:
 - Autocompletion: for attributes that take pre-definied set of values, you will be able to autocomplete them, avoiding the risk of forgetting or mistyping the correct values
 - Helper functions for some attributes like `class_()` that can take multiple input types (`str`, `list`, `dict`) for commodity
 
-Finally, custom attribute objects can be defined in several ways:
+Finally, custom object attributes can be defined in several ways:
 
 - If attribute is a valid python identifier, just do `attr.foo_bar("baz")`
 - Otherwise, you can pass any arbitrary string as an attribute name by doing `attr._("@foo.bar", "baz")`
@@ -166,7 +166,7 @@ Finally, custom attribute objects can be defined in several ways:
 
 ### Combining different types of attributes
 
-Attributes via id/class selector shorthand, dictionary, attribute objects and keyword arguments can be combined and used simultaneously:
+Attributes via id/class selector shorthand, dictionary, object and keyword attributes can be combined and used simultaneously:
 
 ```python title="Specifying attribute via multiple arguments"
 >>> from markupy import attributes as attr
@@ -180,6 +180,6 @@ Attributes via id/class selector shorthand, dictionary, attribute objects and ke
     When combining multiple attribute definition methods, it's important to respect the order between them:
     
     1. **selector id/class string** (optional, at most one)
-    2. **dictionary of attributes** (optional, at most one)
-    3. **attribute objects** (optional, unlimited)
+    2. **dictionary attributes** (optional, at most one)
+    3. **object attributes** (optional, unlimited)
     4. **keyword attributes** (optional, unlimited)
