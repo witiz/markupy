@@ -9,7 +9,7 @@ rows = list(range(50_000))
 def render() -> View:
     return Table[
         Thead[Tr[Th["Row #"]]],
-        Tbody[(Tr(".row")[Td(dataValue=row)[row]] for row in rows)],
+        Tbody[(Tr(".row")[Td(data_value=row)[row]] for row in rows)],
     ]
 
 

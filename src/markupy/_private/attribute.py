@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from collections.abc import Iterator, Mapping
 from functools import lru_cache
 from typing import Any, Callable, TypeAlias
@@ -26,7 +25,7 @@ AttributeHandler: TypeAlias = Callable[[Attribute | None, Attribute], Attribute 
 
 class AttributeHandlerRegistry:
     def __init__(self) -> None:
-        self._handlers: OrderedDict[AttributeHandler, None] = OrderedDict()
+        self._handlers: dict[AttributeHandler, None] = dict()
 
     def register(self, handler: AttributeHandler) -> AttributeHandler:
         """Registers the handler and returns it unchanged (so usable as a decorator)."""
@@ -39,8 +38,7 @@ class AttributeHandlerRegistry:
         self._handlers.pop(handler, None)
 
     def __iter__(self) -> Iterator[AttributeHandler]:
-        for handler in reversed(self._handlers.keys()):
-            yield handler
+        yield from reversed(self._handlers.keys())
 
 
 attribute_handlers = AttributeHandlerRegistry()
