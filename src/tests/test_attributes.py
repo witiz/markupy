@@ -72,29 +72,12 @@ def test_selector_and_kwargs() -> None:
     assert el.Div("#theid", for_="hello", data_foo="<bar") == result
 
 
-def test_attrs_and_kwargs() -> None:
-    result = """<div a="1" for="b" b="2"></div>"""
-    assert el.Div({"a": "1", "for": "a"}, for_="b", b="2") == result
-
-
 def test_class_priority() -> None:
     result = """<div class="selector dict obj kwarg"></div>"""
     assert (
         el.Div(".selector", {"class": "dict"}, attr.class_("obj"), class_="kwarg")
         == result
     )
-
-
-def test_id_priority() -> None:
-    assert (
-        el.Div("#selector", {"id": "dict"}, attr.id("obj"), id="kwarg")
-        == """<div id="kwarg"></div>"""
-    )
-    assert (
-        el.Div("#selector", {"id": "dict"}, attr.id("obj"))
-        == """<div id="obj"></div>"""
-    )
-    assert el.Div("#selector", {"id": "dict"}) == """<div id="dict"></div>"""
 
 
 @pytest.mark.parametrize("not_an_attr", [1234, b"foo", object(), object, 1, 0, None])

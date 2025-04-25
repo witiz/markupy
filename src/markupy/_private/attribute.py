@@ -1,6 +1,6 @@
 from collections.abc import Mapping
 from functools import lru_cache
-from typing import Any, TypeAlias
+from typing import Any, Callable, TypeAlias
 
 from markupsafe import escape
 
@@ -18,6 +18,30 @@ class Attribute:
 
     def __repr__(self) -> str:
         return f"<markupy.Attribute.{self.name}>"
+
+
+AttributeHandler: TypeAlias = Callable[[Attribute | None, Attribute], Attribute | None]
+
+attribute_handlers: list[AttributeHandler] = []
+
+
+def register_attribute_handler(func: AttributeHandler) -> None:
+    attribute_handlers.append(func)
+
+
+def default_attribute_handler(
+    old: Attribute | None, new: Attribute
+) -> Attribute | None:
+    if old is not None:
+        if new.name == "class":
+            # For class, append new values instead of replacing them
+            new.value = f"{old.value} {new.value}"
+            return new
+        raise MarkupyError(f"Invalid attempt to redefine attribute `{new.name}`")
+    return new
+
+
+register_attribute_handler(default_attribute_handler)
 
 
 @lru_cache(maxsize=1000)
@@ -70,11 +94,6 @@ class AttributeDict(dict[str, AttributeValue]):
         if not is_valid_value(value):
             raise MarkupyError(f"Attribute `{key}` has invalid value {value!r}")
 
-        if key == "class":
-            if current := self.get(key):
-                # For class, append new values instead of replacing them
-                value = f"{current} {value}"
-
         return super().__setitem__(key, value)
 
     def __str__(self) -> str:
@@ -89,11 +108,11 @@ class AttributeDict(dict[str, AttributeValue]):
                 )
             if selector.startswith("#"):
                 id, *classes = selector.split()
-                self["id"] = id[1:]
-                self["class"] = " ".join(classes)
+                self.set_attribute(Attribute("id", id[1:]))
             else:
                 classes = selector.split()
-                self["class"] = " ".join(classes)
+
+            self.set_attribute(Attribute("class", " ".join(classes)))
 
     def add_dict(
         self,
@@ -102,8 +121,18 @@ class AttributeDict(dict[str, AttributeValue]):
         rewrite_keys: bool = False,
     ) -> None:
         for key, value in dct.items():
-            self[python_to_html_key(key) if rewrite_keys else key] = value
+            name = python_to_html_key(key) if rewrite_keys else key
+            self.set_attribute(Attribute(name, value))
 
     def add_objs(self, lst: list[Attribute]) -> None:
         for attr in lst:
-            self[attr.name] = attr.value
+            self.set_attribute(attr)
+
+    def set_attribute(self, new: Attribute) -> None:
+        key = new.name
+        old = Attribute(key, self[key]) if key in self else None
+        for handler in reversed(attribute_handlers):
+            if attribute := handler(old, new):
+                # Use attribute.name here to allow for key rewrite
+                self[attribute.name] = attribute.value
+                return
