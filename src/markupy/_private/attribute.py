@@ -46,8 +46,16 @@ def is_valid_value(value: Any) -> bool:
     return isinstance(value, AttributeValue)
 
 
-def format_key_value(key: str, value: AttributeValue) -> str:
-    if value is True:
+def format_key_value(key: str, value: AttributeValue) -> str | None:
+    if (
+        value is None
+        or value is False
+        or (value == "" and key in {"id", "class", "name"})
+    ):
+        # Discard False and None valued attributes for all attributes
+        # Discard empty id, class, name attributes
+        return None
+    elif value is True:
         return key
     return f'{key}="{escape(str(value))}"'
 
@@ -56,15 +64,6 @@ class AttributeDict(dict[str, AttributeValue]):
     __slots__ = ()
 
     def __setitem__(self, key: str, value: AttributeValue) -> None:
-        if (
-            value is None
-            or value is False
-            or (value == "" and key in {"id", "class", "name"})
-        ):
-            # Discard False and None valued attributes for all attributes
-            # Discard empty id, class, name attributes
-            return
-
         if not is_valid_key(key):
             raise MarkupyError(f"Attribute `{key!r}` has invalid name")
 
@@ -79,7 +78,8 @@ class AttributeDict(dict[str, AttributeValue]):
         return super().__setitem__(key, value)
 
     def __str__(self) -> str:
-        return " ".join(format_key_value(k, v) for k, v in self.items())
+        values = [format_key_value(k, v) for k, v in self.items()]
+        return " ".join(filter(None, values))
 
     def add_selector(self, selector: str) -> None:
         if selector := selector.replace(".", " ").strip():

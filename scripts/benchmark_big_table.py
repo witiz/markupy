@@ -44,7 +44,9 @@ def render_markupy_attr() -> str:
             Tbody[
                 (
                     Tr(".row")[
-                        Td(f"#id-{row}.foo.bar", {"hello": "world"}, dataValue=row)[row]
+                        Td(f"#id-{row}.foo.bar", {"hello": "world"}, data_value=row)[
+                            row
+                        ]
                     ]
                     for row in rows
                 )

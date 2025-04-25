@@ -134,3 +134,18 @@ def test_invalid_key(key: str) -> None:
         el.Div({key: "bar"})
     with pytest.raises((MarkupyError, TypeError)):
         el.Div(**{key: "bar"})
+
+
+# def test_duplicate() -> None:
+#     with pytest.raises(MarkupyError):
+#         el.Div("#foo", {"id": "bar"})
+#     with pytest.raises(MarkupyError):
+#         el.Div("#foo", attr.id("bar"))
+#     with pytest.raises(MarkupyError):
+#         el.Div("#foo", id="bar")
+#     with pytest.raises(MarkupyError):
+#         el.Div({"disabled": False}, attr.disabled(True))
+#     with pytest.raises(MarkupyError):
+#         el.Div({"disabled": False}, disabled=True)
+#     with pytest.raises(MarkupyError):
+#         el.Div(attr.disabled(False), disabled=True)
