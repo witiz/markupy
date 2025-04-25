@@ -1,4 +1,5 @@
-from collections.abc import Mapping
+from collections import OrderedDict
+from collections.abc import Iterator, Mapping
 from functools import lru_cache
 from typing import Any, Callable, TypeAlias
 
@@ -22,13 +23,30 @@ class Attribute:
 
 AttributeHandler: TypeAlias = Callable[[Attribute | None, Attribute], Attribute | None]
 
-attribute_handlers: list[AttributeHandler] = []
+
+class AttributeHandlerRegistry:
+    def __init__(self) -> None:
+        self._handlers: OrderedDict[AttributeHandler, None] = OrderedDict()
+
+    def register(self, handler: AttributeHandler) -> AttributeHandler:
+        """Registers the handler and returns it unchanged (so usable as a decorator)."""
+        if handler in self._handlers:
+            raise ValueError(f"Handler {handler.__name__} is already registered.")
+        self._handlers[handler] = None
+        return handler  # Important for decorator usage
+
+    def unregister(self, handler: AttributeHandler) -> None:
+        self._handlers.pop(handler, None)
+
+    def __iter__(self) -> Iterator[AttributeHandler]:
+        for handler in reversed(self._handlers.keys()):
+            yield handler
 
 
-def register_attribute_handler(func: AttributeHandler) -> None:
-    attribute_handlers.append(func)
+attribute_handlers = AttributeHandlerRegistry()
 
 
+@attribute_handlers.register
 def default_attribute_handler(
     old: Attribute | None, new: Attribute
 ) -> Attribute | None:
@@ -40,9 +58,6 @@ def default_attribute_handler(
         return new
     else:
         raise MarkupyError(f"Invalid attempt to redefine attribute `{new.name}`")
-
-
-register_attribute_handler(default_attribute_handler)
 
 
 @lru_cache(maxsize=1000)
@@ -132,7 +147,7 @@ class AttributeDict(dict[str, AttributeValue]):
     def set_attribute(self, new: Attribute) -> None:
         key = new.name
         old = Attribute(key, self[key]) if key in self else None
-        for handler in reversed(attribute_handlers):
+        for handler in attribute_handlers:
             if attribute := handler(old, new):
                 # Use attribute.name here to allow for key rewrite
                 self[attribute.name] = attribute.value
