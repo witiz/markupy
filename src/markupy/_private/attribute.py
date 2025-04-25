@@ -32,13 +32,14 @@ def register_attribute_handler(func: AttributeHandler) -> None:
 def default_attribute_handler(
     old: Attribute | None, new: Attribute
 ) -> Attribute | None:
-    if old is not None:
-        if new.name == "class":
-            # For class, append new values instead of replacing them
-            new.value = f"{old.value} {new.value}"
-            return new
+    if old is None:
+        return new
+    elif new.name == "class":
+        # For class, append new values
+        new.value = f"{old.value} {new.value}"
+        return new
+    else:
         raise MarkupyError(f"Invalid attempt to redefine attribute `{new.name}`")
-    return new
 
 
 register_attribute_handler(default_attribute_handler)
