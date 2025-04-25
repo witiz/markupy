@@ -36,8 +36,10 @@ def python_to_html_key(key: str) -> str:
 
 @lru_cache(maxsize=1000)
 def is_valid_key(key: Any) -> bool:
-    # Check for invalid chars (like <> or newline/spaces)
-    return bool(key != "" and key == escape(str(key)) and key == "".join(key.split()))
+    # Check for invalid chars (like <>, newline/spaces, upper case)
+    return bool(
+        key != "" and key == escape(str(key)) and key == "".join(key.lower().split())
+    )
 
 
 def is_valid_value(value: Any) -> bool:
@@ -54,7 +56,6 @@ class AttributeDict(dict[str, AttributeValue]):
     __slots__ = ()
 
     def __setitem__(self, key: str, value: AttributeValue) -> None:
-        key = key.lower()
         if (
             value is None
             or value is False

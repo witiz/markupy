@@ -125,7 +125,7 @@ def test_attribute_redefinition() -> None:
 
 @pytest.mark.parametrize(
     "key",
-    ["", "  foo  ", "foo bar", '<"foo', Markup('<"foo'), date.today()],
+    ["", " ", "  foo  ", "bAr", "foo bar", '<"foo', Markup('<"foo'), date.today()],
 )
 def test_invalid_key(key: str) -> None:
     with pytest.raises(MarkupyError):
@@ -134,10 +134,3 @@ def test_invalid_key(key: str) -> None:
         el.Div({key: "bar"})
     with pytest.raises((MarkupyError, TypeError)):
         el.Div(**{key: "bar"})
-
-
-def test_attribute_case() -> None:
-    # If not properly managed, could become <div BAR="foo" bar="baz"></div>
-    assert (
-        el.Div({"BAR": "foo", "bAr": "hello"}, bar="baz") == """<div bar="baz"></div>"""
-    )
