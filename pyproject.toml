@@ -26,7 +26,7 @@ dependencies = [
 Homepage = "https://markupy.witiz.com"
 html2markupy = "https://html2markupy.witiz.com"
 Repository = "https://github.com/witiz/markupy"
-Issues = "https://github.com/markupy/markupy/issues"
+Issues = "https://github.com/witiz/markupy/issues"
 
 [project.scripts]
 html2markupy = "markupy._private.cli:main"
