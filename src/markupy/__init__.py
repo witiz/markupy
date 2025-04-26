@@ -11,7 +11,7 @@ __all__ = [
     "Component",
     "Fragment",
     "View",
-    "html2markupy",
     "attribute_handlers",
+    "html2markupy",
 ]
 __version__ = "2.1.0"
