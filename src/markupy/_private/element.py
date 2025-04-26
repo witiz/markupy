@@ -128,7 +128,7 @@ class Element(Fragment):
                 attrs.add_objs(attributes_obj)
             except Exception as e:
                 raise MarkupyError(
-                    f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
+                    f"Invalid object attributes for element {self!r}"
                 ) from e
         if attributes_kwargs:
             try:
