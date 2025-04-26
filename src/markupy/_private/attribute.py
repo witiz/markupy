@@ -39,7 +39,6 @@ class Attribute:
     def name(self, name: str) -> None:
         if not is_valid_key(name):
             raise MarkupyError(f"Attribute `{name!r}` has invalid name")
-
         self._name = name
 
     @property
@@ -53,11 +52,7 @@ class Attribute:
         self._value = value
 
     def __str__(self) -> str:
-        if (
-            self.value is None
-            or self.value is False
-            or (self.value == "" and self.name in {"id", "class", "name"})
-        ):
+        if self.value is None or self.value is False:
             # Discard False and None valued attributes for all attributes
             # Discard empty id, class, name attributes
             return ""
@@ -147,12 +142,14 @@ class Attributes(dict[str, Attribute]):
                     "Id must be defined only once and must be in first position of selector"
                 )
             if selector.startswith("#"):
-                id, *classes = selector.split()
-                self.add(Attribute("id", id[1:]))
+                rawid, *classes = selector.split()
+                if id := rawid[1:]:
+                    self.add(Attribute("id", id))
             else:
                 classes = selector.split()
 
-            self.add(Attribute("class", " ".join(classes)))
+            if classes:
+                self.add(Attribute("class", " ".join(classes)))
 
     def add_dict(
         self,

@@ -40,7 +40,7 @@ def test_selector_bad_type() -> None:
         Div({"oops": "yes"}, {})  # type: ignore
 
 
-@pytest.mark.parametrize("selector", ["", "   ", "  #  ", "  .  "])
+@pytest.mark.parametrize("selector", ["", "   ", "  #  ", "  .  ", "  #  .  "])
 def test_empty_selector(selector: str) -> None:
     result = Div(selector)
     assert result == """<div></div>"""

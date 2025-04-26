@@ -35,7 +35,7 @@ def test_empty_value() -> None:
     # Different behaviour for boolean attributes vs regular
     assert str(Input(disabled="")) == """<input disabled="">"""
     assert str(Input(attr="")) == """<input attr="">"""
-    assert str(Input(id="", class_="", name="")) == """<input>"""
+    assert str(Input(id="", class_="", name="")) == """<input id="" class="" name="">"""
 
 
 def test_integer_attribute() -> None:
