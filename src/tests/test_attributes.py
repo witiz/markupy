@@ -119,16 +119,25 @@ def test_invalid_key(key: str) -> None:
         el.Div(**{key: "bar"})
 
 
-# def test_duplicate() -> None:
-#     with pytest.raises(MarkupyError):
-#         el.Div("#foo", {"id": "bar"})
-#     with pytest.raises(MarkupyError):
-#         el.Div("#foo", attr.id("bar"))
-#     with pytest.raises(MarkupyError):
-#         el.Div("#foo", id="bar")
-#     with pytest.raises(MarkupyError):
-#         el.Div({"disabled": False}, attr.disabled(True))
-#     with pytest.raises(MarkupyError):
-#         el.Div({"disabled": False}, disabled=True)
-#     with pytest.raises(MarkupyError):
-#         el.Div(attr.disabled(False), disabled=True)
+def test_duplicate() -> None:
+    with pytest.raises(MarkupyError):
+        el.Div("#foo", {"id": "bar"})
+    with pytest.raises(MarkupyError):
+        el.Div("#foo", attr.id("bar"))
+    with pytest.raises(MarkupyError):
+        el.Div("#foo", id="bar")
+    with pytest.raises(MarkupyError):
+        el.Div({"disabled": False}, attr.disabled(True))
+    with pytest.raises(MarkupyError):
+        el.Div({"disabled": False}, disabled=True)
+    with pytest.raises(MarkupyError):
+        el.Div(attr.disabled(False), disabled=True)
+    with pytest.raises(MarkupyError):
+        el.A(attr.href(""), href="")
+
+
+def test_none_override() -> None:
+    assert (
+        el.Input({"class": None}, foo="bar", class_="baz")
+        == """<input class="baz" foo="bar">"""
+    )

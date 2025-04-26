@@ -9,36 +9,87 @@ from ..exceptions import MarkupyError
 AttributeValue: TypeAlias = None | bool | str | int | float
 
 
-class Attribute:
-    __slots__ = ("name", "value")
+@lru_cache(maxsize=1000)
+def is_valid_key(key: Any) -> bool:
+    # Check for invalid chars (like <>, newline/spaces, upper case)
+    return bool(
+        key != "" and key == escape(str(key)) and key == "".join(key.lower().split())
+    )
 
-    def __init__(self, name: str, value: AttributeValue):
+
+def is_valid_value(value: Any) -> bool:
+    return isinstance(value, AttributeValue)
+
+
+class Attribute:
+    __slots__ = ("_name", "_value")
+
+    _name: str
+    _value: AttributeValue
+
+    def __init__(self, name: str, value: AttributeValue) -> None:
         self.name = name
         self.value = value
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @name.setter
+    def name(self, name: str) -> None:
+        if not is_valid_key(name):
+            raise MarkupyError(f"Attribute `{name!r}` has invalid name")
+
+        self._name = name
+
+    @property
+    def value(self) -> AttributeValue:
+        return self._value
+
+    @value.setter
+    def value(self, value: AttributeValue) -> None:
+        if not is_valid_value(value):
+            raise MarkupyError(f"Attribute `{self.name}` has invalid value {value!r}")
+        self._value = value
+
+    def __str__(self) -> str:
+        if (
+            self.value is None
+            or self.value is False
+            or (self.value == "" and self.name in {"id", "class", "name"})
+        ):
+            # Discard False and None valued attributes for all attributes
+            # Discard empty id, class, name attributes
+            return ""
+        elif self.value is True:
+            return self.name
+        return f'{self.name}="{escape(str(self.value))}"'
 
     def __repr__(self) -> str:
         return f"<markupy.Attribute.{self.name}>"
 
 
+# We prefer this signature over (name:str, old_value:AttributeValue, new_value:AttributeValue)
+# for several reasons:
+# - avoid exposing AttributeValue type that is too low level
+# - allows to differentiate between an attribute that have never been instanciated vs
+#   an attribute that has already been instanciated with a None value
 AttributeHandler: TypeAlias = Callable[[Attribute | None, Attribute], Attribute | None]
 
 
-class AttributeHandlerRegistry:
-    def __init__(self) -> None:
-        self._handlers: dict[AttributeHandler, None] = dict()
-
+class AttributeHandlerRegistry(dict[AttributeHandler, None]):
     def register(self, handler: AttributeHandler) -> AttributeHandler:
         """Registers the handler and returns it unchanged (so usable as a decorator)."""
-        if handler in self._handlers:
+        if handler in self:
             raise ValueError(f"Handler {handler.__name__} is already registered.")
-        self._handlers[handler] = None
+        self[handler] = None
         return handler  # Important for decorator usage
 
     def unregister(self, handler: AttributeHandler) -> None:
-        self._handlers.pop(handler, None)
+        self.pop(handler, None)
 
     def __iter__(self) -> Iterator[AttributeHandler]:
-        yield from reversed(self._handlers.keys())
+        yield from reversed(self.keys())
 
 
 attribute_handlers = AttributeHandlerRegistry()
@@ -48,7 +99,7 @@ attribute_handlers = AttributeHandlerRegistry()
 def default_attribute_handler(
     old: Attribute | None, new: Attribute
 ) -> Attribute | None:
-    if old is None:
+    if old is None or old.value is None:
         return new
     elif new.name == "class":
         # For class, append new values
@@ -72,47 +123,22 @@ def python_to_html_key(key: str) -> str:
     return key.removesuffix("_").replace("_", "-")
 
 
-@lru_cache(maxsize=1000)
-def is_valid_key(key: Any) -> bool:
-    # Check for invalid chars (like <>, newline/spaces, upper case)
-    return bool(
-        key != "" and key == escape(str(key)) and key == "".join(key.lower().split())
-    )
-
-
-def is_valid_value(value: Any) -> bool:
-    return isinstance(value, AttributeValue)
-
-
-def format_key_value(key: str, value: AttributeValue) -> str | None:
-    if (
-        value is None
-        or value is False
-        or (value == "" and key in {"id", "class", "name"})
-    ):
-        # Discard False and None valued attributes for all attributes
-        # Discard empty id, class, name attributes
-        return None
-    elif value is True:
-        return key
-    return f'{key}="{escape(str(value))}"'
-
-
-class AttributeDict(dict[str, AttributeValue]):
+class Attributes(dict[str, Attribute]):
     __slots__ = ()
 
-    def __setitem__(self, key: str, value: AttributeValue) -> None:
-        if not is_valid_key(key):
-            raise MarkupyError(f"Attribute `{key!r}` has invalid name")
+    def __setitem__(self, key: str, new: Attribute) -> None:
+        old = self[key] if key in self else None
+        for handler in attribute_handlers:
+            if attribute := handler(old, new):
+                # Use attribute.name here to allow for key rewrite
+                key = attribute.name
+                new = attribute
+                break
 
-        if not is_valid_value(value):
-            raise MarkupyError(f"Attribute `{key}` has invalid value {value!r}")
-
-        return super().__setitem__(key, value)
+        super().__setitem__(key, new)
 
     def __str__(self) -> str:
-        values = [format_key_value(k, v) for k, v in self.items()]
-        return " ".join(filter(None, values))
+        return " ".join(filter(None, map(str, self.values())))
 
     def add_selector(self, selector: str) -> None:
         if selector := selector.replace(".", " ").strip():
@@ -122,11 +148,11 @@ class AttributeDict(dict[str, AttributeValue]):
                 )
             if selector.startswith("#"):
                 id, *classes = selector.split()
-                self.set_attribute(Attribute("id", id[1:]))
+                self.add(Attribute("id", id[1:]))
             else:
                 classes = selector.split()
 
-            self.set_attribute(Attribute("class", " ".join(classes)))
+            self.add(Attribute("class", " ".join(classes)))
 
     def add_dict(
         self,
@@ -136,17 +162,11 @@ class AttributeDict(dict[str, AttributeValue]):
     ) -> None:
         for key, value in dct.items():
             name = python_to_html_key(key) if rewrite_keys else key
-            self.set_attribute(Attribute(name, value))
+            self.add(Attribute(name, value))
 
     def add_objs(self, lst: list[Attribute]) -> None:
         for attr in lst:
-            self.set_attribute(attr)
+            self.add(attr)
 
-    def set_attribute(self, new: Attribute) -> None:
-        key = new.name
-        old = Attribute(key, self[key]) if key in self else None
-        for handler in attribute_handlers:
-            if attribute := handler(old, new):
-                # Use attribute.name here to allow for key rewrite
-                self[attribute.name] = attribute.value
-                return
+    def add(self, new: Attribute) -> None:
+        self[new.name] = new

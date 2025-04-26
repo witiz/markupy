@@ -7,7 +7,7 @@ from markupy._private.attribute import AttributeHandler
 
 
 @contextmanager
-def attribute_handler(handler: AttributeHandler) -> Generator[None, None, None]:
+def tmp_handler(handler: AttributeHandler) -> Generator[None, None, None]:
     """Temporarily register a handler within a context."""
     attribute_handlers.register(handler)
     try:
@@ -31,7 +31,7 @@ def test_handler() -> None:
             raise Exception("Not supposed to happen")
         return None
 
-    with attribute_handler(handler):
+    with tmp_handler(handler):
         el.Input("#foo.bar", class_="baz", hello="world")
 
 
@@ -41,7 +41,7 @@ def test_class_replace() -> None:
             return new
         return None
 
-    with attribute_handler(handler):
+    with tmp_handler(handler):
         assert el.Input(".foo", class_="bar") == """<input class="bar">"""
 
 
@@ -50,7 +50,7 @@ def test_prefix_attribute() -> None:
         new.name = f"foo-{new.name}"
         return new
 
-    with attribute_handler(handler):
+    with tmp_handler(handler):
         assert (
             el.Input("#bar.baz", hello="world")
             == """<input foo-id="bar" foo-class="baz" foo-hello="world">"""

@@ -4,7 +4,7 @@ from typing import Any, overload
 from typing_extensions import Self, override
 
 from ..exceptions import MarkupyError
-from .attribute import Attribute, AttributeDict, AttributeValue
+from .attribute import Attribute, Attributes, AttributeValue
 from .fragment import Fragment
 
 
@@ -108,7 +108,7 @@ class Element(Fragment):
         ):
             return self
 
-        attrs = AttributeDict()
+        attrs = Attributes()
         if selector:
             try:
                 attrs.add_selector(selector)
