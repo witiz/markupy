@@ -1,19 +1,12 @@
 import typing
 from collections.abc import Iterable, Mapping
 
-from .attribute import Attribute, AttributeValue
+from .attribute import Attribute, AttributeValue, python_to_html_key
 
 
 class HtmlAttributes:
-    def __getattribute__(
-        self, name: str
-    ) -> typing.Callable[[AttributeValue], Attribute]:
-        def fn(value: AttributeValue) -> Attribute:
-            from .attribute import python_to_html_key
-
-            return Attribute(python_to_html_key(name), value)
-
-        return fn
+    def __getattr__(self, name: str) -> typing.Callable[[AttributeValue], Attribute]:
+        return lambda value: Attribute(python_to_html_key(name), value)
 
     def __call__(self, name: str, value: AttributeValue) -> Attribute:
         return Attribute(name, value)

@@ -85,7 +85,7 @@ def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):
         el.Div({not_an_attr: "foo"})
     with pytest.raises(MarkupyError):
-        el.Div(at._(not_an_attr, "foo"))
+        el.Div(at(not_an_attr, "foo"))
 
 
 @pytest.mark.parametrize(
@@ -112,7 +112,7 @@ def test_attribute_redefinition() -> None:
 )
 def test_invalid_key(key: str) -> None:
     with pytest.raises(MarkupyError):
-        el.Div(at._(key, "bar"))
+        el.Div(at(key, "bar"))
     with pytest.raises(MarkupyError):
         el.Div({key: "bar"})
     with pytest.raises((MarkupyError, TypeError)):
