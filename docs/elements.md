@@ -145,9 +145,9 @@ dynamically.
 Finally there is one last way to define attributes and it is very powerful, it is called "object attributes", athough it's very transparent as a user since you're only ever calling functions that build those objects for you.
 
 ```python title="Using object attributes"
->>> from markupy import attributes as attr
+>>> from markupy import attributes as at
 >>> from markupy.elements import Input
->>> print(Input(attr.id("myid"), attr.tabindex(3), attr.disabled(True)))
+>>> print(Input(at.id("myid"), at.tabindex(3), at.disabled(True)))
 <input id="myid" tabindex="3" disabled>
 ```
 
@@ -160,8 +160,8 @@ There are multiple benefits of defining attributes this way:
 
 Finally, custom object attributes can be defined in several ways:
 
-- If attribute is a valid python identifier, just do `attr.foo_bar("baz")`
-- Otherwise, you can pass any arbitrary string as an attribute name by doing `attr._("@foo.bar", "baz")`
+- If attribute is a valid python identifier, just do `at.foo_bar("baz")`
+- Otherwise, you can pass any arbitrary string as an attribute name by doing `at("@foo.bar", "baz")`
 
 
 ### Combining different types of attributes
@@ -171,7 +171,7 @@ Attributes via id/class selector shorthand, dictionary, object and keyword attri
 ```python title="Specifying attribute via multiple arguments"
 >>> from markupy import attributes as attr
 >>> from markupy.elements import Label
->>> print(Label("#myid.foo.bar", {"for": "somefield"}, attr.tabindex(-1), name="myname"))
+>>> print(Label("#myid.foo.bar", {"for": "somefield"}, at.tabindex(-1), name="myname"))
 <label id="myid" class="foo bar" for="somefield" tabindex="-1" name="myname"></label>
 ```
 

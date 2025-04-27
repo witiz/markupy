@@ -4,7 +4,7 @@ from datetime import date
 import pytest
 from markupsafe import Markup
 
-from markupy import attributes as attr
+from markupy import attributes as at
 from markupy import elements as el
 from markupy.exceptions import MarkupyError
 
@@ -13,13 +13,13 @@ def test_order() -> None:
     with pytest.raises(MarkupyError):
         el.Input({"foo": "bar"}, "selector")  # type: ignore
     with pytest.raises(MarkupyError):
-        el.Input(attr.id("cool"), {"foo": "bar"})  # type: ignore
+        el.Input(at.id("cool"), {"foo": "bar"})  # type: ignore
     with pytest.raises(MarkupyError):
-        el.Input(attr.disabled(), "#foo.bar")  # type: ignore
+        el.Input(at.disabled(), "#foo.bar")  # type: ignore
 
 
 def test_attribute_equivalence() -> None:
-    obj = el.Input(attr.onclick("console.log('yo')"), attr.disabled())
+    obj = el.Input(at.onclick("console.log('yo')"), at.disabled())
     dct = el.Input({"onclick": "console.log('yo')", "disabled": True})
     kwd = el.Input(onclick="console.log('yo')", disabled=True)
     assert obj == dct == kwd
@@ -75,7 +75,7 @@ def test_selector_and_kwargs() -> None:
 def test_class_priority() -> None:
     result = """<div class="selector dict obj kwarg"></div>"""
     assert (
-        el.Div(".selector", {"class": "dict"}, attr.class_("obj"), class_="kwarg")
+        el.Div(".selector", {"class": "dict"}, at.class_("obj"), class_="kwarg")
         == result
     )
 
@@ -85,7 +85,7 @@ def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):
         el.Div({not_an_attr: "foo"})
     with pytest.raises(MarkupyError):
-        el.Div(attr._(not_an_attr, "foo"))
+        el.Div(at._(not_an_attr, "foo"))
 
 
 @pytest.mark.parametrize(
@@ -96,7 +96,7 @@ def test_invalid_attribute_value(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):
         el.Div(foo=not_an_attr)
     with pytest.raises(MarkupyError):
-        el.Div(attr.foo(not_an_attr))
+        el.Div(at.foo(not_an_attr))
     with pytest.raises(MarkupyError):
         el.Div({"foo": not_an_attr})
 
@@ -112,7 +112,7 @@ def test_attribute_redefinition() -> None:
 )
 def test_invalid_key(key: str) -> None:
     with pytest.raises(MarkupyError):
-        el.Div(attr._(key, "bar"))
+        el.Div(at._(key, "bar"))
     with pytest.raises(MarkupyError):
         el.Div({key: "bar"})
     with pytest.raises((MarkupyError, TypeError)):
@@ -123,17 +123,17 @@ def test_duplicate() -> None:
     with pytest.raises(MarkupyError):
         el.Div("#foo", {"id": "bar"})
     with pytest.raises(MarkupyError):
-        el.Div("#foo", attr.id("bar"))
+        el.Div("#foo", at.id("bar"))
     with pytest.raises(MarkupyError):
         el.Div("#foo", id="bar")
     with pytest.raises(MarkupyError):
-        el.Div({"disabled": False}, attr.disabled(True))
+        el.Div({"disabled": False}, at.disabled(True))
     with pytest.raises(MarkupyError):
         el.Div({"disabled": False}, disabled=True)
     with pytest.raises(MarkupyError):
-        el.Div(attr.disabled(False), disabled=True)
+        el.Div(at.disabled(False), disabled=True)
     with pytest.raises(MarkupyError):
-        el.A(attr.href(""), href="")
+        el.A(at.href(""), href="")
 
 
 def test_none_override() -> None:
