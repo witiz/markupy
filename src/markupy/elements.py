@@ -132,7 +132,7 @@ __all__ = [
 
 @lru_cache(maxsize=300)
 def _get_element(name: str) -> Element:
-    if name == "__path__":
+    if name.startswith("_"):
         raise AttributeError()
     elif not _re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
         raise MarkupyError(
