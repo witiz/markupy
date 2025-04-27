@@ -1,7 +1,7 @@
 import pytest
 from markupsafe import Markup
 
-from markupy._private.element import (
+from markupy._private.views.element import (
     CommentElement,
     Element,
     HtmlElement,

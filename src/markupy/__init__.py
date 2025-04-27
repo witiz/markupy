@@ -1,9 +1,8 @@
-from ._private.attribute import Attribute, attribute_handlers
-from ._private.component import Component
-from ._private.fragment import Fragment as _Fragment
-from ._private.html import to_markupy as html2markupy
-from ._private.html_attributes import HtmlAttributes as _HtmlAttributes
-from ._private.view import View
+from ._private.attributes import Attribute, attribute_handlers
+from ._private.attributes import HtmlAttributes as _HtmlAttributes
+from ._private.html_to_markupy import html_to_markupy
+from ._private.views import Component, View
+from ._private.views import Fragment as _Fragment
 
 Fragment = _Fragment()
 attributes = _HtmlAttributes()
@@ -15,6 +14,6 @@ __all__ = [
     "View",
     "attribute_handlers",
     "attributes",
-    "html2markupy",
+    "html_to_markupy",
 ]
 __version__ = "2.2.0"

@@ -1,7 +1,8 @@
 import typing
 from collections.abc import Iterable, Mapping
 
-from .attribute import Attribute, AttributeValue, python_to_html_key
+from . import Attribute, AttributeValue
+from .store import python_to_html_key
 
 
 class HtmlAttributes:

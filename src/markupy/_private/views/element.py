@@ -3,8 +3,9 @@ from typing import Any, overload
 
 from typing_extensions import Self, override
 
-from ..exceptions import MarkupyError
-from .attribute import Attribute, Attributes, AttributeValue
+from markupy.exceptions import MarkupyError
+
+from ..attributes import Attribute, AttributeStore, AttributeValue
 from .fragment import Fragment
 
 
@@ -76,7 +77,7 @@ class Element(Fragment):
         has_dict = False
         has_obj = False
 
-        attrs = Attributes()
+        attrs = AttributeStore()
         for arg in args:
             if not (has_selector or has_dict or has_obj) and isinstance(arg, str):
                 has_selector = True

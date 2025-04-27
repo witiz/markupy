@@ -3,7 +3,7 @@ from typing import Generator
 
 from markupy import Attribute, attribute_handlers
 from markupy import elements as el
-from markupy._private.attribute import AttributeHandler
+from markupy._private.attributes.store import AttributeHandler
 
 
 @contextmanager

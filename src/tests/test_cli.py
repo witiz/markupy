@@ -1,6 +1,6 @@
 import pytest
 
-from markupy._private.html import to_markupy
+from markupy._private.html_to_markupy.parser import to_markupy
 from markupy.exceptions import MarkupyError
 
 

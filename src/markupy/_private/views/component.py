@@ -4,7 +4,8 @@ from typing import Any, final
 
 from typing_extensions import Self
 
-from ..exceptions import MarkupyError
+from markupy.exceptions import MarkupyError
+
 from .view import View
 
 

@@ -9,8 +9,8 @@ from markupsafe import escape
 
 from markupy import elements
 
-from ..exceptions import MarkupyError
-from .element import VoidElement
+from ...exceptions import MarkupyError
+from ..views.element import VoidElement
 
 VOID_ELEMENTS: set[str] = {
     element.name

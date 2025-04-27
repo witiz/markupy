@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from .html import to_markupy
+from .parser import to_markupy
 
 
 def main() -> None:

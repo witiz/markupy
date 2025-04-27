@@ -1,8 +1,8 @@
 from functools import lru_cache
-from re import match as re_fullmatch
-from re import sub as re_sub
+from re import match as _re_fullmatch
+from re import sub as _re_sub
 
-from ._private.element import (
+from ._private.views import (
     CommentElement,
     Element,
     HtmlElement,
@@ -134,13 +134,13 @@ __all__ = [
 def _get_element(name: str) -> Element:
     if name == "__path__":
         raise AttributeError()
-    elif not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
+    elif not _re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
         raise MarkupyError(
             f"`{name}` is not a valid element name (must use CapitalizedCase)"
         )
 
     #  Uppercase chars are word boundaries for tag names
-    words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
+    words = filter(None, _re_sub(r"([A-Z])", r" \1", name).split())
     html_name = "-".join(words).lower()
     return Element(html_name)
 
