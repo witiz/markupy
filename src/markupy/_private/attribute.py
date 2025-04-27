@@ -1,12 +1,12 @@
 from collections.abc import Iterator, Mapping
 from functools import lru_cache
-from typing import Any, Callable, TypeAlias
+from typing import Any, Callable
 
 from markupsafe import escape
 
 from ..exceptions import MarkupyError
 
-AttributeValue: TypeAlias = None | bool | str | int | float
+AttributeValue = None | bool | str | int | float
 
 
 @lru_cache(maxsize=1000)
@@ -69,7 +69,7 @@ class Attribute:
 # - avoid exposing AttributeValue type that is too low level
 # - allows to differentiate between an attribute that have never been instanciated vs
 #   an attribute that has already been instanciated with a None value
-AttributeHandler: TypeAlias = Callable[[Attribute | None, Attribute], Attribute | None]
+AttributeHandler = Callable[[Attribute | None, Attribute], Attribute | None]
 
 
 class AttributeHandlerRegistry(dict[AttributeHandler, None]):
