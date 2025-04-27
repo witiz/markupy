@@ -201,7 +201,7 @@ In addition, markupy is exposing all the required APIs for 3rd party libraries t
 
 We will list here any package we might be aware of.
 
-- markupy_htmx
+- [markupy_htmx](https://github.com/witiz/markupy_htmx): Provides convenient Python methods to build HTMX attributes
 
 
 ## Streaming / Iterating of the Output

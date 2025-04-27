@@ -95,7 +95,10 @@ def default_attribute_handler(
     old: Attribute | None, new: Attribute
 ) -> Attribute | None:
     if old is None or old.value is None:
-        return new
+        # Prefer returning None instead of new here for multiple reasons:
+        # - better performance
+        # - do not rely on presence of handler to persist attributes
+        return None
     elif new.name == "class":
         # For class, append new values
         new.value = f"{old.value} {new.value}"

@@ -77,6 +77,8 @@ markupy started as a fork of [htpy](https://htpy.dev). Even though the two proje
 
 - **Familiar concepts from React:** React helped make it popular writing HTML with a programming language. markupy uses a lot of similar constructs.
 
+- **Customizable:** Use or create 3rd party libraries to leverage the power of markupy
+
 ## Philosophy
 
 markupy generates HTML elements and attributes and provide a few helpers.

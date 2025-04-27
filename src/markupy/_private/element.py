@@ -41,16 +41,16 @@ class Element(Fragment):
 
     # Use call syntax () to define attributes
     @overload
-    def __call__(self, *args: Attribute, **kwargs: AttributeValue) -> Self: ...
+    def __call__(self, *args: Attribute | None, **kwargs: AttributeValue) -> Self: ...
     @overload
     def __call__(
-        self, selector: str, *args: Attribute, **kwargs: AttributeValue
+        self, selector: str, *args: Attribute | None, **kwargs: AttributeValue
     ) -> Self: ...
     @overload
     def __call__(
         self,
         attributes: Mapping[str, AttributeValue],
-        *args: Attribute,
+        *args: Attribute | None,
         **kwargs: AttributeValue,
     ) -> Self: ...
     @overload
@@ -58,7 +58,7 @@ class Element(Fragment):
         self,
         selector: str,
         attributes: Mapping[str, AttributeValue],
-        *args: Attribute,
+        *args: Attribute | None,
         **kwargs: AttributeValue,
     ) -> Self: ...
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
@@ -72,71 +72,27 @@ class Element(Fragment):
                 f"Illegal attempt to define attributes after children for element {self!r}"
             )
 
-        selector: str | None = None
-        attributes_dict: Mapping[str, AttributeValue] | None = None
-        attributes_obj: list[Attribute] = list()
-        attributes_kwargs: Mapping[str, AttributeValue] = kwargs
-        for arg in args:
-            if isinstance(arg, str):
-                if selector:
-                    raise MarkupyError("Selector has already been defined")
-                if attributes_dict:
-                    raise MarkupyError("Selector must be defined after dict attributes")
-                if attributes_obj:
-                    raise MarkupyError("Selector must be defined after obj attributes")
-                selector = arg
-            elif isinstance(arg, Mapping):
-                if attributes_dict:
-                    raise MarkupyError("Dict attributes have already been defined")
-                if attributes_obj:
-                    raise MarkupyError(
-                        "Dict attributes must be defined after obj attributes"
-                    )
-                attributes_dict = arg  # type:ignore[unused-ignore]
-            elif isinstance(arg, Attribute):
-                attributes_obj.append(arg)
-            else:
-                raise MarkupyError(
-                    f"Invalid argument type {arg!r} for element {self!r}"
-                )
-
-        if (
-            not selector
-            and not attributes_dict
-            and not attributes_obj
-            and not attributes_kwargs
-        ):
-            return self
+        has_selector = False
+        has_dict = False
+        has_obj = False
 
         attrs = Attributes()
-        if selector:
-            try:
-                attrs.add_selector(selector)
-            except Exception as e:
-                raise MarkupyError(
-                    f"Invalid selector string `{selector}` for element {self!r}"
-                ) from e
-        if attributes_dict:
-            try:
-                attrs.add_dict(attributes_dict)
-            except Exception as e:
-                raise MarkupyError(
-                    f"Invalid dict attributes `{attributes_dict}` for element {self!r}"
-                ) from e
-        if attributes_obj:
-            try:
-                attrs.add_objs(attributes_obj)
-            except Exception as e:
-                raise MarkupyError(
-                    f"Invalid object attributes for element {self!r}"
-                ) from e
-        if attributes_kwargs:
-            try:
-                attrs.add_dict(attributes_kwargs, rewrite_keys=True)
-            except Exception as e:
-                raise MarkupyError(
-                    f"Invalid keyword attributes `{attributes_kwargs}` for element {self!r}"
-                ) from e
+        for arg in args:
+            if not (has_selector or has_dict or has_obj) and isinstance(arg, str):
+                has_selector = True
+                attrs.add_selector(arg)
+            elif not (has_dict or has_obj) and isinstance(arg, Mapping):
+                has_dict = True
+                attrs.add_dict(arg)  # type:ignore[unused-ignore]
+            elif arg is None:
+                has_obj = True
+            elif isinstance(arg, Attribute):
+                has_obj = True
+                attrs.add(arg)
+            else:
+                raise MarkupyError(f"Invalid argument {arg!r} for element {self!r}")
+        if kwargs:
+            attrs.add_dict(kwargs, rewrite_keys=True)
 
         if attributes := str(attrs):
             el = self._get_instance()

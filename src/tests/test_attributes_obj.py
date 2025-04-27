@@ -36,3 +36,11 @@ def test_class_dict() -> None:
 def test_non_identifier() -> None:
     result = """<input @click="hello">"""
     assert el.Input(attr._("@click", "hello")) == result
+
+
+def test_none() -> None:
+    assert el.Input(None) == """<input>"""
+    assert el.Input("#foo", None) == """<input id="foo">"""
+    assert el.Input(attr.foo("bar"), None) == """<input foo="bar">"""
+    assert el.Input(None, attr.foo("bar")) == """<input foo="bar">"""
+    assert el.Input(None, foo="bar") == """<input foo="bar">"""
