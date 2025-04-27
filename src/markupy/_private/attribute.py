@@ -13,7 +13,12 @@ AttributeValue = None | bool | str | int | float
 def is_valid_key(key: Any) -> bool:
     # Check for invalid chars (like <>, newline/spaces, upper case)
     return bool(
-        key != "" and key == escape(str(key)) and key == "".join(key.lower().split())
+        isinstance(key, str)
+        and key != ""
+        # ensure no special chars
+        and key == escape(str(key))
+        # ensure no newlines/spaces/tabs and lowercase
+        and key == "".join(key.lower().split())
     )
 
 
@@ -163,10 +168,6 @@ class Attributes(dict[str, Attribute]):
         for key, value in dct.items():
             name = python_to_html_key(key) if rewrite_keys else key
             self.add(Attribute(name, value))
-
-    def add_objs(self, lst: list[Attribute]) -> None:
-        for attr in lst:
-            self.add(attr)
 
     def add(self, new: Attribute) -> None:
         self[new.name] = new
