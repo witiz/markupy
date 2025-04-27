@@ -159,7 +159,7 @@ def get_element(name: str) -> Element:
             f"`{name}` is not a valid element name (must use CapitalizedCase)"
         )
 
-    #  Uppercase chars are word boundaries for tag names
+    # Uppercase chars are word boundaries for tag names
     words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
     html_name = "-".join(words).lower()
     return Element(html_name)

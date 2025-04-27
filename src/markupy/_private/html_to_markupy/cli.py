@@ -41,7 +41,7 @@ def main() -> None:
         sys.exit(1)
 
     use_selector: bool = args.selector
-    use_dict: bool = args.dicts_attrs
+    use_dict: bool = args.dict_attrs
     use_import_el: bool = args.el_prefix
 
     print(
