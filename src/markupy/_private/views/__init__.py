@@ -5,6 +5,7 @@ from .element import (
     HtmlElement,
     SafeElement,
     VoidElement,
+    get_element,
 )
 from .fragment import Fragment
 from .view import View
@@ -18,4 +19,5 @@ __all__ = [
     "HtmlElement",
     "SafeElement",
     "VoidElement",
+    "get_element",
 ]

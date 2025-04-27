@@ -1,4 +1,7 @@
 from collections.abc import Iterator, Mapping
+from functools import lru_cache
+from re import match as re_fullmatch
+from re import sub as re_sub
 from typing import Any, overload
 
 from typing_extensions import Self, override
@@ -145,3 +148,18 @@ class SafeElement(Element):
 
     def __init__(self, name: str, *, shared: bool = True) -> None:
         super().__init__(name, safe=True, shared=shared)
+
+
+@lru_cache(maxsize=300)
+def get_element(name: str) -> Element:
+    if name.startswith("_"):
+        raise AttributeError()
+    elif not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
+        raise MarkupyError(
+            f"`{name}` is not a valid element name (must use CapitalizedCase)"
+        )
+
+    #  Uppercase chars are word boundaries for tag names
+    words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
+    html_name = "-".join(words).lower()
+    return Element(html_name)
