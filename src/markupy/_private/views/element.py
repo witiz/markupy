@@ -152,7 +152,7 @@ class SafeElement(Element):
 def get_element(name: str) -> Element:
     if name.startswith("_"):
         raise AttributeError()
-    elif not re_fullmatch(r"^(?:[A-Z][a-z]*)+$", name):
+    elif not re_fullmatch(r"^(?:[A-Z][a-z0-9]*)+$", name):
         raise MarkupyError(
             f"`{name}` is not a valid element name (must use CapitalizedCase)"
         )
