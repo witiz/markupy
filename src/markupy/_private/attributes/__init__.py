@@ -1,6 +1,7 @@
 from .attribute import Attribute, AttributeValue
+from .handlers import attribute_handlers
 from .html import HtmlAttributes
-from .store import AttributeStore, attribute_handlers
+from .store import AttributeStore
 
 attributes = HtmlAttributes()
 
