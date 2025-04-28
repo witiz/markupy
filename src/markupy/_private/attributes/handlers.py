@@ -6,7 +6,7 @@ from .attribute import Attribute
 # We prefer this signature over (name:str, old_value:AttributeValue, new_value:AttributeValue)
 # for several reasons:
 # - avoid exposing AttributeValue type that is too low level
-# - allows to differentiate between an attribute that have never been instanciated vs
+# - allows to differentiate between an attribute that has never been instanciated vs
 #   an attribute that has already been instanciated with a None value
 AttributeHandler = Callable[[Attribute | None, Attribute], Attribute | None]
 
