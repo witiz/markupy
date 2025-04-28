@@ -197,12 +197,65 @@ HTML.
 ### 3rd party object attributes libraries
 
 The `markupy.attributes` provides a complete list of HTML5 attributes.
-In addition, markupy is exposing all the required APIs for 3rd party libraries to implement object attributes specific to any framework or library.
+In addition, markupy is exposing all the required APIs for 3rd party libraries to implement object attributes specific to any framework or library. If you are interested in developping your own `markupy` addons, you might be interested in "[Attribute Handlers](#attribute-handlers)".
 
 We will list here any package we might be aware of.
 
 - [markupy_htmx](https://github.com/witiz/markupy_htmx): Provides convenient Python methods to build HTMX attributes
 
+### Attribute Handlers
+
+Attribute Handlers are a powerful way to extend behaviour of attributes. Most users will not benefit from using them directly, but it can be useful in some cases.
+
+An attribute handler is a user-defined function that gets called every time an attribute is set on an element. This allows to intercept changed and modify the attribute if needed before it is persisted.
+
+Let's show a concrete example. Let's say you want all boolean attributes to be reversed (don't do that for real, your users might be really upset at you).
+
+We'll start by implementing an attribute handler for that. It's a function that you can name howerver you like, you must respect the signature (parameters and return types):
+
+```python
+from markupy import Attribute
+
+def liar_attribute_handler(old: Attribute | None, new: Attribute) -> Attribute | None:
+    if isinstance(new.value, bool):
+        # here, we toggle the attribute value if it's a boolean
+        new.value = not new.value 
+        return new
+    return None
+```
+
+Let's detail the parameters and return value of an handler:
+
+- `old`: the previous/current instance of the attribute. It can be `None` if the attribute has not been set previously for a given `Element`. Otherwise, it will be an instance of `Attribute`, a very lightweight object with only 2 properties: `name` and `value`.
+- `new`: the instance of the `Attribute` that is about to be updated.
+- return type depends on what to do next:
+    - returning `None` tells `markupy` to continue processing other registered handlers before persisting. Handlers are processed in the reverse order of registration (most recent first).
+    - returning an instance of `Attribute` instructs `markupy` to stop processing handlers and persist immediately the returned instance.
+
+Now that our handler is defined, we need to register it. This can be done in 2 ways:
+
+```python title="Usage of attribute_handlers.register() method"
+from markupy import attribute_handlers
+
+attribute_handlers.register(liar_attribute_handler)
+```
+
+```python title="Usage of @attribute_handlers.register decorator"
+from markupy import Attribute, attribute_handlers
+
+@attribute_handlers.register
+def liar_attribute_handler(old: Attribute | None, new: Attribute) -> Attribute | None:
+    ...
+```
+
+And that's it. Now we can try to assign boolean elements and see the result:
+
+```python
+from markupy import elements as el
+
+print(el.Input(disabled=True)) # <input>
+print(el.Input(disabled=False)) # <input disabled>
+```
 
 ## Streaming / Iterating of the Output
 
