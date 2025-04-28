@@ -15,18 +15,16 @@ def test_instance_cache() -> None:
     """
     markupy creates element object dynamically. make sure they are reused.
     """
-    from markupy import elements
-
-    assert elements.Div is elements.Div
-    assert elements.Div is elements.Div()
-    assert elements.Div is elements.Div(attr=False)
-    assert elements.Div is elements.Div[None]
-    assert elements.Div is elements.Div[True]
-    assert elements.Div is elements.Div[False]
-    assert elements.Div is elements.Div[[]]
-    assert elements.Div is elements.Div[[None]]
-    assert elements.Div is elements.Div[""]
-    assert elements.Div is not elements.Div[0]
+    assert el.Div is el.Div
+    assert el.Div is el.Div()
+    assert el.Div is el.Div("", {}, None, attr1=None, attr2=False)
+    assert el.Div is el.Div[None]
+    assert el.Div is el.Div[True]
+    assert el.Div is el.Div[False]
+    assert el.Div is el.Div[[]]
+    assert el.Div is el.Div[[None]]
+    assert el.Div is el.Div[""]
+    assert el.Div is not el.Div[0]
 
 
 def test_invalid_case() -> None:
