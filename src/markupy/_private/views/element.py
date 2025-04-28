@@ -76,9 +76,7 @@ class Element(Fragment):
                 f"Illegal attempt to define attributes after children for element {self!r}"
             )
 
-        has_selector = False
-        has_dict = False
-        has_obj = False
+        has_selector, has_dict, has_obj = False, False, False
 
         attrs = AttributeStore()
         for arg in args:

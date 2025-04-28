@@ -46,8 +46,7 @@ class AttributeStore(dict[str, Attribute]):
         for handler in attribute_handlers:
             if attribute := handler(old, new):
                 # Use attribute.name here to allow for key rewrite
-                key = attribute.name
-                new = attribute
+                key, new = attribute.name, attribute
                 break
 
         super().__setitem__(key, new)
