@@ -469,6 +469,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#attribute-handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute Handlers
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -757,26 +766,67 @@ HTML.</p>
 </span></code></pre></div>
 <h3 id="3rd-party-object-attributes-libraries">3rd party object attributes libraries<a class="headerlink" href="#3rd-party-object-attributes-libraries" title="Permanent link">&para;</a></h3>
 <p>The <code>markupy.attributes</code> provides a complete list of HTML5 attributes.
-In addition, markupy is exposing all the required APIs for 3rd party libraries to implement object attributes specific to any framework or library.</p>
+In addition, markupy is exposing all the required APIs for 3rd party libraries to implement object attributes specific to any framework or library. If you are interested in developping your own <code>markupy</code> addons, you might be interested in "<a href="#attribute-handlers">Attribute Handlers</a>".</p>
 <p>We will list here any package we might be aware of.</p>
 <ul>
-<li>markupy_htmx</li>
+<li><a href="https://github.com/witiz/markupy_htmx">markupy_htmx</a>: Provides convenient Python methods to build HTMX attributes</li>
 </ul>
+<h3 id="attribute-handlers">Attribute Handlers<a class="headerlink" href="#attribute-handlers" title="Permanent link">&para;</a></h3>
+<p>Attribute Handlers are a powerful way to extend behaviour of attributes. Most users will not benefit from using them directly, but it can be useful in some cases or for library maintainers.</p>
+<p>An attribute handler is a user-defined function that gets called every time an attribute is set on an element. This allows to intercept changes and modify the attribute on the fly if needed before it is persisted.</p>
+<p>Let's show a concrete example. Let's say you want all boolean attributes value to be toggled from True to False and vice versa (don't do that for real, your users might be really upset at you).</p>
+<p>We'll start by implementing an attribute handler for that. It's a function that you can name howerver you like, although you must respect its signature (parameters and return types):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Attribute</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">liar_attribute_handler</span><span class="p">(</span><span class="n">old</span><span class="p">:</span> <span class="n">Attribute</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="c1"># here, we toggle the attribute value if it&#39;s a boolean</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="n">new</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">new</span><span class="o">.</span><span class="n">value</span> 
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="k">return</span> <span class="n">new</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="k">return</span> <span class="kc">None</span>
+</span></code></pre></div>
+<p>Let's detail the parameters and return value of an handler:</p>
+<ul>
+<li><code>old</code>: the previous/current instance of the attribute. It can be <code>None</code> if the attribute has not been set previously for a given <code>Element</code>. Otherwise, it will be an instance of <code>Attribute</code>, a very lightweight object with only 2 properties: <code>name</code> and <code>value</code>.</li>
+<li><code>new</code>: the instance of the <code>Attribute</code> that is about to be updated.</li>
+<li>return type depends on what to do next:<ul>
+<li>returning <code>None</code> tells <code>markupy</code> to continue processing other registered handlers before persisting. Handlers are processed in the reverse order of registration (most recent first).</li>
+<li>returning an instance of <code>Attribute</code> instructs <code>markupy</code> to stop processing handlers and persist immediately the returned instance.</li>
+</ul>
+</li>
+</ul>
+<p>Now that our handler is defined, we need to register it. This can be done in 2 different ways:</p>
+<div class="language-python highlight"><span class="filename">Usage of attribute_handlers.register() method</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy</span><span class="w"> </span><span class="kn">import</span> <span class="n">attribute_handlers</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">attribute_handlers</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">liar_attribute_handler</span><span class="p">)</span>
+</span></code></pre></div>
+<div class="language-python highlight"><span class="filename">Usage of @attribute_handlers.register decorator</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Attribute</span><span class="p">,</span> <span class="n">attribute_handlers</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="nd">@attribute_handlers</span><span class="o">.</span><span class="n">register</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">liar_attribute_handler</span><span class="p">(</span><span class="n">old</span><span class="p">:</span> <span class="n">Attribute</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="o">...</span>
+</span></code></pre></div>
+<p>And that's it. Now we can try to assign boolean attributes to any element and see what happens:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">markupy</span><span class="w"> </span><span class="kn">import</span> <span class="n">elements</span> <span class="k">as</span> <span class="n">el</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="c1"># &lt;input&gt;</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span> <span class="c1"># &lt;input disabled&gt;</span>
+</span></code></pre></div>
 <h2 id="streaming-iterating-of-the-output">Streaming / Iterating of the Output<a class="headerlink" href="#streaming-iterating-of-the-output" title="Permanent link">&para;</a></h2>
 <p>Iterating over a markupy element will yield the resulting contents in chunks as
 they are rendered:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ul</span><span class="p">,</span> <span class="n">Li</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">Ul</span><span class="p">[</span><span class="n">Li</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">Li</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]:</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;got a chunk: </span><span class="si">{</span><span class="n">chunk</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="o">...</span>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;ul&gt;&#39;</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span>
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span>
-</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
-</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/ul&gt;&#39;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">markupy.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ul</span><span class="p">,</span> <span class="n">Li</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">Ul</span><span class="p">[</span><span class="n">Li</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">Li</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]:</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;got a chunk: </span><span class="si">{</span><span class="n">chunk</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="o">...</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;ul&gt;&#39;</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;li&gt;&#39;</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="n">got</span> <span class="n">a</span> <span class="n">chunk</span><span class="p">:</span> <span class="s1">&#39;&lt;/ul&gt;&#39;</span>
 </span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
