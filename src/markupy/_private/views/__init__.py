@@ -10,6 +10,8 @@ from .element import (
 from .fragment import Fragment
 from .view import View
 
+fragment = Fragment()
+
 __all__ = [
     "Component",
     "Fragment",
@@ -19,5 +21,6 @@ __all__ = [
     "HtmlElement",
     "SafeElement",
     "VoidElement",
+    "fragment",
     "get_element",
 ]
