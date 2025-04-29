@@ -252,7 +252,7 @@ class HtmlAttributes:
     def loading(self, value: typing.Literal["eager", "lazy"]) -> Attribute:
         return Attribute("loading", value)
 
-    def list_(self, value: str) -> Attribute:
+    def list(self, value: str) -> Attribute:
         return Attribute("list", value)
 
     def loop(self, value: bool = True) -> Attribute:
