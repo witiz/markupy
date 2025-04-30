@@ -11,7 +11,7 @@ AttributeValue = None | bool | str | int | float
 @lru_cache(maxsize=1000)
 def is_valid_key(key: Any) -> bool:
     # Check for invalid chars (like <>, newline/spaces, upper case)
-    return bool(
+    return (
         isinstance(key, str)
         and key != ""
         # ensure no special chars
@@ -58,7 +58,6 @@ class Attribute:
     def __str__(self) -> str:
         if self.value is None or self.value is False:
             # Discard False and None valued attributes for all attributes
-            # Discard empty id, class, name attributes
             return ""
         elif self.value is True:
             return self.name
