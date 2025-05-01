@@ -141,3 +141,7 @@ def test_none_override() -> None:
         el.Input({"class": None}, foo="bar", class_="baz")
         == """<input class="baz" foo="bar">"""
     )
+    assert (
+        el.Input({"class": "baz"}, foo="bar", class_=None)
+        == """<input class="baz" foo="bar">"""
+    )

@@ -18,7 +18,10 @@ def default_attribute_handler(
         return None
     elif new.name == "class":
         # For class, append new values
-        new.value = f"{old.value} {new.value}"
+        if new.value:
+            new.value = f"{old.value} {new.value}"
+        else:
+            new.value = old.value
         return None
     else:
         raise MarkupyError(f"Invalid attempt to redefine attribute `{new.name}`")
@@ -47,7 +50,7 @@ class AttributeStore(dict[str, Attribute]):
             if attribute := handler(old, new):
                 if attribute is new:
                     # stop the handler chain
-                    key, new = attribute.name, attribute
+                    new = attribute
                     break
                 else:
                     # restart a handler chain (beware of infinite loops!)
