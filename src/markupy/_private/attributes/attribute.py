@@ -32,18 +32,18 @@ class Attribute:
     _value: AttributeValue
 
     def __init__(self, name: str, value: AttributeValue) -> None:
-        self.name = name
+        # name is immutable
+        # reason is to avoid, when a handler returns None, having following handlers
+        # receiving old and new instances with different names
+        if not is_valid_key(name):
+            raise MarkupyError(f"Attribute `{name!r}` has invalid name")
+        self._name = name
+        # value is mutable
         self.value = value
 
     @property
     def name(self) -> str:
         return self._name
-
-    @name.setter
-    def name(self, name: str) -> None:
-        if not is_valid_key(name):
-            raise MarkupyError(f"Attribute `{name!r}` has invalid name")
-        self._name = name
 
     @property
     def value(self) -> AttributeValue:

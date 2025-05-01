@@ -227,7 +227,7 @@ def liar_attribute_handler(old: Attribute | None, new: Attribute) -> Attribute |
 Let's detail the parameters and return value of an handler:
 
 - `old`: the previous/current instance of the attribute. It can be `None` if the attribute has not been set previously for a given `Element`. Otherwise, it will be an instance of `Attribute`, a very lightweight object with only 2 properties: `name` and `value`.
-- `new`: the instance of the `Attribute` that is about to be updated. It is mutable so you can update its `name` or `value` properties in place.
+- `new`: the instance of the `Attribute` that is about to be updated. Its `value` property is mutable so you can update it in place.
 - return type depends on what to do next:
     - returning `None` tells `markupy` to continue processing other registered handlers before persisting. Handlers are processed in the reverse order of registration (most recent first).
     - returning an instance of `Attribute` instructs `markupy` to either:
