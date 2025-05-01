@@ -781,17 +781,21 @@ In addition, markupy is exposing all the required APIs for 3rd party libraries t
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">liar_attribute_handler</span><span class="p">(</span><span class="n">old</span><span class="p">:</span> <span class="n">Attribute</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
 </span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="c1"># here, we toggle the attribute value if it&#39;s a boolean</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="n">new</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">new</span><span class="o">.</span><span class="n">value</span> 
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="k">return</span> <span class="n">new</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="n">new</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">new</span><span class="o">.</span><span class="n">value</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="c1"># do not &quot;return new&quot; to let other potential handlers do their job</span>
 </span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="k">return</span> <span class="kc">None</span>
 </span></code></pre></div>
 <p>Let's detail the parameters and return value of an handler:</p>
 <ul>
 <li><code>old</code>: the previous/current instance of the attribute. It can be <code>None</code> if the attribute has not been set previously for a given <code>Element</code>. Otherwise, it will be an instance of <code>Attribute</code>, a very lightweight object with only 2 properties: <code>name</code> and <code>value</code>.</li>
-<li><code>new</code>: the instance of the <code>Attribute</code> that is about to be updated.</li>
+<li><code>new</code>: the instance of the <code>Attribute</code> that is about to be updated. Its <code>value</code> property is mutable so you can update it in place.</li>
 <li>return type depends on what to do next:<ul>
 <li>returning <code>None</code> tells <code>markupy</code> to continue processing other registered handlers before persisting. Handlers are processed in the reverse order of registration (most recent first).</li>
-<li>returning an instance of <code>Attribute</code> instructs <code>markupy</code> to stop processing handlers and persist immediately the returned instance.</li>
+<li>returning an instance of <code>Attribute</code> instructs <code>markupy</code> to either:<ul>
+<li>stop processing handlers and persist immediately the returned instance if <code>new</code> is returned</li>
+<li>restart a handlers chain processing if a new instance of <code>Attribute(name, value)</code> is returned</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
