@@ -32,16 +32,18 @@ class Attribute:
     _value: AttributeValue
 
     def __init__(self, name: str, value: AttributeValue) -> None:
-        # name is immutable (only set at init)
-        if not is_valid_key(name):
-            raise MarkupyError(f"Attribute `{name!r}` has invalid name")
-        self._name = name
-        # value is mutable
+        self.name = name
         self.value = value
 
     @property
     def name(self) -> str:
         return self._name
+
+    @name.setter
+    def name(self, name: str) -> None:
+        if not is_valid_key(name):
+            raise MarkupyError(f"Attribute `{name!r}` has invalid name")
+        self._name = name
 
     @property
     def value(self) -> AttributeValue:

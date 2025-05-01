@@ -45,14 +45,13 @@ class AttributeStore(dict[str, Attribute]):
         old = self[key] if key in self else None
         for handler in attribute_handlers:
             if attribute := handler(old, new):
-                if attribute.name == new.name:
+                if attribute is new:
                     # stop the handler chain
-                    new = attribute
+                    key, new = attribute.name, attribute
                     break
                 else:
                     # restart a handler chain (beware of infinite loops!)
-                    self.add(attribute)
-                    return
+                    return self.add(attribute)
 
         super().__setitem__(key, new)
 
