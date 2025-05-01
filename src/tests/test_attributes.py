@@ -133,7 +133,12 @@ def test_duplicate() -> None:
     with pytest.raises(MarkupyError):
         el.Div(at.disabled(False), disabled=True)
     with pytest.raises(MarkupyError):
-        el.A(at.href(""), href="")
+        el.Div(at.disabled(False), at.disabled(True))
+    assert (
+        el.A(at.href("/"), href="/")
+        == el.A(at.href("/"), at.href("/"))
+        == """<a href="/"></a>"""
+    )
 
 
 def test_none_override() -> None:

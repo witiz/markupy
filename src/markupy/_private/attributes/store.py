@@ -11,13 +11,17 @@ from .handlers import attribute_handlers
 def default_attribute_handler(
     old: Attribute | None, new: Attribute
 ) -> Attribute | None:
-    if old is None or old.value is None:
+    if old is None or old.value is None or old.value == new.value:
         # Prefer returning None instead of new here for multiple reasons:
         # - better performance
         # - do not rely on presence of handler to persist attributes
+        # Attribute redefinition is allowed if values are equal
+        # this is useful when bundling attrs into "traits" tuples
+        # that may overlap with each other
         return None
     elif new.name == "class":
-        # For class, append new values
+        # For class, attribute redefinition is allowed:
+        # new values get appended to old values
         if new.value:
             new.value = f"{old.value} {new.value}"
         else:
