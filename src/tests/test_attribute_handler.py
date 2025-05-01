@@ -47,8 +47,10 @@ def test_class_replace() -> None:
 
 def test_prefix_attribute() -> None:
     def handler(old: Attribute | None, new: Attribute) -> Attribute | None:
-        new.name = f"foo-{new.name}"
-        return new
+        prefix = "foo-"
+        if not new.name.startswith(prefix):
+            return Attribute(f"{prefix}{new.name}", new.value)
+        return None
 
     with tmp_handler(handler):
         assert (

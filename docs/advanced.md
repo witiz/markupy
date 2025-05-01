@@ -219,18 +219,20 @@ from markupy import Attribute
 def liar_attribute_handler(old: Attribute | None, new: Attribute) -> Attribute | None:
     if isinstance(new.value, bool):
         # here, we toggle the attribute value if it's a boolean
-        new.value = not new.value 
-        return new
+        new.value = not new.value
+        # do not "return new" to let other potential handlers do their job
     return None
 ```
 
 Let's detail the parameters and return value of an handler:
 
 - `old`: the previous/current instance of the attribute. It can be `None` if the attribute has not been set previously for a given `Element`. Otherwise, it will be an instance of `Attribute`, a very lightweight object with only 2 properties: `name` and `value`.
-- `new`: the instance of the `Attribute` that is about to be updated.
+- `new`: the instance of the `Attribute` that is about to be updated. Its `value` is mutable so you can update it.
 - return type depends on what to do next:
     - returning `None` tells `markupy` to continue processing other registered handlers before persisting. Handlers are processed in the reverse order of registration (most recent first).
-    - returning an instance of `Attribute` instructs `markupy` to stop processing handlers and persist immediately the returned instance.
+    - returning an instance of `Attribute` instructs `markupy` to either:
+        - stop processing handlers and persist immediately the returned instance if the attribute `name` is unchanged compared to the `old.name`
+        - restart a handlers chain processing for the returned attribute otherwise
 
 Now that our handler is defined, we need to register it. This can be done in 2 different ways:
 
