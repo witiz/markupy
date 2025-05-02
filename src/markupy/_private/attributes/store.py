@@ -24,7 +24,7 @@ def default_attribute_handler(
         # new values get appended to old values
         if new.value:
             merged = f"{old.value} {new.value}"
-            new.value = " ".join(dict.fromkeys(merged.split(), None))
+            new.value = " ".join(dict.fromkeys(merged.split()))
         else:
             new.value = old.value
         return None

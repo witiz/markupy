@@ -83,7 +83,7 @@ def test_class_priority() -> None:
 def test_class_merge() -> None:
     result = """<div class="foo bar baz"></div>"""
     assert (
-        el.Div(".foo.bar", {"class": "bar baz"}, at.class_("foo"), class_="bar baz")
+        el.Div(".foo.bar", {"class": "bar baz"}, at.class_("foo"), class_="foo baz")
         == result
     )
 
