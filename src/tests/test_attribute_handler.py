@@ -29,6 +29,20 @@ def test_multi_register() -> None:
             attribute_handlers.register(handler)
 
 
+def test_handler_order() -> None:
+    def handler1(old: Attribute | None, new: Attribute) -> Attribute | None:
+        new.value = f"{new.value}1"
+        return None
+
+    def handler2(old: Attribute | None, new: Attribute) -> Attribute | None:
+        new.value = f"{new.value}2"
+        return None
+
+    with tmp_handler(handler1):
+        with tmp_handler(handler2):
+            assert el.Input(foo="bar") == """<input foo="bar21">"""
+
+
 def test_handler() -> None:
     def handler(old: Attribute | None, new: Attribute) -> Attribute | None:
         if new.name == "id":
