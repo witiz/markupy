@@ -80,6 +80,14 @@ def test_class_priority() -> None:
     )
 
 
+def test_class_merge() -> None:
+    result = """<div class="foo bar baz"></div>"""
+    assert (
+        el.Div(".foo.bar", {"class": "bar baz"}, at.class_("foo"), class_="bar baz")
+        == result
+    )
+
+
 @pytest.mark.parametrize("not_an_attr", [1234, b"foo", object(), object, 1, 0, None])
 def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):

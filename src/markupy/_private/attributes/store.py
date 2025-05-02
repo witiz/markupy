@@ -23,7 +23,8 @@ def default_attribute_handler(
         # For class, attribute redefinition is allowed:
         # new values get appended to old values
         if new.value:
-            new.value = f"{old.value} {new.value}"
+            merged = f"{old.value} {new.value}"
+            new.value = " ".join(dict.fromkeys(merged.split(), None))
         else:
             new.value = old.value
         return None
