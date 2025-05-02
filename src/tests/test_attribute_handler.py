@@ -1,9 +1,12 @@
 from contextlib import contextmanager
 from typing import Generator
 
+import pytest
+
 from markupy import Attribute, attribute_handlers
 from markupy import elements as el
 from markupy._private.attributes.handlers import AttributeHandler
+from markupy.exceptions import MarkupyError
 
 
 @contextmanager
@@ -15,6 +18,15 @@ def tmp_handler(handler: AttributeHandler) -> Generator[None, None, None]:
     finally:
         attribute_handlers.unregister(handler)
     return None
+
+
+def test_multi_register() -> None:
+    def handler(old: Attribute | None, new: Attribute) -> Attribute | None:
+        return None
+
+    with tmp_handler(handler):
+        with pytest.raises(MarkupyError):
+            attribute_handlers.register(handler)
 
 
 def test_handler() -> None:

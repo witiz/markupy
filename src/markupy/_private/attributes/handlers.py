@@ -1,6 +1,8 @@
 from collections.abc import Iterator
 from typing import Callable
 
+from markupy.exceptions import MarkupyError
+
 from .attribute import Attribute
 
 # We prefer this signature over (name:str, old_value:AttributeValue, new_value:AttributeValue)
@@ -15,7 +17,7 @@ class AttributeHandlerRegistry(dict[AttributeHandler, None]):
     def register(self, handler: AttributeHandler) -> AttributeHandler:
         """Registers the handler and returns it unchanged (so usable as a decorator)."""
         if handler in self:
-            raise ValueError(f"Handler {handler.__name__} is already registered.")
+            raise MarkupyError(f"Handler {handler.__name__} is already registered.")
         self[handler] = None
         return handler  # Important for decorator usage
 
