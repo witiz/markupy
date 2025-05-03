@@ -151,10 +151,10 @@ def test_duplicate() -> None:
 
 def test_none_override() -> None:
     assert (
-        el.Input({"class": None}, foo="bar", class_="baz")
+        el.Input({"class": None, "foo": None}, foo="bar", class_="baz")
         == """<input class="baz" foo="bar">"""
     )
     assert (
-        el.Input({"class": "baz"}, foo="bar", class_=None)
+        el.Input({"class": "baz", "foo": "bar"}, foo=None, class_=None)
         == """<input class="baz" foo="bar">"""
     )

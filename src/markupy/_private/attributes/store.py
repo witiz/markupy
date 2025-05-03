@@ -19,17 +19,17 @@ def default_attribute_handler(
         # this is useful when bundling attrs into "traits" tuples
         # that may overlap with each other
         return None
+    elif new.value is None:
+        new.value = old.value
+        return None
     elif new.name == "class":
         # For class, attribute redefinition is allowed:
-        # new values get appended to old values
-        if new.value:
-            merged = f"{old.value} {new.value}"
-            new.value = " ".join(dict.fromkeys(merged.split()))
-        else:
-            new.value = old.value
+        # new values get appended to old values and then deduplicated
+        merged = f"{old.value} {new.value}"
+        new.value = " ".join(dict.fromkeys(merged.split()))
         return None
-    else:
-        raise MarkupyError(f"Invalid attempt to redefine attribute `{new.name}`")
+
+    raise MarkupyError(f"Invalid attempt to redefine attribute `{new.name}`")
 
 
 @lru_cache(maxsize=1000)
