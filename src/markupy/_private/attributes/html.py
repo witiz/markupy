@@ -1,12 +1,12 @@
-import typing
 from collections.abc import Iterable, Mapping
+from typing import Callable, Literal
 
 from . import Attribute, AttributeValue
 from .store import python_to_html_key
 
 
 class HtmlAttributes:
-    def __getattr__(self, name: str) -> typing.Callable[[AttributeValue], Attribute]:
+    def __getattr__(self, name: str) -> Callable[[AttributeValue], Attribute]:
         return lambda value: Attribute(python_to_html_key(name), value)
 
     def __call__(self, name: str, value: AttributeValue) -> Attribute:
@@ -41,11 +41,11 @@ class HtmlAttributes:
 
     def autocapitalize(
         self,
-        value: typing.Literal["off", "none", "on", "sentences", "words", "characters"],
+        value: Literal["off", "none", "on", "sentences", "words", "characters"],
     ) -> Attribute:
         return Attribute("autocapitalize", value)
 
-    def autocomplete(self, value: typing.Literal["on", "off"]) -> Attribute:
+    def autocomplete(self, value: Literal["on", "off"]) -> Attribute:
         return Attribute("autocomplete", value)
 
     def autofocus(self, value: bool = True) -> Attribute:
@@ -97,7 +97,7 @@ class HtmlAttributes:
     def content(self, value: str) -> Attribute:
         return Attribute("content", value)
 
-    def contenteditable(self, value: typing.Literal["true", "false", ""]) -> Attribute:
+    def contenteditable(self, value: Literal["true", "false", ""]) -> Attribute:
         return Attribute("contenteditable", value)
 
     def controls(self, value: bool = True) -> Attribute:
@@ -106,9 +106,7 @@ class HtmlAttributes:
     def coords(self, value: str) -> Attribute:
         return Attribute("coords", value)
 
-    def crossorigin(
-        self, value: typing.Literal["anonymous", "use-credentials"]
-    ) -> Attribute:
+    def crossorigin(self, value: Literal["anonymous", "use-credentials"]) -> Attribute:
         return Attribute("crossorigin", value)
 
     def csp(self, value: str) -> Attribute:
@@ -120,7 +118,7 @@ class HtmlAttributes:
     def datetime(self, value: str) -> Attribute:
         return Attribute("datetime", value)
 
-    def decoding(self, value: typing.Literal["sync", "async", "auto"]) -> Attribute:
+    def decoding(self, value: Literal["sync", "async", "auto"]) -> Attribute:
         return Attribute("decoding", value)
 
     def default(self, value: bool = True) -> Attribute:
@@ -129,7 +127,7 @@ class HtmlAttributes:
     def defer(self, value: bool = True) -> Attribute:
         return Attribute("defer", value)
 
-    def dir(self, value: typing.Literal["ltr", "rtl", "auto"]) -> Attribute:
+    def dir(self, value: Literal["ltr", "rtl", "auto"]) -> Attribute:
         return Attribute("dir", value)
 
     def dirname(self, value: str) -> Attribute:
@@ -141,12 +139,12 @@ class HtmlAttributes:
     def download(self, value: str) -> Attribute:
         return Attribute("download", value)
 
-    def draggable(self, value: typing.Literal["true", "false", "auto"]) -> Attribute:
+    def draggable(self, value: Literal["true", "false", "auto"]) -> Attribute:
         return Attribute("draggable", value)
 
     def enctype(
         self,
-        value: typing.Literal[
+        value: Literal[
             "application/x-www-form-urlencoded", "multipart/form-data", "text/plain"
         ],
     ) -> Attribute:
@@ -154,9 +152,7 @@ class HtmlAttributes:
 
     def enterkeyhint(
         self,
-        value: typing.Literal[
-            "enter", "done", "go", "next", "previous", "search", "send"
-        ],
+        value: Literal["enter", "done", "go", "next", "previous", "search", "send"],
     ) -> Attribute:
         return Attribute("enterkeyhint", value)
 
@@ -174,13 +170,13 @@ class HtmlAttributes:
 
     def formenctype(
         self,
-        value: typing.Literal[
+        value: Literal[
             "application/x-www-form-urlencoded", "multipart/form-data", "text/plain"
         ],
     ) -> Attribute:
         return Attribute("formenctype", value)
 
-    def formmethod(self, value: typing.Literal["get", "post"]) -> Attribute:
+    def formmethod(self, value: Literal["get", "post"]) -> Attribute:
         return Attribute("formmethod", value)
 
     def formnovalidate(self, value: bool = True) -> Attribute:
@@ -195,7 +191,7 @@ class HtmlAttributes:
     def height(self, value: int | str) -> Attribute:
         return Attribute("height", value)
 
-    def hidden(self, value: bool | typing.Literal["until-found"] = True) -> Attribute:
+    def hidden(self, value: bool | Literal["until-found"] = True) -> Attribute:
         return Attribute("hidden", value)
 
     def high(self, value: str) -> Attribute:
@@ -209,7 +205,7 @@ class HtmlAttributes:
 
     def http_equiv(
         self,
-        value: typing.Literal[
+        value: Literal[
             "content-security-policy", "content-type", "default-style", "refresh"
         ],
     ) -> Attribute:
@@ -220,7 +216,7 @@ class HtmlAttributes:
 
     def inputmode(
         self,
-        value: typing.Literal[
+        value: Literal[
             "none", "text", "decimal", "numeric", "tel", "search", "email", "url"
         ],
     ) -> Attribute:
@@ -237,9 +233,7 @@ class HtmlAttributes:
 
     def kind(
         self,
-        value: typing.Literal[
-            "subtitles", "captions", "descriptions", "chapters", "metadata"
-        ],
+        value: Literal["subtitles", "captions", "descriptions", "chapters", "metadata"],
     ) -> Attribute:
         return Attribute("kind", value)
 
@@ -249,7 +243,7 @@ class HtmlAttributes:
     def lang(self, value: str) -> Attribute:
         return Attribute("lang", value)
 
-    def loading(self, value: typing.Literal["eager", "lazy"]) -> Attribute:
+    def loading(self, value: Literal["eager", "lazy"]) -> Attribute:
         return Attribute("loading", value)
 
     def list(self, value: str) -> Attribute:
@@ -270,7 +264,7 @@ class HtmlAttributes:
     def media(self, value: str) -> Attribute:
         return Attribute("media", value)
 
-    def method(self, value: typing.Literal["get", "post"]) -> Attribute:
+    def method(self, value: Literal["get", "post"]) -> Attribute:
         return Attribute("method", value)
 
     def min(self, value: int | float | str) -> Attribute:
@@ -501,13 +495,13 @@ class HtmlAttributes:
     def playsinline(self, value: bool = True) -> Attribute:
         return Attribute("playsinline", value)
 
-    def popover(self, value: typing.Literal["auto", "manual"]) -> Attribute:
+    def popover(self, value: Literal["auto", "manual"]) -> Attribute:
         return Attribute("popover", value)
 
     def poster(self, value: str) -> Attribute:
         return Attribute("poster", value)
 
-    def preload(self, value: typing.Literal["auto", "metadata", "none"]) -> Attribute:
+    def preload(self, value: Literal["auto", "metadata", "none"]) -> Attribute:
         return Attribute("preload", value)
 
     def readonly(self, value: bool = True) -> Attribute:
@@ -515,7 +509,7 @@ class HtmlAttributes:
 
     def referrerpolicy(
         self,
-        value: typing.Literal[
+        value: Literal[
             "no-referrer",
             "no-referrer-when-downgrade",
             "origin",
@@ -530,7 +524,7 @@ class HtmlAttributes:
 
     def rel(
         self,
-        value: typing.Literal[
+        value: Literal[
             "alternate",
             "author",
             "bookmark",
@@ -576,7 +570,7 @@ class HtmlAttributes:
 
     def sandbox(
         self,
-        *value: typing.Literal[
+        *value: Literal[
             "allow-forms",
             "allow-modals",
             "allow-orientation-lock",
@@ -592,17 +586,13 @@ class HtmlAttributes:
     ) -> Attribute:
         return Attribute("sandbox", " ".join(value))
 
-    def scope(
-        self, value: typing.Literal["col", "row", "colgroup", "rowgroup"]
-    ) -> Attribute:
+    def scope(self, value: Literal["col", "row", "colgroup", "rowgroup"]) -> Attribute:
         return Attribute("scope", value)
 
     def selected(self, value: bool = True) -> Attribute:
         return Attribute("selected", value)
 
-    def shape(
-        self, value: typing.Literal["default", "rect", "circle", "poly"]
-    ) -> Attribute:
+    def shape(self, value: Literal["default", "rect", "circle", "poly"]) -> Attribute:
         return Attribute("shape", value)
 
     def size(self, value: int) -> Attribute:
@@ -617,9 +607,7 @@ class HtmlAttributes:
     def span(self, value: int) -> Attribute:
         return Attribute("span", value)
 
-    def spellcheck(
-        self, value: typing.Literal["true", "false"] | bool = True
-    ) -> Attribute:
+    def spellcheck(self, value: Literal["true", "false"] | bool = True) -> Attribute:
         return Attribute("spellcheck", value)
 
     def src(self, value: str) -> Attribute:
@@ -637,7 +625,7 @@ class HtmlAttributes:
     def start(self, value: str) -> Attribute:
         return Attribute("start", value)
 
-    def step(self, value: int | float | typing.Literal["any"]) -> Attribute:
+    def step(self, value: int | float | Literal["any"]) -> Attribute:
         return Attribute("step", value)
 
     def style(self, value: str) -> Attribute:
@@ -648,19 +636,19 @@ class HtmlAttributes:
 
     def target(
         self,
-        value: typing.Literal["_self", "_blank", "_parent", "_top"] | str,
+        value: Literal["_self", "_blank", "_parent", "_top"] | str,
     ) -> Attribute:
         return Attribute("target", value)
 
     def title(self, value: str) -> Attribute:
         return Attribute("title", value)
 
-    def translate(self, value: typing.Literal["yes", "no"]) -> Attribute:
+    def translate(self, value: Literal["yes", "no"]) -> Attribute:
         return Attribute("translate", value)
 
     def type(
         self,
-        value: typing.Literal[
+        value: Literal[
             "button",
             "checkbox",
             "color",
@@ -695,7 +683,7 @@ class HtmlAttributes:
 
     def virtualkeyboardpolicy(
         self,
-        value: typing.Literal["auto", "manual"] = "auto",
+        value: Literal["auto", "manual"] = "auto",
     ) -> Attribute:
         return Attribute("virtualkeyboardpolicy", value)
 
@@ -705,5 +693,5 @@ class HtmlAttributes:
     def width(self, value: int | str) -> Attribute:
         return Attribute("width", value)
 
-    def wrap(self, value: typing.Literal["hard", "soft", "off"]) -> Attribute:
+    def wrap(self, value: Literal["hard", "soft", "off"]) -> Attribute:
         return Attribute("wrap", value)
