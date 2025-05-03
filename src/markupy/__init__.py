@@ -12,4 +12,4 @@ __all__ = [
     "attributes",
     "html_to_markupy",
 ]
-__version__ = "2.2.2"
+__version__ = "2.2.3"
