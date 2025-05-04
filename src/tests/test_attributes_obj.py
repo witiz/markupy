@@ -1,5 +1,6 @@
-from markupy import attributes as at
-from markupy import elements as el
+import markupy.attributes as at
+import markupy.elements as el
+from markupy import Attribute
 
 
 def test_int() -> None:
@@ -35,7 +36,7 @@ def test_class_dict() -> None:
 
 def test_non_identifier() -> None:
     result = """<input @click="hello">"""
-    assert el.Input(at("@click", "hello")) == result
+    assert el.Input(Attribute("@click", "hello")) == result
 
 
 def test_none() -> None:

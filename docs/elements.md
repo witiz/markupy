@@ -161,7 +161,7 @@ There are multiple benefits of defining attributes this way:
 Finally, custom object attributes can be defined in several ways:
 
 - If attribute is a valid python identifier, just do `at.foo_bar("baz")`
-- Otherwise, you can pass any arbitrary string as an attribute name by doing `at("@foo.bar", "baz")`
+- Otherwise, you can pass any arbitrary string by constructing an attribute object and pass it a name and a value: `Attribute("@foo:bar", "baz")`
 
 
 ### Combining different types of attributes

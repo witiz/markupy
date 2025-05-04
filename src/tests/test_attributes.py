@@ -4,6 +4,7 @@ from datetime import date
 import pytest
 from markupsafe import Markup
 
+from markupy import Attribute
 from markupy import attributes as at
 from markupy import elements as el
 from markupy.exceptions import MarkupyError
@@ -93,7 +94,7 @@ def test_invalid_attribute_key(not_an_attr: t.Any) -> None:
     with pytest.raises(MarkupyError):
         el.Div({not_an_attr: "foo"})
     with pytest.raises(MarkupyError):
-        el.Div(at(not_an_attr, "foo"))
+        el.Div(Attribute(not_an_attr, "foo"))
 
 
 @pytest.mark.parametrize(
@@ -120,7 +121,7 @@ def test_attribute_redefinition() -> None:
 )
 def test_invalid_key(key: str) -> None:
     with pytest.raises(MarkupyError):
-        el.Div(at(key, "bar"))
+        el.Div(Attribute(key, "bar"))
     with pytest.raises(MarkupyError):
         el.Div({key: "bar"})
     with pytest.raises((MarkupyError, TypeError)):
