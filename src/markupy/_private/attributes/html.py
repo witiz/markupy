@@ -1,11 +1,12 @@
 from collections.abc import Iterable, Mapping
+from types import ModuleType
 from typing import Callable, Literal
 
 from . import Attribute, AttributeValue
 from .store import python_to_html_key
 
 
-class HtmlAttributes:
+class HtmlAttributes(ModuleType):
     def __getattr__(self, name: str) -> Callable[[AttributeValue], Attribute]:
         return lambda value: Attribute(python_to_html_key(name), value)
 
