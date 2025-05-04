@@ -667,7 +667,7 @@ dynamically.</p>
 <p>Finally, custom object attributes can be defined in several ways:</p>
 <ul>
 <li>If attribute is a valid python identifier, just do <code>at.foo_bar("baz")</code></li>
-<li>Otherwise, you can pass any arbitrary string as an attribute name by doing <code>at("@foo.bar", "baz")</code></li>
+<li>Otherwise, you can pass any arbitrary string by constructing an attribute object and pass it a name and a value: <code>Attribute("@foo:bar", "baz")</code></li>
 </ul>
 <h3 id="combining-different-types-of-attributes">Combining different types of attributes<a class="headerlink" href="#combining-different-types-of-attributes" title="Permanent link">&para;</a></h3>
 <p>Attributes via id/class selector shorthand, dictionary, object and keyword attributes can be combined and used simultaneously:</p>
