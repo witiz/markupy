@@ -75,7 +75,7 @@ class View:
         if self._children:
             raise MarkupyError(f"Illegal attempt to redefine children of {self!r}")
 
-        if children := tuple(c for c in self._iter_node(content)):
+        if children := tuple(self._iter_node(content)):
             instance = self._get_instance()
             instance._children = children
             return instance
