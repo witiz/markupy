@@ -10,7 +10,7 @@ from .element import (
 from .fragment import Fragment
 from .view import View
 
-fragment = Fragment()
+fragment: Fragment = Fragment()
 
 __all__ = [
     "Component",
