@@ -7,15 +7,11 @@ from typing import Iterator
 
 from markupsafe import escape
 
-from markupy import elements
-
 from ...exceptions import MarkupyError
-from ..views.element import VoidElement
+from ..views.element import SPECIAL_ELEMENTS, VoidElement
 
 VOID_ELEMENTS: set[str] = {
-    element.name
-    for element in map(lambda x: getattr(elements, x), elements.__all__)
-    if isinstance(element, VoidElement)
+    name for name, cls in SPECIAL_ELEMENTS.items() if cls is VoidElement
 }
 
 

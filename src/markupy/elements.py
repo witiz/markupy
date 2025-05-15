@@ -123,129 +123,129 @@ def __getattr__(name: str) -> _views.Element:
     return _views.get_element(name)
 
 
-_ = _views.CommentElement("_")
+_: _views.CommentElement
 
 # Script and Style contents do not need to be wrapped inside Markup()
-Script = _views.SafeElement("script")
-Style = _views.SafeElement("style")
+Script: _views.SafeElement
+Style: _views.SafeElement
 
 # https://developer.mozilla.org/en-US/docs/Glossary/Doctype
-Html = _views.HtmlElement("html")
+Html: _views.HtmlElement
 
-# https://developer.mozilla.org/en-US/docs/Glossary/Void_views.Element
-Area = _views.VoidElement("area")
-Base = _views.VoidElement("base")
-Br = _views.VoidElement("br")
-Col = _views.VoidElement("col")
-Embed = _views.VoidElement("embed")
-Hr = _views.VoidElement("hr")
-Img = _views.VoidElement("img")
-Input = _views.VoidElement("input")
-Link = _views.VoidElement("link")
-Meta = _views.VoidElement("meta")
-Param = _views.VoidElement("param")
-Source = _views.VoidElement("source")
-Track = _views.VoidElement("track")
-Wbr = _views.VoidElement("wbr")
+# https://developer.mozilla.org/en-US/docs/Glossary/VoidElement
+Area: _views.VoidElement
+Base: _views.VoidElement
+Br: _views.VoidElement
+Col: _views.VoidElement
+Embed: _views.VoidElement
+Hr: _views.VoidElement
+Img: _views.VoidElement
+Input: _views.VoidElement
+Link: _views.VoidElement
+Meta: _views.VoidElement
+Param: _views.VoidElement
+Source: _views.VoidElement
+Track: _views.VoidElement
+Wbr: _views.VoidElement
 
-# Non-deprecated HTML _views.Elements, extracted from
+# Non-deprecated HTML Elements, extracted from
 # https://developer.mozilla.org/en-US/docs/Web/HTML/Element
 # Located via the inspector with:
 # Array.from($0.querySelectorAll('li')).filter(x=>!x.querySelector('.icon-deprecated')).map(x => x.querySelector('code').textContent) # noqa: E501
-A = _views.Element("a")
-Abbr = _views.Element("abbr")
-Abc = _views.Element("abc")
-Address = _views.Element("address")
-Article = _views.Element("article")
-Aside = _views.Element("aside")
-Audio = _views.Element("audio")
-B = _views.Element("b")
-Bdi = _views.Element("bdi")
-Bdo = _views.Element("bdo")
-Blockquote = _views.Element("blockquote")
-Body = _views.Element("body")
-Button = _views.Element("button")
-Canvas = _views.Element("canvas")
-Caption = _views.Element("caption")
-Cite = _views.Element("cite")
-Code = _views.Element("code")
-Colgroup = _views.Element("colgroup")
-Data = _views.Element("data")
-Datalist = _views.Element("datalist")
-Dd = _views.Element("dd")
-Del = _views.Element("del")
-Details = _views.Element("details")
-Dfn = _views.Element("dfn")
-Dialog = _views.Element("dialog")
-Div = _views.Element("div")
-Dl = _views.Element("dl")
-Dt = _views.Element("dt")
-Em = _views.Element("em")
-Fieldset = _views.Element("fieldset")
-Figcaption = _views.Element("figcaption")
-Figure = _views.Element("figure")
-Footer = _views.Element("footer")
-Form = _views.Element("form")
-H1 = _views.Element("h1")
-H2 = _views.Element("h2")
-H3 = _views.Element("h3")
-H4 = _views.Element("h4")
-H5 = _views.Element("h5")
-H6 = _views.Element("h6")
-Head = _views.Element("head")
-Header = _views.Element("header")
-Hgroup = _views.Element("hgroup")
-I = _views.Element("i")  # noqa: E741
-Iframe = _views.Element("iframe")
-Ins = _views.Element("ins")
-Kbd = _views.Element("kbd")
-Label = _views.Element("label")
-Legend = _views.Element("legend")
-Li = _views.Element("li")
-Main = _views.Element("main")
-Map = _views.Element("map")
-Mark = _views.Element("mark")
-Menu = _views.Element("menu")
-Meter = _views.Element("meter")
-Nav = _views.Element("nav")
-Noscript = _views.Element("noscript")
-Object = _views.Element("object")
-Ol = _views.Element("ol")
-Optgroup = _views.Element("optgroup")
-Option = _views.Element("option")
-Output = _views.Element("output")
-P = _views.Element("p")
-Picture = _views.Element("picture")
-Portal = _views.Element("portal")
-Pre = _views.Element("pre")
-Progress = _views.Element("progress")
-Q = _views.Element("q")
-Rp = _views.Element("rp")
-Rt = _views.Element("rt")
-Ruby = _views.Element("ruby")
-S = _views.Element("s")
-Samp = _views.Element("samp")
-Search = _views.Element("search")
-Section = _views.Element("section")
-Select = _views.Element("select")
-Slot = _views.Element("slot")
-Small = _views.Element("small")
-Span = _views.Element("span")
-Strong = _views.Element("strong")
-Sub = _views.Element("sub")
-Summary = _views.Element("summary")
-Sup = _views.Element("sup")
-Table = _views.Element("table")
-Tbody = _views.Element("tbody")
-Td = _views.Element("td")
-Template = _views.Element("template")
-Textarea = _views.Element("textarea")
-Tfoot = _views.Element("tfoot")
-Th = _views.Element("th")
-Thead = _views.Element("thead")
-Time = _views.Element("time")
-Title = _views.Element("title")
-Tr = _views.Element("tr")
-U = _views.Element("u")
-Ul = _views.Element("ul")
-Var = _views.Element("var")
+A: _views.Element
+Abbr: _views.Element
+Abc: _views.Element
+Address: _views.Element
+Article: _views.Element
+Aside: _views.Element
+Audio: _views.Element
+B: _views.Element
+Bdi: _views.Element
+Bdo: _views.Element
+Blockquote: _views.Element
+Body: _views.Element
+Button: _views.Element
+Canvas: _views.Element
+Caption: _views.Element
+Cite: _views.Element
+Code: _views.Element
+Colgroup: _views.Element
+Data: _views.Element
+Datalist: _views.Element
+Dd: _views.Element
+Del: _views.Element
+Details: _views.Element
+Dfn: _views.Element
+Dialog: _views.Element
+Div: _views.Element
+Dl: _views.Element
+Dt: _views.Element
+Em: _views.Element
+Fieldset: _views.Element
+Figcaption: _views.Element
+Figure: _views.Element
+Footer: _views.Element
+Form: _views.Element
+H1: _views.Element
+H2: _views.Element
+H3: _views.Element
+H4: _views.Element
+H5: _views.Element
+H6: _views.Element
+Head: _views.Element
+Header: _views.Element
+Hgroup: _views.Element
+I: _views.Element  # noqa: E741
+Iframe: _views.Element
+Ins: _views.Element
+Kbd: _views.Element
+Label: _views.Element
+Legend: _views.Element
+Li: _views.Element
+Main: _views.Element
+Map: _views.Element
+Mark: _views.Element
+Menu: _views.Element
+Meter: _views.Element
+Nav: _views.Element
+Noscript: _views.Element
+Object: _views.Element
+Ol: _views.Element
+Optgroup: _views.Element
+Option: _views.Element
+Output: _views.Element
+P: _views.Element
+Picture: _views.Element
+Portal: _views.Element
+Pre: _views.Element
+Progress: _views.Element
+Q: _views.Element
+Rp: _views.Element
+Rt: _views.Element
+Ruby: _views.Element
+S: _views.Element
+Samp: _views.Element
+Search: _views.Element
+Section: _views.Element
+Select: _views.Element
+Slot: _views.Element
+Small: _views.Element
+Span: _views.Element
+Strong: _views.Element
+Sub: _views.Element
+Summary: _views.Element
+Sup: _views.Element
+Table: _views.Element
+Tbody: _views.Element
+Td: _views.Element
+Template: _views.Element
+Textarea: _views.Element
+Tfoot: _views.Element
+Th: _views.Element
+Thead: _views.Element
+Time: _views.Element
+Title: _views.Element
+Tr: _views.Element
+U: _views.Element
+Ul: _views.Element
+Var: _views.Element

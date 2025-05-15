@@ -148,16 +148,47 @@ class SafeElement(Element):
         super().__init__(name, safe=True, shared=shared)
 
 
+SPECIAL_ELEMENTS: dict[
+    str, type[VoidElement | CommentElement | HtmlElement | SafeElement]
+] = {
+    "area": VoidElement,
+    "base": VoidElement,
+    "br": VoidElement,
+    "col": VoidElement,
+    "embed": VoidElement,
+    "hr": VoidElement,
+    "img": VoidElement,
+    "input": VoidElement,
+    "link": VoidElement,
+    "meta": VoidElement,
+    "param": VoidElement,
+    "source": VoidElement,
+    "track": VoidElement,
+    "wbr": VoidElement,
+    "_": CommentElement,
+    "script": SafeElement,
+    "style": SafeElement,
+    "html": HtmlElement,
+}
+
+
 @lru_cache(maxsize=300)
 def get_element(name: str) -> Element:
-    if name.startswith("_"):
-        raise AttributeError()
+    if name == "_":
+        # Special exception for CommentElement
+        html_name = "_"
+    elif name.startswith("_"):
+        # Needed when called from __getattr__
+        raise AttributeError
     elif not re_fullmatch(r"^(?:[A-Z][a-z0-9]*)+$", name):
         raise MarkupyError(
             f"`{name}` is not a valid element name (must use CapitalizedCase)"
         )
+    else:
+        # Uppercase chars are word boundaries for tag names
+        words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
+        html_name = "-".join(words).lower()
 
-    # Uppercase chars are word boundaries for tag names
-    words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
-    html_name = "-".join(words).lower()
+    if html_name in SPECIAL_ELEMENTS:
+        return SPECIAL_ELEMENTS[html_name](html_name)
     return Element(html_name)
