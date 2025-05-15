@@ -189,6 +189,5 @@ def get_element(name: str) -> Element:
         words = filter(None, re_sub(r"([A-Z])", r" \1", name).split())
         html_name = "-".join(words).lower()
 
-    if html_name in SPECIAL_ELEMENTS:
-        return SPECIAL_ELEMENTS[html_name](html_name)
-    return Element(html_name)
+    cls = SPECIAL_ELEMENTS.get(html_name, Element)
+    return cls(html_name)
