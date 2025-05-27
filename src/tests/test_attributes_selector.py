@@ -37,7 +37,7 @@ def test_selector_classes_space_separator() -> None:
 
 def test_selector_bad_type() -> None:
     with pytest.raises(MarkupyError):
-        Div({"oops": "yes"}, {})  # type: ignore
+        Div(object(), {"oops": "yes"})  # type: ignore
 
 
 @pytest.mark.parametrize("selector", ["", "   ", "  #  ", "  .  ", "  #  .  "])

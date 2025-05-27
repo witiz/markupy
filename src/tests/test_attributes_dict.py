@@ -1,12 +1,9 @@
-import pytest
-
 from markupy.elements import Div
-from markupy.exceptions import MarkupyError
 
 
 def test_redefinition() -> None:
-    with pytest.raises(MarkupyError):
-        Div({"attr": "val"}, {"attr2": "val2"})  # type: ignore
+    result = """<div attr="val" attr2="val2"></div>"""
+    assert result == Div({"attr": "val"}, {"attr2": "val2"})
 
 
 def test_dict_attributes_escape() -> None:

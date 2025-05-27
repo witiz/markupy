@@ -5,9 +5,9 @@ from markupy.exceptions import MarkupyError
 
 from .attribute import Attribute
 
-# We prefer this signature over (name:str, old_value:AttributeValue, new_value:AttributeValue)
+# We prefer this signature over (name:str, old_value:Attribute.Value, new_value:Attribute.Value)
 # for several reasons:
-# - avoid exposing AttributeValue type that is too low level
+# - avoid exposing Attribute.Value type that is too low level
 # - allows to differentiate between an attribute that has never been instanciated vs
 #   an attribute that has already been instanciated with a None value
 AttributeHandler = Callable[[Attribute | None, Attribute], Attribute | None]

@@ -14,8 +14,6 @@ def test_order() -> None:
     with pytest.raises(MarkupyError):
         el.Input({"foo": "bar"}, "selector")  # type: ignore
     with pytest.raises(MarkupyError):
-        el.Input(at.id("cool"), {"foo": "bar"})  # type: ignore
-    with pytest.raises(MarkupyError):
         el.Input(at.disabled(), "#foo.bar")  # type: ignore
 
 

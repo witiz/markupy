@@ -2,14 +2,21 @@ from collections.abc import Iterator, Mapping
 from functools import lru_cache
 from re import match as re_fullmatch
 from re import sub as re_sub
-from typing import Any, overload
+from typing import Any, TypeAlias, overload
 
 from typing_extensions import Self, override
 
 from markupy.exceptions import MarkupyError
 
-from ..attributes import Attribute, AttributeStore, AttributeValue
+from ..attributes import Attribute, AttributeStore
 from .fragment import Fragment
+
+AttributeArgs: TypeAlias = (
+    Mapping[Attribute.Name, Attribute.Value]
+    | tuple[Attribute.Name, Attribute.Value]
+    | Attribute
+    | None
+)
 
 
 class Element(Fragment):
@@ -45,25 +52,13 @@ class Element(Fragment):
 
     # Use call syntax () to define attributes
     @overload
-    def __call__(self, *args: Attribute | None, **kwargs: AttributeValue) -> Self: ...
-    @overload
-    def __call__(
-        self, selector: str, *args: Attribute | None, **kwargs: AttributeValue
-    ) -> Self: ...
-    @overload
-    def __call__(
-        self,
-        attributes: Mapping[str, AttributeValue],
-        *args: Attribute | None,
-        **kwargs: AttributeValue,
-    ) -> Self: ...
+    def __call__(self, *args: AttributeArgs, **kwargs: Attribute.Value) -> Self: ...
     @overload
     def __call__(
         self,
         selector: str,
-        attributes: Mapping[str, AttributeValue],
-        *args: Attribute | None,
-        **kwargs: AttributeValue,
+        *args: AttributeArgs,
+        **kwargs: Attribute.Value,
     ) -> Self: ...
     def __call__(self, *args: Any, **kwargs: Any) -> Self:
         if self._attributes is not None:
@@ -76,20 +71,17 @@ class Element(Fragment):
                 f"Illegal attempt to define attributes after children for element {self!r}"
             )
 
-        has_selector, has_dict, has_obj = False, False, False
-
         attrs = AttributeStore()
         for arg in args:
-            if not (has_selector or has_dict or has_obj) and isinstance(arg, str):
-                has_selector = True
+            if len(attrs) == 0 and isinstance(arg, str):
                 attrs.add_selector(arg)
-            elif not (has_dict or has_obj) and isinstance(arg, Mapping):
-                has_dict = True
-                attrs.add_dict(arg)  # type:ignore[unused-ignore]
             elif arg is None:
-                has_obj = True
+                pass
+            elif isinstance(arg, Mapping):
+                attrs.add_dict(arg)  # type:ignore[unused-ignore]
+            elif isinstance(arg, tuple):
+                attrs.add_tuple(arg)  # type:ignore[unused-ignore]
             elif isinstance(arg, Attribute):
-                has_obj = True
                 attrs.add(arg)
             else:
                 raise MarkupyError(f"Invalid argument {arg!r} for element {self!r}")

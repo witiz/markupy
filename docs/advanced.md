@@ -194,10 +194,10 @@ HTML.
 <button></button>
 ```
 
-### 3rd party object attributes libraries
+### 3rd party attributes libraries
 
-The `markupy.attributes` provides a complete list of HTML5 attributes.
-In addition, markupy is exposing all the required APIs for 3rd party libraries to implement object attributes specific to any framework or library. If you are interested in developping your own `markupy` addons, you might be interested in "[Attribute Handlers](#attribute-handlers)".
+The builtin `markupy.attributes` module provides a complete list of HTML5 attributes.
+In addition, markupy is exposing all the required APIs for 3rd party libraries to implement attributes helpers specific to any framework or library. If you are interested in developping your own `markupy` addons, you might be interested in "[Attribute Handlers](#attribute-handlers)".
 
 We will list here any package we might be aware of.
 

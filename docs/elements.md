@@ -140,6 +140,17 @@ dynamically.
 <label for="myfield"></label>
 ```
 
+### Tuple attributes
+
+Attributes can be defined as tuples like so:
+
+```python title="Attributes as tuples"
+>>> from markupy.elements import Button
+>>> print(Button(("class", "btn btn-primary"), ("disabled", True)))
+<button class="btn btn-primary" disabled></button>
+```
+
+
 ### Object attributes
 
 Finally there is one last way to define attributes and it is very powerful, it is called "object attributes", athough it's very transparent as a user since you're only ever calling functions that build those objects for you.
@@ -166,13 +177,13 @@ Finally, custom object attributes can be defined in several ways:
 
 ### Combining different types of attributes
 
-Attributes via id/class selector shorthand, dictionary, object and keyword attributes can be combined and used simultaneously:
+Attributes via id/class selector shorthand, dictionary, tuple, object and keyword attributes can be combined and used simultaneously:
 
 ```python title="Specifying attribute via multiple arguments"
 >>> from markupy import attributes as attr
 >>> from markupy.elements import Label
->>> print(Label("#myid.foo.bar", {"for": "somefield"}, at.tabindex(-1), name="myname"))
-<label id="myid" class="foo bar" for="somefield" tabindex="-1" name="myname"></label>
+>>> print(Label("#myid.foo.bar", {"for": "somefield"}, ("disabled", True), at.tabindex(-1), name="myname"))
+<label id="myid" class="foo bar" for="somefield" disabled tabindex="-1" name="myname"></label>
 ```
 
 !!! warning "Order is important"
@@ -180,6 +191,5 @@ Attributes via id/class selector shorthand, dictionary, object and keyword attri
     When combining multiple attribute definition methods, it's important to respect the order between them:
     
     1. **selector id/class string** (optional, at most one)
-    2. **dictionary attributes** (optional, at most one)
-    3. **object attributes** (optional, unlimited)
-    4. **keyword attributes** (optional, unlimited)
+    3. **args attributes** such as dict, tuple or `Attribute` instance (optional, unlimited)
+    4. **kwargs attributes** (optional, unlimited)

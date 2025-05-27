@@ -1,18 +1,16 @@
 from functools import lru_cache
-from typing import Any
+from typing import Any, TypeAlias
 
 from markupsafe import escape
 
 from markupy.exceptions import MarkupyError
-
-AttributeValue = None | bool | str | int | float
 
 
 @lru_cache(maxsize=1000)
 def is_valid_key(key: Any) -> bool:
     # Check for invalid chars (like <>, newline/spaces, upper case)
     return (
-        isinstance(key, str)
+        isinstance(key, Attribute.Name)
         and key != ""
         # ensure no special chars
         and key == escape(str(key))
@@ -22,16 +20,18 @@ def is_valid_key(key: Any) -> bool:
 
 
 def is_valid_value(value: Any) -> bool:
-    return isinstance(value, AttributeValue)
+    return isinstance(value, Attribute.Value)
 
 
 class Attribute:
     __slots__ = ("_name", "_value")
 
-    _name: str
-    _value: AttributeValue
+    Name: TypeAlias = str
+    Value: TypeAlias = None | bool | str | int | float
+    _name: Name
+    _value: Value
 
-    def __init__(self, name: str, value: AttributeValue) -> None:
+    def __init__(self, name: str, value: Value) -> None:
         # name is immutable
         # reason is to avoid, when a handler returns None, having following handlers
         # receiving old and new instances with different names
@@ -46,11 +46,11 @@ class Attribute:
         return self._name
 
     @property
-    def value(self) -> AttributeValue:
+    def value(self) -> Value:
         return self._value
 
     @value.setter
-    def value(self, value: AttributeValue) -> None:
+    def value(self, value: Value) -> None:
         if not is_valid_value(value):
             raise MarkupyError(f"Attribute `{self.name}` has invalid value {value!r}")
         self._value = value

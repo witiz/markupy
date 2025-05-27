@@ -1,5 +1,5 @@
-from .attribute import Attribute, AttributeValue
+from .attribute import Attribute
 from .handlers import attribute_handlers
 from .store import AttributeStore
 
-__all__ = ["attribute_handlers", "Attribute", "AttributeValue", "AttributeStore"]
+__all__ = ["attribute_handlers", "Attribute", "AttributeStore"]

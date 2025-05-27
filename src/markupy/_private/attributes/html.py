@@ -1,13 +1,13 @@
 from collections.abc import Iterable, Mapping
 from typing import Callable, Literal
 
-from . import Attribute, AttributeValue
+from . import Attribute
 from .store import python_to_html_key
 
 # Special functions
 
 
-def getattr(name: str) -> Callable[[AttributeValue], Attribute]:
+def getattr(name: str) -> Callable[[Attribute.Value], Attribute]:
     return lambda value: Attribute(python_to_html_key(name), value)
 
 

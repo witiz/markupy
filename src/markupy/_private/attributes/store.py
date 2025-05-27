@@ -3,7 +3,7 @@ from functools import lru_cache
 
 from markupy.exceptions import MarkupyError
 
-from .attribute import Attribute, AttributeValue
+from .attribute import Attribute
 from .handlers import attribute_handlers
 
 
@@ -84,7 +84,7 @@ class AttributeStore(dict[str, Attribute]):
 
     def add_dict(
         self,
-        dct: Mapping[str, AttributeValue],
+        dct: Mapping[Attribute.Name, Attribute.Value],
         *,
         rewrite_keys: bool = False,
     ) -> None:
@@ -92,5 +92,9 @@ class AttributeStore(dict[str, Attribute]):
             name = python_to_html_key(key) if rewrite_keys else key
             self.add(Attribute(name, value))
 
-    def add(self, new: Attribute) -> None:
-        self[new.name] = new
+    def add_tuple(self, attr: tuple[Attribute.Name, Attribute.Value]) -> None:
+        name, value = attr
+        self.add(Attribute(name, value))
+
+    def add(self, attr: Attribute) -> None:
+        self[attr.name] = attr

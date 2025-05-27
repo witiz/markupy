@@ -39,6 +39,11 @@ def test_non_identifier() -> None:
     assert el.Input(Attribute("@click", "hello")) == result
 
 
+def test_tuple() -> None:
+    result = """<input @click="hello">"""
+    assert el.Input(("@click", "hello")) == result
+
+
 def test_none() -> None:
     assert el.Input(None) == """<input>"""
     assert el.Input("#foo", None) == """<input id="foo">"""
