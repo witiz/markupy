@@ -140,9 +140,7 @@ class SafeElement(Element):
         super().__init__(name, safe=True, shared=shared)
 
 
-SPECIAL_ELEMENTS: dict[
-    str, type[VoidElement | CommentElement | HtmlElement | SafeElement]
-] = {
+SPECIAL_ELEMENTS: dict[str, type[Element]] = {
     "area": VoidElement,
     "base": VoidElement,
     "br": VoidElement,

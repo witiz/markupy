@@ -1,5 +1,5 @@
 from collections.abc import Iterator
-from typing import Callable
+from typing import Callable, TypeAlias
 
 from markupy.exceptions import MarkupyError
 
@@ -10,7 +10,7 @@ from .attribute import Attribute
 # - avoid exposing Attribute.Value type that is too low level
 # - allows to differentiate between an attribute that has never been instanciated vs
 #   an attribute that has already been instanciated with a None value
-AttributeHandler = Callable[[Attribute | None, Attribute], Attribute | None]
+AttributeHandler: TypeAlias = Callable[[Attribute | None, Attribute], Attribute | None]
 
 
 class AttributeHandlerRegistry(dict[AttributeHandler, None]):
