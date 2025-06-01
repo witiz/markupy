@@ -2,34 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://markupy.witiz.com/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-06-01</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/advanced/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-06-01</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/django/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-06-01</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/elements/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-06-01</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/flask/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-06-01</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/html2markupy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-06-01</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/reusability/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-06-01</lastmod>
     </url>
     <url>
          <loc>https://markupy.witiz.com/starlette/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-06-01</lastmod>
     </url>
 </urlset>
