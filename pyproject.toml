@@ -1,7 +1,7 @@
 [project]
+version = "2.5.0"
 name = "markupy"
 description = "markupy - HTML in Python"
-dynamic = ["version"]
 authors = [
   { name="witiz", email="markupy@witiz.com" },
 ]
@@ -32,11 +32,8 @@ Issues = "https://github.com/witiz/markupy/issues"
 html2markupy = "markupy._private.html_to_markupy.cli:main"
 
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
-
-[tool.flit.module]
-name = "markupy"
+requires = ["uv_build"]
+build-backend = "uv_build"
 
 [tool.uv]
 dev-dependencies = [
@@ -45,7 +42,6 @@ dev-dependencies = [
     "django>=5.1.1",
     "htpy>=24.9.1",
     "mkdocs-material>=9.5.34",
-    "flit>=3.9.0",
     "mypy>=1.11.2",
     "ruff>=0.6.5",
     "pyright>=1.1.381",
