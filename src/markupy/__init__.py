@@ -11,6 +11,6 @@ __all__ = [
     "attribute_handlers",
     "html_to_markupy",
 ]
-__version__ = "2.4.0"
+__version__ = "2.5.0"
 
 Fragment = _Fragment()
