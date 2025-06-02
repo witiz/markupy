@@ -7,4 +7,4 @@ set -euo pipefail
 . ${BASH_SOURCE%/*}/docs.sh
 
 echo --- pypi publish ----
-uv run flit publish
+uv publish
